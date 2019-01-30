@@ -25,6 +25,8 @@ app.post("/", (request, response) => {
     });
 });
 
+let port = process.env.PORT || 8080;
+
 app.listen(3000, (err) => {
     if (err) {
         console.log(err);
