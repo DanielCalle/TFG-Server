@@ -24,16 +24,12 @@ let movies = {
 }
 
 app.get("/", (request, response) => {
-    response.json({
-        data: movies
-    });
+    response.json(movies);
 });
 
 app.post("/", (request, response) => {
     console.log(request.body);
-    response.json({
-        data: movies[request.body.uuid]
-    });
+    response.json(movies[request.body.uuid]);
 });
 
 let port = process.env.PORT || 8080;
