@@ -27,10 +27,10 @@ app.post("/", (request, response) => {
 
 let port = process.env.PORT || 8080;
 
-app.listen(3000, (err) => {
+app.listen(port, (err) => {
     if (err) {
         console.log(err);
     } else {
-        console.log("listening at port 3000");
+        console.log("listening at port " + port);
     }
 });
