@@ -8,20 +8,31 @@ const app = express();
 app.use(morgan("dev"));
 app.use(bodyParser.urlencoded({ extended: false }));
 
-let op = {
-    "8e4115c194c545c991b6fea51581cfa8": "Golden Pound Usopp"
+let movies = {
+    "a49581c363b94409badf6bafb4bd15d0": {
+        title: "Z",
+        description: "hey"
+    },
+    "e72296b8c7d845c69be9c63bd6a57019": {
+        title: "Frozen",
+        description: "pelicula"
+    },
+    "738f2719b6dd4cdf9169fb202fbc7810": {
+        title: "El Rey León",
+        description: "es un leon"
+    }
 }
 
 app.get("/", (request, response) => {
     response.json({
-        data: op
+        data: movies
     });
 });
 
 app.post("/", (request, response) => {
     console.log(request.body);
     response.json({
-        data: op[request.body.uuid]
+        data: movies[request.body.uuid]
     });
 });
 
