@@ -1,0 +1,38 @@
+package es.ucm.fdi.tfg.app.controller;
+
+import java.util.Optional;
+
+import com.github.lambdaexpression.annotation.EnableRequestBodyParam;
+import com.github.lambdaexpression.annotation.RequestBodyParam;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import es.ucm.fdi.tfg.app.entity.Film;
+import es.ucm.fdi.tfg.app.repository.FilmRepository;
+
+@Controller
+@RequestMapping("/film")
+@EnableRequestBodyParam
+public class FilmController {
+
+    @Autowired
+    private FilmRepository filmRepository;
+
+    @PostMapping("/")
+    @ResponseBody
+    public Optional<Film> getFilm(@RequestBodyParam String id) {
+        return filmRepository.findById(id);
+    }
+
+    @GetMapping("/all")
+    @ResponseBody
+    public Iterable<Film> getAllFilms() {
+        return filmRepository.findAll();
+    }
+
+}

@@ -1,5 +1,5 @@
-# node files
-node_modules/
-package-lock.json
-# visual docs
-.vscode/
+bin
+target
+.classpath
+.project
+.settings
