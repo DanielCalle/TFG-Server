@@ -7,15 +7,15 @@ import javax.persistence.Id;
 public class Film {
 
     @Id
-    private String id;
+    private String uuid;
 
-    private String film_name;
+    private String name;
 
-    private String id_director;
+    private String idDirector;
 
     private String trailer;
 
-    private String film_description;
+    private String description;
 
     private String genre;
 
@@ -26,45 +26,45 @@ public class Film {
     private String country;
 
     /**
-     * @return the id
+     * @return the uuid
      */
-    public String getId() {
-        return id;
+    public String getUuid() {
+        return uuid;
     }
 
     /**
-     * @param id the id to set
+     * @param uuid the uuid to set
      */
-    public void setId(String id) {
-        this.id = id;
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 
     /**
-     * @return the film_name
+     * @return the name
      */
-    public String getFilm_name() {
-        return film_name;
+    public String getName() {
+        return name;
     }
 
     /**
-     * @param film_name the film_name to set
+     * @param name the name to set
      */
-    public void setFilm_name(String film_name) {
-        this.film_name = film_name;
+    public void setName(String name) {
+        this.name = name;
     }
 
     /**
-     * @return the id_director
+     * @return the idDirector
      */
-    public String getId_director() {
-        return id_director;
+    public String getIdDirector() {
+        return idDirector;
     }
 
     /**
-     * @param id_director the id_director to set
+     * @param idDirector the idDirector to set
      */
-    public void setId_director(String id_director) {
-        this.id_director = id_director;
+    public void setIdDirector(String idDirector) {
+        this.idDirector = idDirector;
     }
 
     /**
@@ -82,17 +82,17 @@ public class Film {
     }
 
     /**
-     * @return the film_description
+     * @return the description
      */
-    public String getFilm_description() {
-        return film_description;
+    public String getDescription() {
+        return description;
     }
 
     /**
-     * @param film_description the film_description to set
+     * @param description the description to set
      */
-    public void setFilm_description(String film_description) {
-        this.film_description = film_description;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     /**
@@ -150,5 +150,6 @@ public class Film {
     public void setCountry(String country) {
         this.country = country;
     }
+
 
 }

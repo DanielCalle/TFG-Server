@@ -25,12 +25,6 @@ public class FilmController {
     @Autowired
     private FilmRepository filmRepository;
 
-    @PostMapping("/")
-    @ResponseBody
-    public Optional<Film> getFilm(@RequestBodyParam String id) {
-        return filmRepository.findById(id);
-    }
-
     @GetMapping("/all")
     @ResponseBody
     public Iterable<Film> getAllFilms() {
