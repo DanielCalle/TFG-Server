@@ -8,6 +8,7 @@ import com.github.lambdaexpression.annotation.RequestBodyParam;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,12 @@ public class FilmController {
     @ResponseBody
     public Iterable<Film> getAllFilms() {
         return filmRepository.findAll();
+    }
+
+    @PostMapping("/save")
+    @ResponseBody
+    public Film save(@RequestBody Film film) {
+        return filmRepository.save(film);
     }
 
 }
