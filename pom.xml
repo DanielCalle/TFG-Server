@@ -33,17 +33,18 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
-        </dependency>      
-        <!-- Use MySQL Connector-J -->
+        </dependency>
+        <!-- Postgresql -->
         <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-        </dependency>   
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>9.4-1206-jdbc42</version>
+        </dependency>
         <!-- https://github.com/LambdaExpression/RequestBodyParam -->
         <dependency>
-          <groupId>com.github.lambdaexpression</groupId>
-          <artifactId>request-body-param</artifactId>
-          <version>2.0.1.RELEASE</version>
+            <groupId>com.github.lambdaexpression</groupId>
+            <artifactId>request-body-param</artifactId>
+            <version>2.0.1.RELEASE</version>
         </dependency>
         <!-- junit -->
         <dependency>
