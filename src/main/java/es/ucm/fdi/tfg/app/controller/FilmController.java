@@ -30,6 +30,12 @@ public class FilmController {
         return filmRepository.findById(id);
     }
 
+    @PostMapping("/get")
+    @ResponseBody
+    public Optional<Film> getFilmById(@RequestBodyParam String id) {
+        return filmRepository.findById(id);
+    }
+
     @GetMapping("/all")
     @ResponseBody
     public Iterable<Film> getAllFilms() {
