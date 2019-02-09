@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import es.ucm.fdi.tfg.app.entity.Film;
 import es.ucm.fdi.tfg.app.repository.FilmRepository;
@@ -32,6 +33,7 @@ public class FilmController {
         return filmRepository.findAll();
     }
 
+    @CrossOrigin
     @PostMapping("/save")
     @ResponseBody
     public Film save(@RequestBody Film film) {
