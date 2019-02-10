@@ -27,6 +27,7 @@ public class FilmController {
     @Autowired
     private FilmRepository filmRepository;
 
+    @CrossOrigin
     @GetMapping("/all")
     @ResponseBody
     public Iterable<Film> getAllFilms() {
