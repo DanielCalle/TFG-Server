@@ -3,7 +3,7 @@ $(() => {
     data.forEach(element => {
         $.ajax({
             method: "GET",
-            url: "http://tfg-spring.herokuapp.com/film/" + element,
+            url: "/film/" + element,
             success: function (data, textStatus, jqXHR) {
                 console.log(data);
             },
