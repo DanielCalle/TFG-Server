@@ -2,9 +2,6 @@ package es.ucm.fdi.tfg.app.controller;
 
 import java.util.Optional;
 
-import com.github.lambdaexpression.annotation.EnableRequestBodyParam;
-import com.github.lambdaexpression.annotation.RequestBodyParam;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,7 +16,6 @@ import es.ucm.fdi.tfg.app.repository.FilmRepository;
 
 @Controller
 @RequestMapping("/film")
-@EnableRequestBodyParam
 public class FilmController {
 
     @Autowired
