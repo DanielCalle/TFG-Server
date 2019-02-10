@@ -37,6 +37,7 @@ public class FilmController {
         return filmRepository.save(film);
     }
 
+    @CrossOrigin
     @GetMapping("/{id}")
     @ResponseBody
     public Optional<Film> getFilmById(@PathVariable String id) {
