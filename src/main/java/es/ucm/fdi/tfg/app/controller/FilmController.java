@@ -23,21 +23,18 @@ public class FilmController {
     @Autowired
     private FilmRepository filmRepository;
 
-    @CrossOrigin
     @GetMapping("/all")
     @ResponseBody
     public Iterable<Film> getAllFilms() {
         return filmRepository.findAll();
     }
 
-    @CrossOrigin
     @PostMapping("/save")
     @ResponseBody
     public Film save(@RequestBody Film film) {
         return filmRepository.save(film);
     }
 
-    @CrossOrigin
     @GetMapping("/{id}")
     @ResponseBody
     public Optional<Film> getFilmById(@PathVariable String id) {

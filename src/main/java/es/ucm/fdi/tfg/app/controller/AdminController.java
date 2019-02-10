@@ -1,16 +1,10 @@
 package es.ucm.fdi.tfg.app.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.http.HttpEntity;
-import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import es.ucm.fdi.tfg.app.vuforia.service.Vuforia;
 
@@ -33,6 +27,11 @@ public class AdminController {
 
         model.addAttribute("data", jsonObject.getJSONArray("results"));
         return "admin";
+    }
+
+    @GetMapping("/save")
+    public String save() {
+        return "form";
     }
 
 }

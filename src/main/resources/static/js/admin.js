@@ -8,6 +8,13 @@ $(() => {
             url: "/film/" + element,
             success: function (data, textStatus, jqXHR) {
                 if (data) {
+                    let line = $("<li></li>");
+                    let film = $("<div class='film'></div>");
+                    Object.keys(data).forEach(key => {
+                        film.append("<p>" + key + ": " + data[key] + "</p>");
+                    });
+                    line.append(film);
+                    $(".list").append(line);
                     console.log(data);
                 }
             },
