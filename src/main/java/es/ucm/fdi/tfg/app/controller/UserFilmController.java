@@ -11,32 +11,25 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import es.ucm.fdi.tfg.app.entity.User;
-import es.ucm.fdi.tfg.app.repository.UserRepository;
+import es.ucm.fdi.tfg.app.entity.UserFilm;
+import es.ucm.fdi.tfg.app.repository.UserFilmRepository;
 
 @Controller
-@RequestMapping("/user")
-public class UserController{
+@RequestMapping("/userFilm")
+public class UserFilmController{
 
     @Autowired
-    private UserRepository userRepository;
-
-    @GetMapping("/all")
-    @ResponseBody
-    public Iterable<User> getAllUsers() {
-        return userRepository.findAll();
-    }
+    private UserFilmRepository userFilmRepository;
 
     @PostMapping("/save")
     @ResponseBody
-    public User save(@RequestBody User user) {
-        return userRepository.save(user);
+    public UserFilm save(@RequestBody UserFilm userFilm) {
+        return userFilmRepository.save(userFilm);
     }
 
     @GetMapping("/{id}")
     @ResponseBody
-    public Optional<User> getUserById(@PathVariable String id) {
-        return userRepository.findById(id);
+    public Optional<UserFilm> getUserFilmsById(@PathVariable String id){
+        return userFilmRepository.findById(id);
     }
-
 }
