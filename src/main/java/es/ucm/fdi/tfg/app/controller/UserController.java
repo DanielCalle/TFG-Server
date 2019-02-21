@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import es.ucm.fdi.tfg.app.entity.User;
+import es.ucm.fdi.tfg.app.entity.UserFilm;
+import es.ucm.fdi.tfg.app.repository.UserFilmRepository;
 import es.ucm.fdi.tfg.app.repository.UserRepository;
 
 @Controller
@@ -20,6 +22,9 @@ public class UserController{
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private UserFilmRepository userFilmRepository;
 
     @GetMapping("/all")
     @ResponseBody
@@ -37,6 +42,12 @@ public class UserController{
     @ResponseBody
     public Optional<User> getUserById(@PathVariable String id) {
         return userRepository.findById(id);
+    }
+    
+    @GetMapping("/userFilms/{id}")
+    @ResponseBody
+    public Optional<UserFilm> getUserFilmsById(@PathVariable String id){
+        return userFilmRepository.findById(id);
     }
 
 }

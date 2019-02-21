@@ -5,7 +5,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 @Entity
-public class Tiene{
+public class UserFilm{
 
     /*public Tiene(){
 

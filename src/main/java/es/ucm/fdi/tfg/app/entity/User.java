@@ -73,6 +73,6 @@ public class User{
 		this.password = password;
     }
     
-    @OneToMany(mappedBy = "User")
-    private List<Tiene> tiene;
+    @OneToMany(mappedBy = "user")
+    private List<UserFilm> userFilms;
 }

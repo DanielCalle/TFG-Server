@@ -155,6 +155,6 @@ public class Film {
     }
 
     @OneToMany(mappedBy = "film")
-    private List<Tiene> tiene;
+    private List<UserFilm> userFilms;
 
 }
