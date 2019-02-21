@@ -1,7 +1,10 @@
 package es.ucm.fdi.tfg.app.entity;
 
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Film {
@@ -151,5 +154,7 @@ public class Film {
         this.country = country;
     }
 
+    @OneToMany(mappedBy = "film")
+    private List<Tiene> tiene;
 
 }
