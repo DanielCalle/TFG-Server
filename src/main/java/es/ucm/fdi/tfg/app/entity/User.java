@@ -72,7 +72,7 @@ public class User{
 	public void setPassword(String password) {
 		this.password = password;
     }
-    /*
+    
     @OneToMany(mappedBy = "user")
-    private List<UserFilm> userFilms;*/
+    private List<UserFilm> userFilms;
 }
