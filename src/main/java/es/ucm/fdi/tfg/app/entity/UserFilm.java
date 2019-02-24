@@ -2,9 +2,11 @@ package es.ucm.fdi.tfg.app.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.ManyToOne;
 
 @Entity
+@IdClass(UserFilmId.class)
 public class UserFilm{
 
     /*public Tiene(){

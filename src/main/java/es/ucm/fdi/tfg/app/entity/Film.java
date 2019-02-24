@@ -154,7 +154,8 @@ public class Film {
         this.country = country;
     }
 
+    /*
     @OneToMany(mappedBy = "film")
-    private List<UserFilm> userFilms;
+    private List<UserFilm> userFilms;*/
 
 }
