@@ -8,14 +8,14 @@ import javax.persistence.Embeddable;
 public class UserFilmId implements Serializable{
 
     private static final long serialVersionUID = 1L;
-    private String user;
+    private String userApp;
     private String film;
 
     /**
      * @return the user
      */
     public String getUser() {
-        return user;
+        return userApp;
     }
 
     /**
@@ -33,9 +33,9 @@ public class UserFilmId implements Serializable{
     }
 
     /**
-     * @param user the user to set
+     * @param userApp the user to set
      */
     public void setUser(String user) {
-        this.user = user;
+        this.userApp = user;
     }
 }

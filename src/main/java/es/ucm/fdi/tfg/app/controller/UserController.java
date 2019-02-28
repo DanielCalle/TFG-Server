@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import es.ucm.fdi.tfg.app.entity.User;
+import es.ucm.fdi.tfg.app.entity.UserApp;
 import es.ucm.fdi.tfg.app.repository.UserRepository;
 
 @Controller
@@ -23,19 +23,19 @@ public class UserController{
 
     @GetMapping("/all")
     @ResponseBody
-    public Iterable<User> getAllUsers() {
+    public Iterable<UserApp> getAllUsers() {
         return userRepository.findAll();
     }
 
     @PostMapping("/save")
     @ResponseBody
-    public User save(@RequestBody User user) {
+    public UserApp save(@RequestBody UserApp user) {
         return userRepository.save(user);
     }
 
     @GetMapping("/{id}")
     @ResponseBody
-    public Optional<User> getUserById(@PathVariable String id) {
+    public Optional<UserApp> getUserById(@PathVariable String id) {
         return userRepository.findById(id);
     }
 

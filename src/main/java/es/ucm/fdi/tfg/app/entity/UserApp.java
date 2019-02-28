@@ -7,7 +7,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 @Entity
-public class User{
+public class UserApp{
     @Id
     private String uuid;
 
@@ -73,6 +73,6 @@ public class User{
 		this.password = password;
     }
     
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "userApp")
     private List<UserFilm> userFilms;
 }

@@ -19,7 +19,7 @@ public class UserFilm{
 
     @Id
     @ManyToOne
-    private User user;
+    private UserApp userApp;
 
     @Id
     @ManyToOne
