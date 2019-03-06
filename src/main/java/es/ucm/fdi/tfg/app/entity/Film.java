@@ -3,10 +3,14 @@ package es.ucm.fdi.tfg.app.entity;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.Column;
+import javax.persistence.Lob;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 @Entity
+@Table(name = "film")
 public class Film {
 
     @Id
@@ -14,19 +18,27 @@ public class Film {
 
     private String name;
 
-    private String idDirector;
+    private String director;
 
-    private String trailer;
+    @Column(name = "trailer_url")
+    private String trailerURL;
 
-    private String description;
+    @Column(name = "info_url")
+    private String infoURL;
+
+    @Lob
+    private Byte[] image;
 
     private String genre;
 
     private int duration;
 
-    private int valoration;
+    private float rating;
 
     private String country;
+    
+    @OneToMany(mappedBy = "film")
+    private List<UserFilm> userFilms;
 
     /**
      * @return the uuid
@@ -57,45 +69,45 @@ public class Film {
     }
 
     /**
-     * @return the idDirector
+     * @return the director
      */
-    public String getIdDirector() {
-        return idDirector;
+    public String getDirector() {
+        return director;
     }
 
     /**
-     * @param idDirector the idDirector to set
+     * @param director the director to set
      */
-    public void setIdDirector(String idDirector) {
-        this.idDirector = idDirector;
+    public void setDirector(String director) {
+        this.director = director;
     }
 
     /**
-     * @return the trailer
+     * @return the trailerURL
      */
-    public String getTrailer() {
-        return trailer;
+    public String getTrailerURL() {
+        return trailerURL;
     }
 
     /**
-     * @param trailer the trailer to set
+     * @param trailerURL the trailerURL to set
      */
-    public void setTrailer(String trailer) {
-        this.trailer = trailer;
+    public void setTrailerURL(String trailerURL) {
+        this.trailerURL = trailerURL;
     }
 
     /**
-     * @return the description
+     * @return the infoURL
      */
-    public String getDescription() {
-        return description;
+    public String getInfoURL() {
+        return infoURL;
     }
 
     /**
-     * @param description the description to set
+     * @param infoURL the infoURL to set
      */
-    public void setDescription(String description) {
-        this.description = description;
+    public void setInfoURL(String infoURL) {
+        this.infoURL = infoURL;
     }
 
     /**
@@ -127,17 +139,17 @@ public class Film {
     }
 
     /**
-     * @return the valoration
+     * @return the rating
      */
-    public int getValoration() {
-        return valoration;
+    public float getRating() {
+        return rating;
     }
 
     /**
-     * @param valoration the valoration to set
+     * @param rating the rating to set
      */
-    public void setValoration(int valoration) {
-        this.valoration = valoration;
+    public void setRating(float rating) {
+        this.rating = rating;
     }
 
     /**
@@ -154,8 +166,19 @@ public class Film {
         this.country = country;
     }
 
-    
-    @OneToMany(mappedBy = "film")
-    private List<UserFilm> userFilms;
+    /**
+     * @return the userFilms
+     */
+    public List<UserFilm> getUserFilms() {
+        return userFilms;
+    }
 
+    /**
+     * @param userFilms the userFilms to set
+     */
+    public void setUserFilms(List<UserFilm> userFilms) {
+        this.userFilms = userFilms;
+    }
+
+    
 }

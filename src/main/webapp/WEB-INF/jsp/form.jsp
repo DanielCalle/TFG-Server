@@ -17,13 +17,14 @@
         <h1>Film Form</h1>
         <form action="" method="POST">
             UUID<input type="text" name="uuid" id="uuid" required>
-            FILM NAME<input type="text" name="name" id="name" required>
-            DIRECTOR ID<input type="text" name="idDirector" id="idDirector">
-            TRAILER URL<input type="text" name="trailer" id="trailer">
-            DESCRIPTION<textarea name="description" id="description"></textarea>
+            NAME<input type="text" name="name" id="name" required>
+            DIRECTOR<input type="text" name="director" id="director">
+            TRAILER URL<input type="text" name="trailerURL" id="trailerURL">
+            INFO URL<textarea name="infoURL" id="infoURL"></textarea>
+            IMAGE<input type="image" name="image" id="image" required>
             GENRE<input type="text" name="genre" id="genre" required>
             DURATION<input type="text" name="duration" id="duration" required>
-            VALORATION<input type="text" name="valoration" id="valoration" required>
+            RATING<input type="text" name="rating" id="rating" required>
             COUNTRY<input type="text" name="country" id="country" required>
             <input type="button" value="SEND" id="send">
         </form>
