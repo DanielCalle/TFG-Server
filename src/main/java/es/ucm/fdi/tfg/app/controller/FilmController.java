@@ -1,10 +1,12 @@
 package es.ucm.fdi.tfg.app.controller;
 
+import java.io.IOException;
 import java.util.Optional;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -40,9 +42,30 @@ public class FilmController {
     @RequestMapping(value = "/save", method = RequestMethod.POST,
     consumes = {"multipart/form-data"})
     @ResponseBody
-    public Film save(@RequestPart("film") @Valid Film film,
-    @RequestPart("file") @Valid @NotNull @NotBlank MultipartFile file) {
-        return film;
+    public Film save(@RequestPart("film") @Valid String filmString,
+    	    @RequestPart("image") @Valid @NotNull @NotBlank MultipartFile image) {
+        JSONObject obj = new JSONObject(filmString);
+        Film film = new Film();
+        byte[] imageBytes = null;
+        try {
+        	imageBytes = image.getBytes();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
+        film.setUuid((String)obj.get("uuid"));
+        film.setName((String)obj.get("name"));
+        film.setDirector((String)obj.get("director"));
+        film.setTrailerURL((String)obj.get("trailerURL"));
+        film.setInfoURL((String)obj.get("infoURL"));
+        film.setImage(imageBytes);
+        film.setGenre((String)obj.get("genre"));
+        film.setDuration((Integer)obj.get("duration"));
+        film.setRating((Double)obj.get("rating"));
+        film.setCountry((String)obj.get("country"));
+
+        return filmRepository.save(film);
     }
 
     @GetMapping("/{id}")

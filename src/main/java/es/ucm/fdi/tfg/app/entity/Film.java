@@ -27,13 +27,13 @@ public class Film {
     private String infoURL;
 
     @Lob
-    private Byte[] image;
+    private byte[] image;
 
     private String genre;
 
     private int duration;
 
-    private float rating;
+    private double rating;
 
     private String country;
     
@@ -113,14 +113,14 @@ public class Film {
     /**
      * @return the image
      */
-    public Byte[] getImage() {
+    public byte[] getImage() {
         return image;
     }
 
     /**
      * @param image the image to set
      */
-    public void setImage(Byte[] image) {
+    public void setImage(byte[] image) {
         this.image = image;
     }
 
@@ -155,14 +155,14 @@ public class Film {
     /**
      * @return the rating
      */
-    public float getRating() {
+    public double getRating() {
         return rating;
     }
 
     /**
      * @param rating the rating to set
      */
-    public void setRating(float rating) {
+    public void setRating(double rating) {
         this.rating = rating;
     }
 
