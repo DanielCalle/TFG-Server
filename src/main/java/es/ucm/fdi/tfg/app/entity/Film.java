@@ -111,6 +111,20 @@ public class Film {
     }
 
     /**
+     * @return the image
+     */
+    public Byte[] getImage() {
+        return image;
+    }
+
+    /**
+     * @param image the image to set
+     */
+    public void setImage(Byte[] image) {
+        this.image = image;
+    }
+
+    /**
      * @return the genre
      */
     public String getGenre() {
@@ -179,6 +193,7 @@ public class Film {
     public void setUserFilms(List<UserFilm> userFilms) {
         this.userFilms = userFilms;
     }
+
 
     
 }
