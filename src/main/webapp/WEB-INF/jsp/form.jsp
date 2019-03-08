@@ -21,7 +21,7 @@
             DIRECTOR<input type="text" name="director" id="director">
             TRAILER URL<input type="text" name="trailerURL" id="trailerURL">
             INFO URL<textarea name="infoURL" id="infoURL"></textarea>
-            IMAGE<input type="image" name="image" id="image" required>
+            IMAGE<input type="file" name="image" id="image" required>
             GENRE<input type="text" name="genre" id="genre" required>
             DURATION<input type="text" name="duration" id="duration" required>
             RATING<input type="text" name="rating" id="rating" required>
