@@ -14,12 +14,13 @@ $(() => {
 
         formData.append("film", JSON.stringify(film));
         formData.append("image", $('#image').val());
-        
+
         $.ajax({
             url: '/film/save',
             type: 'POST',
             data: formData,
-            contentType: undefined,
+            processData: false,
+            contentType: false,
             success: function(response) {
                 alert(response);
             },
