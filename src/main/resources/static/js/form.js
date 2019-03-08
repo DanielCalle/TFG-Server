@@ -1,16 +1,25 @@
 $(() => {
     $("#send").on("click", (event) => {
+        let formData = new FormData();
+        let film = {
+            uuid: $('#uuid').val(), 
+            name: $('#name').val(),
+            director: $('#director').val(),
+            trailerURL: $('#trailerURL').val(),
+            infoURL: $('#infoURL').val(),
+            genre: $('#genre').val(),
+            duration: $('#duration').val(),
+            rating: $('#rating').val(),
+            country: $('#country').val()};
+
+        formData.append("film", JSON.stringify(film));
+        formData.append("image", $('#image').val());
+        
         $.ajax({
             url: '/film/save',
             type: 'POST',
-            data: JSON.stringify({uuid: $('#uuid').val(), 
-            name: $('#name').val(), director: $('#director').val(),
-            trailerURL: $('#trailerURL').val(), infoURL: $('#infoURL').val(),
-            //image: $('#image').val(),
-            genre: $('#genre').val(), duration: $('#duration').val(),
-            rating: $('#rating').val(), country: $('#country').val()}),
-            processData: false,
-            contentType: "application/json",
+            data: formData,
+            contentType: undefined,
             success: function(response) {
                 alert(response);
             },

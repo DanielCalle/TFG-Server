@@ -20,7 +20,7 @@
             NAME<input type="text" name="name" id="name" required>
             DIRECTOR<input type="text" name="director" id="director">
             TRAILER URL<input type="text" name="trailerURL" id="trailerURL">
-            INFO URL<textarea name="infoURL" id="infoURL"></textarea>
+            INFO URL<input type="text" name="infoURL" id="infoURL">
             IMAGE<input type="file" name="image" id="image" required>
             GENRE<input type="text" name="genre" id="genre" required>
             DURATION<input type="text" name="duration" id="duration" required>

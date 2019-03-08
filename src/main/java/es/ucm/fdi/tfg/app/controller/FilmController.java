@@ -9,7 +9,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RequestPart;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
@@ -30,8 +36,11 @@ public class FilmController {
     }
 
     @PostMapping("/save")
+    @RequestMapping(value = "/save", method = RequestMethod.POST,
+    consumes = {"multipart/form-data"})
     @ResponseBody
-    public Film save(@RequestBody Film film) {
+    public Film save(@RequestPart("film") @Valid Film film,
+    @RequestPart("file") @Valid @NotNull @NotBlank MultipartFile file) {
         return filmRepository.save(film);
     }
 
