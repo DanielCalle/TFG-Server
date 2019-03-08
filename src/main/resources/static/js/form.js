@@ -12,7 +12,7 @@ $(() => {
             rating: $('#rating').val(),
             country: $('#country').val()};
 
-        formData.append("film", JSON.stringify(film));
+        formData.append("film", new Blob(JSON.stringify(film),{ type: "application/json"}));
         formData.append("image", $('#image').val());
 
         $.ajax({

@@ -40,11 +40,9 @@ public class FilmController {
     @RequestMapping(value = "/save", method = RequestMethod.POST,
     consumes = {"multipart/form-data"})
     @ResponseBody
-    public String save(@RequestPart("film") @Valid String filmString,
+    public Film save(@RequestPart("film") @Valid Film film,
     @RequestPart("file") @Valid @NotNull @NotBlank MultipartFile file) {
-        JSONObject obj = new JSONObject(filmString);
-        String res = (String)obj.get("name");
-        return res;
+        return film;
     }
 
     @GetMapping("/{id}")
