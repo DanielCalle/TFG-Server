@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestPart;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.NotBlank;
+import org.json.JSONObject;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -41,7 +42,9 @@ public class FilmController {
     @ResponseBody
     public String save(@RequestPart("film") @Valid String filmString,
     @RequestPart("file") @Valid @NotNull @NotBlank MultipartFile file) {
-        return filmString;
+        JSONObject obj = new JSONObject(filmString);
+        String res = (String)obj.get("name");
+        return res;
     }
 
     @GetMapping("/{id}")
