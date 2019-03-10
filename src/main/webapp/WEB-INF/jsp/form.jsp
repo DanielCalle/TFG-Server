@@ -15,7 +15,7 @@
 <body>
     <main>
         <h1>Film Form</h1>
-        <form action="" method="POST">
+        <form:form method="POST" action="/film/save" enctype="multipart/form-data">
             UUID<input type="text" name="uuid" id="uuid" required>
             NAME<input type="text" name="name" id="name" required>
             DIRECTOR<input type="text" name="director" id="director">
@@ -23,11 +23,11 @@
             INFO URL<input type="text" name="infoURL" id="infoURL">
             IMAGE<input type="file" name="image" id="image" required>
             GENRE<input type="text" name="genre" id="genre" required>
-            DURATION<input type="text" name="duration" id="duration" required>
-            RATING<input type="text" name="rating" id="rating" required>
+            DURATION<input type="number" name="duration" id="duration" required>
+            RATING<input type="number" name="rating" id="rating" required>
             COUNTRY<input type="text" name="country" id="country" required>
-            <input type="button" value="SEND" id="send">
-        </form>
+            <input type="submit" value="Submit">
+        </form:form>
     </main>
 </body>
 

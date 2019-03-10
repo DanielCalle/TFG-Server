@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RequestPart;
 import javax.validation.Valid;
@@ -39,12 +40,12 @@ public class FilmController {
     }
 
     @PostMapping("/save")
-    @RequestMapping(value = "/save", method = RequestMethod.POST,
-    consumes = {"multipart/form-data"})
-    @ResponseBody
-    public Film save(@RequestPart("film") @Valid String filmString,
-    	    @RequestPart("image") @Valid @NotNull @NotBlank MultipartFile image) {
-        JSONObject obj = new JSONObject(filmString);
+    public Film save(@RequestParam String uuid, @RequestParam String name,
+    		@RequestParam String director, @RequestParam String trailerURL,
+    		@RequestParam String infoURL, @RequestParam MultipartFile image,
+    		@RequestParam String genre, @RequestParam int duration,
+    		@RequestParam double rating, @RequestParam String country) {
+
         Film film = new Film();
         byte[] imageBytes = null;
         try {
@@ -54,16 +55,16 @@ public class FilmController {
 			e.printStackTrace();
 		}
         
-        film.setUuid((String)obj.get("uuid"));
-        film.setName((String)obj.get("name"));
-        film.setDirector((String)obj.get("director"));
-        film.setTrailerURL((String)obj.get("trailerURL"));
-        film.setInfoURL((String)obj.get("infoURL"));
+        film.setUuid(uuid);
+        film.setName(name);
+        film.setDirector(director);
+        film.setTrailerURL(trailerURL);
+        film.setInfoURL(infoURL);
         film.setImage(imageBytes);
-        film.setGenre((String)obj.get("genre"));
-        film.setDuration((Integer)obj.get("duration"));
-        film.setRating((Double)obj.get("rating"));
-        film.setCountry((String)obj.get("country"));
+        film.setGenre(genre);
+        film.setDuration(duration);
+        film.setRating(rating);
+        film.setCountry(country);
 
         return filmRepository.save(film);
     }
