@@ -40,6 +40,7 @@ public class FilmController {
     }
 
     @PostMapping("/save")
+    @ResponseBody
     public Film save(@RequestParam String uuid, @RequestParam String name,
     		@RequestParam String director, @RequestParam String trailerURL,
     		@RequestParam String infoURL, @RequestParam MultipartFile image,
