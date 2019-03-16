@@ -3,8 +3,11 @@ package es.ucm.fdi.tfg.app.entity;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class UserApp{
@@ -16,6 +19,18 @@ public class UserApp{
     private String email;
 
     private String password;
+    
+    @JsonIgnore
+    @OneToMany(mappedBy = "userApp", fetch=FetchType.LAZY) 
+    private List<UserFilm> userFilms;
+    
+    @JsonIgnore
+    @OneToMany(mappedBy = "requester", fetch=FetchType.LAZY)
+    private List<Friendship> friendRequests;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "friend", fetch=FetchType.LAZY) 
+    private List<Friendship> friends;
 
     /**
      * @return the uuid
@@ -72,7 +87,19 @@ public class UserApp{
 	public void setPassword(String password) {
 		this.password = password;
     }
+
+	public List<UserFilm> getUserFilms() {
+		return userFilms;
+	}
+
+	public List<Friendship> getFriendRequests() {
+		return friendRequests;
+	}
+
+	public List<Friendship> getFriends() {
+		return friends;
+	}
+	
+	
     
-    @OneToMany(mappedBy = "userApp")
-    private List<UserFilm> userFilms;
 }
