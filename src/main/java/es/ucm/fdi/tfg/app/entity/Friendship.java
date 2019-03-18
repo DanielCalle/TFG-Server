@@ -1,33 +1,33 @@
 package es.ucm.fdi.tfg.app.entity;
 
-import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 
 @Entity
+@Table(name = "friendship")
 @IdClass(FriendshipId.class)
 public class Friendship {
 
     @Id
     @ManyToOne
-    UserApp requester;
+    private UserApp requester;
 
     @Id
     @ManyToOne
-    UserApp friend;
+    private UserApp friend;
 
     @Temporal(javax.persistence.TemporalType.DATE)
-    Date date;
+    private Date date;
 
     @Column(nullable = false)
-    boolean active;
+    private boolean active;
 
 	public UserApp getRequester() {
 		return requester;

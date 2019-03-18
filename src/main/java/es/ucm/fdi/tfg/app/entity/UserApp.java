@@ -21,6 +21,14 @@ public class UserApp{
     private String password;
     
     @JsonIgnore
+    @OneToMany(mappedBy = "creator", fetch=FetchType.LAZY) 
+    private List<Plan> createdPlans;
+    
+    @JsonIgnore
+    @OneToMany(mappedBy = "joinedUsers", fetch=FetchType.LAZY) 
+    private List<Plan> joinedPlans;
+    
+    @JsonIgnore
     @OneToMany(mappedBy = "userApp", fetch=FetchType.LAZY) 
     private List<UserFilm> userFilms;
     
@@ -98,6 +106,34 @@ public class UserApp{
 
 	public List<Friendship> getFriends() {
 		return friends;
+	}
+
+	public List<Plan> getCreatedPlans() {
+		return createdPlans;
+	}
+
+	public void setCreatedPlans(List<Plan> createdPlans) {
+		this.createdPlans = createdPlans;
+	}
+
+	public List<Plan> getJoinedPlans() {
+		return joinedPlans;
+	}
+
+	public void setJoinedPlans(List<Plan> joinedPlans) {
+		this.joinedPlans = joinedPlans;
+	}
+
+	public void setUserFilms(List<UserFilm> userFilms) {
+		this.userFilms = userFilms;
+	}
+
+	public void setFriendRequests(List<Friendship> friendRequests) {
+		this.friendRequests = friendRequests;
+	}
+
+	public void setFriends(List<Friendship> friends) {
+		this.friends = friends;
 	}
 	
 	

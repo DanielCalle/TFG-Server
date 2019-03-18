@@ -1,7 +1,5 @@
 package es.ucm.fdi.tfg.app.repository;
 
-import java.util.Optional;
-
 import org.springframework.data.repository.CrudRepository;
 
 import es.ucm.fdi.tfg.app.entity.Friendship;

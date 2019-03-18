@@ -18,32 +18,35 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import es.ucm.fdi.tfg.app.entity.Friendship;
-import es.ucm.fdi.tfg.app.entity.FriendshipId;
+import es.ucm.fdi.tfg.app.entity.Film;
+import es.ucm.fdi.tfg.app.entity.Plan;
 import es.ucm.fdi.tfg.app.entity.UserApp;
-import es.ucm.fdi.tfg.app.repository.FriendshipRepository;
+import es.ucm.fdi.tfg.app.repository.FilmRepository;
+import es.ucm.fdi.tfg.app.repository.PlanRepository;
 import es.ucm.fdi.tfg.app.repository.UserRepository;
 
 @Controller
-@RequestMapping("/friendship")
-public class FriendshipController {
+@RequestMapping("/plan")
+public class PlanController {
 	
 	@Autowired
-    private FriendshipRepository friendshipRepository;
+    private PlanRepository planRepository;
 	@Autowired
     private UserRepository userRepository;
+	@Autowired
+    private FilmRepository filmRepository;
 	
     @GetMapping("/")
     @ResponseBody
-    public Iterable<Friendship> getAllUsers() {
-        return friendshipRepository.findAll();
+    public Iterable<Plan> getAllUsers() {
+        return planRepository.findAll();
     }
 
     @PostMapping("/")
     @ResponseBody
-    public ResponseEntity<?> save(
-    		@RequestParam String requesterId,
-    		@RequestParam String friendId,
+    public ResponseEntity<Plan> save(
+    		@RequestParam String uuidCreator,
+    		@RequestParam String uuidFilm,
     		@RequestParam int year,
     		@RequestParam int month,
     		@RequestParam int day,
@@ -51,10 +54,10 @@ public class FriendshipController {
     		@RequestParam int min
     		) {
 
-        Optional<UserApp> requester = userRepository.findById(requesterId);
-        Optional<UserApp> friend = userRepository.findById(friendId);
+        Optional<UserApp> creator = userRepository.findById(uuidCreator);
+        Optional<Film> film = filmRepository.findById(uuidFilm);
         
-        if (requester.isPresent() && friend.isPresent()) {
+        if (creator.isPresent() && film.isPresent()) {
         	if (year >= 0 &&
         			month > 0 && month <= 12 &&
         			day > 0 && day <= 31 &&
@@ -68,13 +71,12 @@ public class FriendshipController {
                 cal.set(Calendar.HOUR_OF_DAY, hrs+1);
                 cal.set(Calendar.MINUTE, min);
                 Date date = cal.getTime();
-                Friendship friendship = new Friendship();
-                friendship.setRequester(requester.get());
-                friendship.setFriend(friend.get());
-                friendship.setDate(date);
-                friendship.setActive(false);
+                Plan plan = new Plan();
+                plan.setCreator(creator.get());
+                plan.setFilm(film.get());
+                plan.setDate(date);
 
-            	return ResponseEntity.status(HttpStatus.CREATED).body(friendshipRepository.save(friendship));
+            	return ResponseEntity.status(HttpStatus.CREATED).body(planRepository.save(plan));
         	}
         	else
         		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
@@ -84,38 +86,33 @@ public class FriendshipController {
 
     }
     
-    @PutMapping("/accept")
+    @PutMapping("/join")
     @ResponseBody
-    public ResponseEntity<?> accept(
-    		@RequestParam String requesterId,
-    		@RequestParam String friendId
+    public ResponseEntity<Plan> accept(
+    		@RequestParam long planId,
+    		@RequestParam String uuidUser
     		) {
-    	FriendshipId friendshipId = new FriendshipId();
-    	friendshipId.setFriend(friendId);
-    	friendshipId.setRequester(requesterId);
-    	Optional<Friendship> friendship = friendshipRepository.findById(friendshipId);
-    	if (friendship.isPresent()) {
-    		friendship.get().setActive(true);
-    		friendshipRepository.save(friendship.get());
+    	Optional<Plan> plan = planRepository.findById(planId);
+    	Optional<UserApp> user = userRepository.findById(uuidUser);
+    	if (plan.isPresent() &&  user.isPresent()) {
+    		List<UserApp> joinedUsers = plan.get().getJoinedUsers();
+    		joinedUsers.add(user.get());
+    		plan.get().setJoinedUsers(joinedUsers);
+    		planRepository.save(plan.get());
     		
-    		return ResponseEntity.status(HttpStatus.OK).body(friendship.get());
+    		return ResponseEntity.status(HttpStatus.OK).body(plan.get());
     	}
     	else
     		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
     }
     
-    @DeleteMapping("/")
+    @DeleteMapping("/{id}")
     @ResponseBody
-    public ResponseEntity<?> delete(
-    		@RequestParam String requesterId,
-    		@RequestParam String friendId
-    		) {
-    	FriendshipId friendshipId = new FriendshipId();
-    	friendshipId.setFriend(friendId);
-    	friendshipId.setRequester(requesterId);
-    	Optional<Friendship> friendship = friendshipRepository.findById(friendshipId);
-    	if (friendship.isPresent()) {
-    		friendshipRepository.delete(friendship.get());
+    public ResponseEntity<?> delete(@PathVariable long id) {
+    	Optional<Plan> plan = planRepository.findById(id);
+    	if (plan.isPresent()) {
+    		planRepository.delete(plan.get());
+    		
     		return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
     	}
     	else
@@ -124,12 +121,10 @@ public class FriendshipController {
 
     @GetMapping("/{id}")
     @ResponseBody
-    public ResponseEntity<?> getUserById(@PathVariable String id) {
-    	Optional<UserApp> user = userRepository.findById(id);
-    	if (user.isPresent()) {
-	    	List<Friendship> friendships = user.get().getFriends();
-	    	friendships.addAll(user.get().getFriendRequests());
-	    	return ResponseEntity.status(HttpStatus.OK).body(friendships);
+    public ResponseEntity<Plan> getUserById(@PathVariable long id) {
+    	Optional<Plan> plan = planRepository.findById(id);
+    	if (plan.isPresent()) {
+	    	return ResponseEntity.status(HttpStatus.OK).body(plan.get());
     	}
     	else
     		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
