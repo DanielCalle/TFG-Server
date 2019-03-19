@@ -36,13 +36,13 @@
             <artifactId>postgresql</artifactId>
             <version>9.4-1206-jdbc42</version>
         </dependency>
-        <!-- H2 
+        <!-- H2 --> 
         <dependency>
 		    <groupId>com.h2database</groupId>
 		    <artifactId>h2</artifactId>
-		    <version>1.4.194</version>
+		    <version>1.4.197</version>
 		</dependency>
-		-->
+		
         <!-- https://github.com/LambdaExpression/RequestBodyParam -->
         <dependency>
             <groupId>com.github.lambdaexpression</groupId>

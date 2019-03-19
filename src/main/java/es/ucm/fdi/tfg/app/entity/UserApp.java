@@ -5,6 +5,7 @@ import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -25,7 +26,7 @@ public class UserApp{
     private List<Plan> createdPlans;
     
     @JsonIgnore
-    @OneToMany(mappedBy = "joinedUsers", fetch=FetchType.LAZY) 
+    @ManyToMany
     private List<Plan> joinedPlans;
     
     @JsonIgnore

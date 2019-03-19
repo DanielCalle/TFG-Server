@@ -45,8 +45,8 @@ public class PlanController {
     @PostMapping("/")
     @ResponseBody
     public ResponseEntity<Plan> save(
-    		@RequestParam String uuidCreator,
-    		@RequestParam String uuidFilm,
+    		@RequestParam String creatorUuid,
+    		@RequestParam String filmUuid,
     		@RequestParam int year,
     		@RequestParam int month,
     		@RequestParam int day,
@@ -54,8 +54,8 @@ public class PlanController {
     		@RequestParam int min
     		) {
 
-        Optional<UserApp> creator = userRepository.findById(uuidCreator);
-        Optional<Film> film = filmRepository.findById(uuidFilm);
+        Optional<UserApp> creator = userRepository.findById(creatorUuid);
+        Optional<Film> film = filmRepository.findById(filmUuid);
         
         if (creator.isPresent() && film.isPresent()) {
         	if (year >= 0 &&
@@ -78,11 +78,11 @@ public class PlanController {
 
             	return ResponseEntity.status(HttpStatus.CREATED).body(planRepository.save(plan));
         	}
-        	else
-        		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        	
+        	return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
-        else
-        	return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 
     }
     
@@ -90,33 +90,36 @@ public class PlanController {
     @ResponseBody
     public ResponseEntity<Plan> accept(
     		@RequestParam long planId,
-    		@RequestParam String uuidUser
+    		@RequestParam String userUuid
     		) {
     	Optional<Plan> plan = planRepository.findById(planId);
-    	Optional<UserApp> user = userRepository.findById(uuidUser);
+    	Optional<UserApp> user = userRepository.findById(userUuid);
     	if (plan.isPresent() &&  user.isPresent()) {
-    		List<UserApp> joinedUsers = plan.get().getJoinedUsers();
-    		joinedUsers.add(user.get());
-    		plan.get().setJoinedUsers(joinedUsers);
-    		planRepository.save(plan.get());
+    		if (plan.get().getCreator().getUuid() != user.get().getUuid()) {
+	    		List<UserApp> joinedUsers = plan.get().getJoinedUsers();
+	    		joinedUsers.add(user.get());
+	    		plan.get().setJoinedUsers(joinedUsers);
+	    		planRepository.save(plan.get());
+	    		return ResponseEntity.status(HttpStatus.OK).body(plan.get());
+    		}
     		
-    		return ResponseEntity.status(HttpStatus.OK).body(plan.get());
+    		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
     	}
-    	else
-    		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+    	
+    	return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
     }
     
     @DeleteMapping("/{id}")
     @ResponseBody
-    public ResponseEntity<?> delete(@PathVariable long id) {
+    public ResponseEntity<Plan> delete(@PathVariable long id) {
     	Optional<Plan> plan = planRepository.findById(id);
     	if (plan.isPresent()) {
     		planRepository.delete(plan.get());
     		
     		return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
     	}
-    	else
-    		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+    	
+    	return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
     }
 
     @GetMapping("/{id}")
@@ -126,8 +129,8 @@ public class PlanController {
     	if (plan.isPresent()) {
 	    	return ResponseEntity.status(HttpStatus.OK).body(plan.get());
     	}
-    	else
-    		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+    	
+    	return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
     	
     }
 }

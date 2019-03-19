@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -21,14 +23,15 @@ public class Plan {
 	@GeneratedValue
 	private Long id;
 	
+	@ManyToOne
     private UserApp creator;
     
+	@ManyToOne
     private Film film;
-    
-    @JsonIgnore
-    @OneToMany(mappedBy = "userApp", fetch=FetchType.LAZY) 
+
+    @ManyToMany
     private List<UserApp> joinedUsers;
-	
+    
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date date;
 

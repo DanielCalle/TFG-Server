@@ -41,9 +41,9 @@ public class FriendshipController {
 
     @PostMapping("/")
     @ResponseBody
-    public ResponseEntity<?> save(
-    		@RequestParam String requesterId,
-    		@RequestParam String friendId,
+    public ResponseEntity<Friendship> save(
+    		@RequestParam String requesterUuid,
+    		@RequestParam String friendUuid,
     		@RequestParam int year,
     		@RequestParam int month,
     		@RequestParam int day,
@@ -51,8 +51,8 @@ public class FriendshipController {
     		@RequestParam int min
     		) {
 
-        Optional<UserApp> requester = userRepository.findById(requesterId);
-        Optional<UserApp> friend = userRepository.findById(friendId);
+        Optional<UserApp> requester = userRepository.findById(requesterUuid);
+        Optional<UserApp> friend = userRepository.findById(friendUuid);
         
         if (requester.isPresent() && friend.isPresent()) {
         	if (year >= 0 &&
@@ -76,23 +76,23 @@ public class FriendshipController {
 
             	return ResponseEntity.status(HttpStatus.CREATED).body(friendshipRepository.save(friendship));
         	}
-        	else
-        		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        	
+        	return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
-        else
-        	return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 
     }
     
-    @PutMapping("/accept")
+    @PutMapping("/accept/{requesterUuid}/{friendUuid}")
     @ResponseBody
-    public ResponseEntity<?> accept(
-    		@RequestParam String requesterId,
-    		@RequestParam String friendId
+    public ResponseEntity<Friendship> accept(
+    		@PathVariable String requesterUuid,
+    		@PathVariable String friendUuid
     		) {
     	FriendshipId friendshipId = new FriendshipId();
-    	friendshipId.setFriend(friendId);
-    	friendshipId.setRequester(requesterId);
+    	friendshipId.setFriend(friendUuid);
+    	friendshipId.setRequester(requesterUuid);
     	Optional<Friendship> friendship = friendshipRepository.findById(friendshipId);
     	if (friendship.isPresent()) {
     		friendship.get().setActive(true);
@@ -100,39 +100,42 @@ public class FriendshipController {
     		
     		return ResponseEntity.status(HttpStatus.OK).body(friendship.get());
     	}
-    	else
-    		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+    	
+    	return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
     }
     
-    @DeleteMapping("/")
+    @DeleteMapping("/{requesterUuid}/{friendUuid}")
     @ResponseBody
-    public ResponseEntity<?> delete(
-    		@RequestParam String requesterId,
-    		@RequestParam String friendId
+    public ResponseEntity<Friendship> delete(
+    		@PathVariable String requesterUuid,
+    		@PathVariable String friendUuid
     		) {
     	FriendshipId friendshipId = new FriendshipId();
-    	friendshipId.setFriend(friendId);
-    	friendshipId.setRequester(requesterId);
+    	friendshipId.setFriend(friendUuid);
+    	friendshipId.setRequester(requesterUuid);
     	Optional<Friendship> friendship = friendshipRepository.findById(friendshipId);
     	if (friendship.isPresent()) {
     		friendshipRepository.delete(friendship.get());
     		return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
     	}
-    	else
-    		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+    	
+    	return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{requesterUuid}/{friendUuid}")
     @ResponseBody
-    public ResponseEntity<?> getUserById(@PathVariable String id) {
-    	Optional<UserApp> user = userRepository.findById(id);
-    	if (user.isPresent()) {
-	    	List<Friendship> friendships = user.get().getFriends();
-	    	friendships.addAll(user.get().getFriendRequests());
-	    	return ResponseEntity.status(HttpStatus.OK).body(friendships);
+    public ResponseEntity<Friendship> getUserById(
+    		@PathVariable String requesterUuid,
+    		@PathVariable String friendUuid) {
+    	FriendshipId friendshipId = new FriendshipId();
+    	friendshipId.setFriend(friendUuid);
+    	friendshipId.setRequester(requesterUuid);
+    	Optional<Friendship> friendship = friendshipRepository.findById(friendshipId);
+    	if (friendship.isPresent()) {
+	    	return ResponseEntity.status(HttpStatus.OK).body(friendship.get());
     	}
-    	else
-    		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+    	
+    	return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
     	
     }
 }
