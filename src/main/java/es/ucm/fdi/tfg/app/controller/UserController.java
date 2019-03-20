@@ -18,33 +18,46 @@ import es.ucm.fdi.tfg.app.entity.Friendship;
 import es.ucm.fdi.tfg.app.entity.Plan;
 import es.ucm.fdi.tfg.app.entity.UserApp;
 import es.ucm.fdi.tfg.app.repository.UserRepository;
+import es.ucm.fdi.tfg.app.transfer.TUser;
 
 @Controller
-@RequestMapping("/user")
+@RequestMapping("/users")
 public class UserController{
 
     @Autowired
     private UserRepository userRepository;
 
-    @GetMapping("/all")
+    @GetMapping({"", "/"})
     @ResponseBody
     public Iterable<UserApp> getAllUsers() {
         return userRepository.findAll();
     }
 
-    @PostMapping("/save")
+    @PostMapping({"", "/"})
     @ResponseBody
-    public UserApp save(@RequestBody UserApp user) {
-        return userRepository.save(user);
+    public ResponseEntity<UserApp> save(@RequestBody TUser tUser) {
+    	Optional<UserApp> optUser = userRepository.findById(tUser.getUuid());
+    	if (!optUser.isPresent()) {
+    		UserApp user = new UserApp();
+    		user.setUuid(tUser.getUuid());
+    		user.setEmail(tUser.getEmail());
+    		user.setName(tUser.getName());
+    		user.setPassword(tUser.getPassword());
+    		
+    		return ResponseEntity.status(HttpStatus.CREATED).body(userRepository.save(user));
+    	}
+    	
+    	return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
+        
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{uuid}")
     @ResponseBody
-    public Optional<UserApp> getUserById(@PathVariable String id) {
-        return userRepository.findById(id);
+    public Optional<UserApp> getUserById(@PathVariable String uuid) {
+        return userRepository.findById(uuid);
     }
     
-    @GetMapping("friendships/{uuid}")
+    @GetMapping("{uuid}/friendships")
     @ResponseBody
     public ResponseEntity<List<Friendship>> getFriends(@PathVariable String uuid) {
     	Optional<UserApp> user = userRepository.findById(uuid);
@@ -56,7 +69,7 @@ public class UserController{
     	return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
     }
 
-    @GetMapping("plans/{uuid}")
+    @GetMapping("{uuid}/plans")
     @ResponseBody
     public ResponseEntity<List<Plan>> getPlans(@PathVariable String uuid) {
     	Optional<UserApp> user = userRepository.findById(uuid);
