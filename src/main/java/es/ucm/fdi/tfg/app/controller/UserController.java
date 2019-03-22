@@ -57,7 +57,7 @@ public class UserController{
         return userRepository.findById(uuid);
     }
     
-    @GetMapping("{uuid}/friendships")
+    @GetMapping("/{uuid}/friendships")
     @ResponseBody
     public ResponseEntity<List<Friendship>> getFriends(@PathVariable String uuid) {
     	Optional<UserApp> user = userRepository.findById(uuid);
@@ -69,7 +69,7 @@ public class UserController{
     	return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
     }
 
-    @GetMapping("{uuid}/plans")
+    @GetMapping("/{uuid}/plans")
     @ResponseBody
     public ResponseEntity<List<Plan>> getPlans(@PathVariable String uuid) {
     	Optional<UserApp> user = userRepository.findById(uuid);
