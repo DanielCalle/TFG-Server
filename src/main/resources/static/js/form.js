@@ -1,26 +1,23 @@
 $(() => {
     $("#send").on("click", (event) => {
-        let formData = new FormData();
         let film = {
             uuid: $('#uuid').val(), 
             name: $('#name').val(),
             director: $('#director').val(),
             trailerURL: $('#trailerURL').val(),
             infoURL: $('#infoURL').val(),
+            imageURL: $('#imageURL').val(),
             genre: $('#genre').val(),
             duration: $('#duration').val(),
             rating: $('#rating').val(),
             country: $('#country').val()};
 
-        formData.append("film", JSON.stringify(film));
-        formData.append("image", $('#image').val());
-
         $.ajax({
-            url: '/film/save',
+            url: '/films',
             type: 'POST',
-            data: formData,
+            data: film,
             processData: false,
-            contentType: false,
+            contentType: "application/json",
             success: function(response) {
                 alert(response);
             },

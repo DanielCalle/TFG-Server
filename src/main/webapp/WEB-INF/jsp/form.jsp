@@ -21,12 +21,12 @@
             DIRECTOR<input type="text" name="director" id="director">
             TRAILER URL<input type="text" name="trailerURL" id="trailerURL">
             INFO URL<input type="text" name="infoURL" id="infoURL">
-            IMAGE<input type="file" name="image" id="image" required>
+            IMAGE URL<input type="text" name="imageURL" id="imageURL" required>
             GENRE<input type="text" name="genre" id="genre" required>
             DURATION<input type="number" name="duration" id="duration" required>
             RATING<input type="number" name="rating" id="rating" required>
             COUNTRY<input type="text" name="country" id="country" required>
-            <input type="submit" value="Submit">
+            <input id="send" type="button" value="Save">
         </form>
     </main>
 </body>
