@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import es.ucm.fdi.tfg.app.entity.Friendship;
 import es.ucm.fdi.tfg.app.entity.Plan;
 import es.ucm.fdi.tfg.app.entity.UserApp;
+import es.ucm.fdi.tfg.app.entity.UserFilm;
 import es.ucm.fdi.tfg.app.repository.UserRepository;
 import es.ucm.fdi.tfg.app.transfer.TUser;
 
@@ -77,6 +78,17 @@ public class UserController{
 	   		List<Plan> plans = user.get().getCreatedPlans();
 	   		plans.addAll(user.get().getJoinedPlans());
 		    return ResponseEntity.status(HttpStatus.OK).body(plans);
+	   	}
+	   	return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+    }
+    
+    @GetMapping("/{uuid}/films")
+    @ResponseBody
+    public ResponseEntity<List<UserFilm>> getFilms(@PathVariable String uuid) {
+    	Optional<UserApp> user = userRepository.findById(uuid);
+	   	if (user.isPresent()) {
+	   		List<UserFilm> userFilms = user.get().getUserFilms();
+		    return ResponseEntity.status(HttpStatus.OK).body(userFilms);
 	   	}
 	   	return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
     }

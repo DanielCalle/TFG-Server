@@ -4,6 +4,9 @@ import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.Column;
 import javax.persistence.Lob;
 import javax.persistence.Id;
@@ -37,6 +40,7 @@ public class Film {
 
     private String country;
     
+    @JsonIgnore
     @OneToMany(mappedBy = "film")
     private List<UserFilm> userFilms;
 
