@@ -4,8 +4,10 @@ import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.Column;
-import javax.persistence.Lob;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
@@ -26,8 +28,8 @@ public class Film {
     @Column(name = "info_url")
     private String infoURL;
 
-    @Lob
-    private byte[] image;
+    @Column(name = "image_url")
+    private String imageURL;
 
     private String genre;
 
@@ -37,6 +39,7 @@ public class Film {
 
     private String country;
     
+    @JsonIgnore
     @OneToMany(mappedBy = "film")
     private List<UserFilm> userFilms;
 
@@ -113,15 +116,15 @@ public class Film {
     /**
      * @return the image
      */
-    public byte[] getImage() {
-        return image;
+    public String getImageURL() {
+        return imageURL;
     }
 
     /**
      * @param image the image to set
      */
-    public void setImage(byte[] image) {
-        this.image = image;
+    public void setImageURL(String imageURL) {
+        this.imageURL = imageURL;
     }
 
     /**
