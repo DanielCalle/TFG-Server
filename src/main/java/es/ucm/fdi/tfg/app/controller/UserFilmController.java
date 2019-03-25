@@ -25,7 +25,7 @@ import es.ucm.fdi.tfg.app.repository.UserRepository;
 import es.ucm.fdi.tfg.app.transfer.TUserFilm;
 
 @Controller
-@RequestMapping("/userFilms")
+@RequestMapping("/user-films")
 public class UserFilmController{
 
 	@Autowired
