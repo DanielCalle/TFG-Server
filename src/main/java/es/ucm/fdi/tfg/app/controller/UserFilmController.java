@@ -22,7 +22,6 @@ import es.ucm.fdi.tfg.app.entity.UserFilmId;
 import es.ucm.fdi.tfg.app.repository.FilmRepository;
 import es.ucm.fdi.tfg.app.repository.UserFilmRepository;
 import es.ucm.fdi.tfg.app.repository.UserRepository;
-import es.ucm.fdi.tfg.app.transfer.TUserFilm;
 
 @Controller
 @RequestMapping("/user-films")
@@ -43,17 +42,18 @@ public class UserFilmController{
 
     @PostMapping({"", "/"})
     @ResponseBody
-    public ResponseEntity<UserFilm> save(@RequestBody TUserFilm tUserFilm) {
-		Optional<UserApp> optUser = userRepository.findById(tUserFilm.getUserUuid());
-		Optional<Film> optFilm = filmRepository.findById(tUserFilm.getFilmUuid());
+    public ResponseEntity<UserFilm> save(@RequestBody UserFilm userFilm) {
+    	String userUuid = userFilm.getUserApp().getUuid();
+    	String filmUuid = userFilm.getFilm().getUuid();
+		Optional<UserApp> optUser = userRepository.findById(userUuid);
+		Optional<Film> optFilm = filmRepository.findById(filmUuid);
 		//Check if user and film exist
 		if (optUser.isPresent() && optFilm.isPresent()) {
 			UserFilmId id = new UserFilmId();
-			id.setFilm(tUserFilm.getFilmUuid());
-			id.setUser(tUserFilm.getUserUuid());
+			id.setFilm(filmUuid);
+			id.setUser(userUuid);
 			Optional<UserFilm> optUserFilm = userFilmRepository.findById(id);
 			if (!optUserFilm.isPresent()) {
-				UserFilm userFilm = new UserFilm();
 				userFilm.setFilm(optFilm.get());
 				userFilm.setUserApp(optUser.get());
 				userFilm.setDate(new Date());

@@ -17,7 +17,6 @@ import org.springframework.http.ResponseEntity;
 
 import es.ucm.fdi.tfg.app.entity.Film;
 import es.ucm.fdi.tfg.app.repository.FilmRepository;
-import es.ucm.fdi.tfg.app.transfer.TFilm;
 
 @Controller
 @RequestMapping("/films")
@@ -34,23 +33,11 @@ public class FilmController {
 
     @PostMapping({"", "/"})
     @ResponseBody
-    public ResponseEntity<Film> save(@RequestBody TFilm tFilm) {
-		Optional<Film> optFilm = filmRepository.findById(tFilm.getUuid());
+    public ResponseEntity<Film> save(@RequestBody Film film) {
+		Optional<Film> optFilm = filmRepository.findById(film.getUuid());
 		
 		//Check if film exist
 		if (!optFilm.isPresent()) {
-			Film film = new Film();
-			film.setUuid(tFilm.getUuid());
-			film.setName(tFilm.getName());
-			film.setImageURL(tFilm.getImageURL());
-			film.setInfoURL(tFilm.getInfoURL());
-			film.setTrailerURL(tFilm.getTrailerURL());
-			film.setRating(tFilm.getRating());
-			film.setCountry(tFilm.getCountry());
-			film.setDirector(tFilm.getDirector());
-			film.setDuration(tFilm.getDuration());
-			film.setGenre(tFilm.getGenre());
-			
 			return ResponseEntity.status(HttpStatus.CREATED).body(filmRepository.save(film));
 		}
 		
@@ -59,23 +46,11 @@ public class FilmController {
     
     @PutMapping({"", "/"})
     @ResponseBody
-    public ResponseEntity<Film> update(@RequestBody TFilm tFilm) {
-		Optional<Film> optFilm = filmRepository.findById(tFilm.getUuid());
+    public ResponseEntity<Film> update(@RequestBody Film film) {
+		Optional<Film> optFilm = filmRepository.findById(film.getUuid());
 		
 		//Check if film exist
 		if (optFilm.isPresent()) {
-			Film film = new Film();
-			film.setUuid(tFilm.getUuid());
-			film.setName(tFilm.getName());
-			film.setImageURL(tFilm.getImageURL());
-			film.setInfoURL(tFilm.getInfoURL());
-			film.setTrailerURL(tFilm.getTrailerURL());
-			film.setRating(tFilm.getRating());
-			film.setCountry(tFilm.getCountry());
-			film.setDirector(tFilm.getDirector());
-			film.setDuration(tFilm.getDuration());
-			film.setGenre(tFilm.getGenre());
-			
 			return ResponseEntity.status(HttpStatus.CREATED).body(filmRepository.save(film));
 		}
 		
