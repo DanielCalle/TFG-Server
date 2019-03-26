@@ -148,7 +148,12 @@ public class FriendshipController {
     	if (friendship.isPresent()) {
 	    	return ResponseEntity.status(HttpStatus.OK).body(friendship.get());
     	}
-    	
+    	friendshipId.setFriend(requesterUuid);
+		friendshipId.setRequester(friendUuid);
+		friendship = friendshipRepository.findById(friendshipId);
+    	if (friendship.isPresent()) {
+	    	return ResponseEntity.status(HttpStatus.OK).body(friendship.get());
+    	}
     	return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
     	
     }
