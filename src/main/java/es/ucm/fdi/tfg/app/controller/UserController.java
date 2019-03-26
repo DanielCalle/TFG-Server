@@ -20,6 +20,7 @@ import es.ucm.fdi.tfg.app.entity.Plan;
 import es.ucm.fdi.tfg.app.entity.UserApp;
 import es.ucm.fdi.tfg.app.entity.UserFilm;
 import es.ucm.fdi.tfg.app.repository.UserRepository;
+import es.ucm.fdi.tfg.app.transfer.TUser;
 
 @Controller
 @RequestMapping("/users")
@@ -36,10 +37,15 @@ public class UserController{
 
     @PostMapping({"", "/"})
     @ResponseBody
-    public ResponseEntity<UserApp> save(@RequestBody UserApp user) {
-    	Optional<UserApp> optUser = userRepository.findById(user.getUuid());
-    	
+    public ResponseEntity<UserApp> save(@RequestBody TUser tUser) {
+    	Optional<UserApp> optUser = userRepository.findById(tUser.getUuid());
     	if (!optUser.isPresent()) {
+    		UserApp user = new UserApp();
+    		user.setUuid(tUser.getUuid());
+    		user.setEmail(tUser.getEmail());
+    		user.setName(tUser.getName());
+    		user.setPassword(tUser.getPassword());
+    		
     		return ResponseEntity.status(HttpStatus.CREATED).body(userRepository.save(user));
     	}
     	
