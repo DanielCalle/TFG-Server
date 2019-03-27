@@ -1,9 +1,7 @@
 package es.ucm.fdi.tfg.app.controller;
 
 import java.util.List;
-import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -15,96 +13,112 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import es.ucm.fdi.tfg.app.entity.Friendship;
-import es.ucm.fdi.tfg.app.entity.Plan;
 import es.ucm.fdi.tfg.app.entity.UserApp;
-import es.ucm.fdi.tfg.app.entity.UserFilm;
-import es.ucm.fdi.tfg.app.repository.UserRepository;
+import es.ucm.fdi.tfg.app.sa.SAFactory;
+import es.ucm.fdi.tfg.app.sa.SAUser;
+import es.ucm.fdi.tfg.app.transfer.TFriendship;
+import es.ucm.fdi.tfg.app.transfer.TPlan;
 import es.ucm.fdi.tfg.app.transfer.TUser;
+import es.ucm.fdi.tfg.app.transfer.TUserFilm;
 
 @Controller
 @RequestMapping("/users")
-public class UserController{
+public class UserController {
 
-    @Autowired
-    private UserRepository userRepository;
+	@GetMapping({ "", "/" })
+	@ResponseBody
+	public Iterable<TUser> getAllUsers() {
+		SAFactory saFactory = SAFactory.getInstance();
+		SAUser saUserApp = saFactory.generateSAUser();
 
-    @GetMapping({"", "/"})
-    @ResponseBody
-    public Iterable<UserApp> getAllUsers() {
-        return userRepository.findAll();
-    }
+		return saUserApp.readAll();
+	}
 
-    @PostMapping({"", "/"})
-    @ResponseBody
-    public ResponseEntity<UserApp> save(@RequestBody TUser tUser) {
-    	Optional<UserApp> optUser = userRepository.findById(tUser.getUuid());
-    	if (!optUser.isPresent()) {
-    		UserApp user = new UserApp();
-    		user.setUuid(tUser.getUuid());
-    		user.setEmail(tUser.getEmail());
-    		user.setName(tUser.getName());
-    		user.setPassword(tUser.getPassword());
-    		
-    		return ResponseEntity.status(HttpStatus.CREATED).body(userRepository.save(user));
-    	}
-    	
-    	return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
-        
-    }
+	@PostMapping({ "", "/" })
+	@ResponseBody
+	public ResponseEntity<TUser> save(@RequestBody TUser tUser) {
 
-    @GetMapping("/{uuid}")
-    @ResponseBody
-    public Optional<UserApp> getUserById(@PathVariable String uuid) {
-        return userRepository.findById(uuid);
-    }
-    
-    @DeleteMapping("/{uuid}")
-    @ResponseBody
-    public ResponseEntity<UserApp> delete(@PathVariable String uuid) {
-    	Optional<UserApp> optUser = userRepository.findById(uuid);
-    	if (optUser.isPresent()) {
-    		userRepository.delete(optUser.get());
-    		return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
-    	}
-    	
-    	return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-    }
-    
-    @GetMapping("/{uuid}/friendships")
-    @ResponseBody
-    public ResponseEntity<List<Friendship>> getFriends(@PathVariable String uuid) {
-    	Optional<UserApp> user = userRepository.findById(uuid);
-    	if (user.isPresent()) {
-    		List<Friendship> friendships = user.get().getFriends();
-    		friendships.addAll(user.get().getFriendRequests());
-    		return ResponseEntity.status(HttpStatus.OK).body(friendships);
-    	}
-    	return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-    }
+		if (tUser.getUuid() != null && tUser.getName() != null && tUser.getEmail() != null
+				&& tUser.getPassword() != null && tUser.getUuid() != "" && tUser.getName() != ""
+				&& tUser.getEmail() != "" && tUser.getPassword() != "") {
 
-    @GetMapping("/{uuid}/plans")
-    @ResponseBody
-    public ResponseEntity<List<Plan>> getPlans(@PathVariable String uuid) {
-    	Optional<UserApp> user = userRepository.findById(uuid);
-	   	if (user.isPresent()) {
-	   		List<Plan> plans = user.get().getCreatedPlans();
-	   		plans.addAll(user.get().getJoinedPlans());
-		    return ResponseEntity.status(HttpStatus.OK).body(plans);
-	   	}
-	   	return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-    }
-    
-    @GetMapping("/{uuid}/films")
-    @ResponseBody
-    public ResponseEntity<List<UserFilm>> getFilms(@PathVariable String uuid) {
-    	Optional<UserApp> user = userRepository.findById(uuid);
-	   	if (user.isPresent()) {
-	   		List<UserFilm> userFilms = user.get().getUserFilms();
-		    return ResponseEntity.status(HttpStatus.OK).body(userFilms);
-	   	}
-	   	return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-    }
+			SAFactory saFactory = SAFactory.getInstance();
+			SAUser saUserApp = saFactory.generateSAUser();
+			TUser response = saUserApp.create(tUser);
 
+			if (response != null)
+				return ResponseEntity.status(HttpStatus.CREATED).body(tUser);
+
+			return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
+		}
+
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+
+	}
+
+	@GetMapping("/{uuid}")
+	@ResponseBody
+	public ResponseEntity<TUser> getUserById(@PathVariable String uuid) {
+		SAFactory saFactory = SAFactory.getInstance();
+		SAUser saUserApp = saFactory.generateSAUser();
+		TUser tUser = saUserApp.read(uuid);
+
+		if (tUser != null)
+			return ResponseEntity.status(HttpStatus.OK).body(tUser);
+
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+	}
+
+	@DeleteMapping("/{uuid}")
+	@ResponseBody
+	public ResponseEntity<UserApp> delete(@PathVariable String uuid) {
+		SAFactory saFactory = SAFactory.getInstance();
+		SAUser saUserApp = saFactory.generateSAUser();
+		String response = saUserApp.delete(uuid);
+
+		if (response != null)
+			return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+	}
+
+	@GetMapping("/{uuid}/friendships")
+	@ResponseBody
+	public ResponseEntity<List<TFriendship>> getFriends(@PathVariable String uuid) {
+		SAFactory saFactory = SAFactory.getInstance();
+		SAUser saUserApp = saFactory.generateSAUser();
+		List<TFriendship> listFriendships = saUserApp.getFriends(uuid);
+
+		if (listFriendships != null)
+			return ResponseEntity.status(HttpStatus.OK).body(listFriendships);
+
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+	}
+
+	@GetMapping("/{uuid}/plans")
+	@ResponseBody
+	public ResponseEntity<List<TPlan>> getPlans(@PathVariable String uuid) {
+		SAFactory saFactory = SAFactory.getInstance();
+		SAUser saUserApp = saFactory.generateSAUser();
+		List<TPlan> listPlans = saUserApp.getPlans(uuid);
+
+		if (listPlans != null)
+			return ResponseEntity.status(HttpStatus.OK).body(listPlans);
+
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+	}
+
+	@GetMapping("/{uuid}/films")
+	@ResponseBody
+	public ResponseEntity<List<TUserFilm>> getFilms(@PathVariable String uuid) {
+		SAFactory saFactory = SAFactory.getInstance();
+		SAUser saUserApp = saFactory.generateSAUser();
+		List<TUserFilm> listFilms = saUserApp.getFilms(uuid);
+
+		if (listFilms != null)
+			return ResponseEntity.status(HttpStatus.OK).body(listFilms);
+
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+	}
 
 }

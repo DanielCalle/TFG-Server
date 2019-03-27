@@ -1,6 +1,6 @@
 package es.ucm.fdi.tfg.app.controller;
 
-import java.util.Optional;
+import java.util.List;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -11,93 +11,89 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import es.ucm.fdi.tfg.app.entity.Film;
-import es.ucm.fdi.tfg.app.repository.FilmRepository;
+import es.ucm.fdi.tfg.app.sa.SAFactory;
+import es.ucm.fdi.tfg.app.sa.SAFilm;
 import es.ucm.fdi.tfg.app.transfer.TFilm;
 
 @Controller
 @RequestMapping("/films")
 public class FilmController {
 
-    @Autowired
-    private FilmRepository filmRepository;
-
     @GetMapping({"", "/"})
     @ResponseBody
-    public Iterable<Film> getAllFilms() {
-        return filmRepository.findAll();
+    public List<TFilm> getAllFilms() {
+		SAFactory saFactory = SAFactory.getInstance();
+		SAFilm saFilm = saFactory.generateSAFilm();
+
+		return saFilm.readAll();
     }
 
     @PostMapping({"", "/"})
     @ResponseBody
-    public ResponseEntity<Film> save(@RequestBody TFilm tFilm) {
-		Optional<Film> optFilm = filmRepository.findById(tFilm.getUuid());
-		
-		//Check if film exist
-		if (!optFilm.isPresent()) {
-			Film film = new Film();
-			film.setUuid(tFilm.getUuid());
-			film.setName(tFilm.getName());
-			film.setImageURL(tFilm.getImageURL());
-			film.setInfoURL(tFilm.getInfoURL());
-			film.setTrailerURL(tFilm.getTrailerURL());
-			film.setRating(tFilm.getRating());
-			film.setCountry(tFilm.getCountry());
-			film.setDirector(tFilm.getDirector());
-			film.setDuration(tFilm.getDuration());
-			film.setGenre(tFilm.getGenre());
-			
-			return ResponseEntity.status(HttpStatus.CREATED).body(filmRepository.save(film));
+    public ResponseEntity<TFilm> save(@RequestBody TFilm tFilm) {
+
+		if (tFilm.getUuid() != null && tFilm.getName() != null) {
+
+			SAFactory saFactory = SAFactory.getInstance();
+			SAFilm saFilm = saFactory.generateSAFilm();
+			TFilm response = saFilm.create(tFilm);
+
+			if (response != null)
+				return ResponseEntity.status(HttpStatus.CREATED).body(tFilm);
+
+			return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
 		}
-		
-		return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
+
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+
     }
     
     @PutMapping({"", "/"})
     @ResponseBody
-    public ResponseEntity<Film> update(@RequestBody TFilm tFilm) {
-		Optional<Film> optFilm = filmRepository.findById(tFilm.getUuid());
-		
-		//Check if film exist
-		if (optFilm.isPresent()) {
-			Film film = new Film();
-			film.setUuid(tFilm.getUuid());
-			film.setName(tFilm.getName());
-			film.setImageURL(tFilm.getImageURL());
-			film.setInfoURL(tFilm.getInfoURL());
-			film.setTrailerURL(tFilm.getTrailerURL());
-			film.setRating(tFilm.getRating());
-			film.setCountry(tFilm.getCountry());
-			film.setDirector(tFilm.getDirector());
-			film.setDuration(tFilm.getDuration());
-			film.setGenre(tFilm.getGenre());
-			
-			return ResponseEntity.status(HttpStatus.CREATED).body(filmRepository.save(film));
+    public ResponseEntity<TFilm> update(@RequestBody TFilm tFilm) {
+		if (tFilm.getUuid() != null && tFilm.getName() != null) {
+
+			SAFactory saFactory = SAFactory.getInstance();
+			SAFilm saFilm = saFactory.generateSAFilm();
+			TFilm response = saFilm.create(tFilm);
+
+			if (response != null)
+				return ResponseEntity.status(HttpStatus.OK).body(tFilm);
+
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 		}
-		
-		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
     }
 
     @GetMapping("/{uuid}")
     @ResponseBody
-    public Optional<Film> getFilmById(@PathVariable String uuid) {
-        return filmRepository.findById(uuid);
+    public ResponseEntity<TFilm> getFilmById(@PathVariable String uuid) {
+		SAFactory saFactory = SAFactory.getInstance();
+		SAFilm saFilm = saFactory.generateSAFilm();
+		TFilm tFilm = saFilm.read(uuid);
+
+		if (tFilm != null)
+			return ResponseEntity.status(HttpStatus.OK).body(tFilm);
+
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
     }
     
     @DeleteMapping("/{uuid}")
     @ResponseBody
     public ResponseEntity<Film> delete(@PathVariable String uuid) {
-    	Optional<Film> optFilm = filmRepository.findById(uuid);
-    	if (optFilm.isPresent()) {
-    		filmRepository.delete(optFilm.get());
-    		return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
-    	}
-    	
-    	return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+		SAFactory saFactory = SAFactory.getInstance();
+		SAFilm saFilm = saFactory.generateSAFilm();
+		String response = saFilm.delete(uuid);
+
+		if (response != null)
+			return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
     }
 
 

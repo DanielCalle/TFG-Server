@@ -6,7 +6,7 @@ public class TUserFilm {
 	
     private String userUuid;
     private String filmUuid;
-    private Date date;
+    private String date;
     
 	public String getUserUuid() {
 		return userUuid;
@@ -20,10 +20,10 @@ public class TUserFilm {
 	public void setFilmUuid(String filmUuid) {
 		this.filmUuid = filmUuid;
 	}
-	public Date getDate() {
+	public String getDate() {
 		return date;
 	}
-	public void setDate(Date date) {
+	public void setDate(String date) {
 		this.date = date;
 	}
     
