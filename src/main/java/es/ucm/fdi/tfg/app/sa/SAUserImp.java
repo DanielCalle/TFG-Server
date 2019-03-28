@@ -65,7 +65,6 @@ public class SAUserImp implements SAUser{
 		Optional<UserApp> optUser = userRepository.findById(uuid);
 		
 		if (optUser.isPresent()) {
-			userRepository.delete(optUser.get());
 			TUser tUser = new TUser();
 			tUser.setUuid(optUser.get().getUuid());
 			tUser.setName(optUser.get().getName());
