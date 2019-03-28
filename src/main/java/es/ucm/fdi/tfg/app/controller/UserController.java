@@ -20,6 +20,7 @@ import es.ucm.fdi.tfg.app.transfer.TFriendship;
 import es.ucm.fdi.tfg.app.transfer.TPlan;
 import es.ucm.fdi.tfg.app.transfer.TUser;
 import es.ucm.fdi.tfg.app.transfer.TUserFilm;
+import es.ucm.fdi.tfg.app.transfer.TFilm;
 
 @Controller
 @RequestMapping("/users")
@@ -100,8 +101,8 @@ public class UserController {
 
 	@GetMapping("/{uuid}/films")
 	@ResponseBody
-	public ResponseEntity<List<TUserFilm>> getFilms(@PathVariable String uuid) {
-		List<TUserFilm> listFilms = saUserApp.getFilms(uuid);
+	public ResponseEntity<List<TFilm>> getFilms(@PathVariable String uuid) {
+		List<TFilm> listFilms = saUserApp.getFilms(uuid);
 
 		if (listFilms != null)
 			return ResponseEntity.status(HttpStatus.OK).body(listFilms);
