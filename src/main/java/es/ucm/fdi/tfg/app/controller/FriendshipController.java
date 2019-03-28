@@ -2,6 +2,7 @@ package es.ucm.fdi.tfg.app.controller;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -23,11 +24,12 @@ import es.ucm.fdi.tfg.app.transfer.TFriendship;
 @RequestMapping("/friendships")
 public class FriendshipController {
 
+	@Autowired
+	SAFriendship saFriendship = SAFactory.getInstance().generateSAFriendship();
+	
 	@GetMapping({ "", "/" })
 	@ResponseBody
 	public List<TFriendship> getAllUsers() {
-		SAFactory saFactory = SAFactory.getInstance();
-		SAFriendship saFriendship = saFactory.generateSAFriendship();
 
 		return saFriendship.readAll();
 	}
@@ -38,8 +40,6 @@ public class FriendshipController {
 
 		if (tFriendship.getRequesterUuid() != null && tFriendship.getFriendUuid() != null) {
 
-			SAFactory saFactory = SAFactory.getInstance();
-			SAFriendship saFriendship = saFactory.generateSAFriendship();
 			TFriendship response = saFriendship.create(tFriendship);
 
 			if (response != null)
@@ -56,8 +56,6 @@ public class FriendshipController {
 	@ResponseBody
 	public ResponseEntity<TFriendship> accept(@PathVariable String requesterUuid, @PathVariable String friendUuid) {
 
-		SAFactory saFactory = SAFactory.getInstance();
-		SAFriendship saFriendship = saFactory.generateSAFriendship();
 		TFriendship response = saFriendship.accept(requesterUuid, friendUuid);
 
 		if (response != null)
@@ -70,8 +68,6 @@ public class FriendshipController {
 	@ResponseBody
 	public ResponseEntity<TFriendship> delete(@PathVariable String requesterUuid, @PathVariable String friendUuid) {
 
-		SAFactory saFactory = SAFactory.getInstance();
-		SAFriendship saFriendship = saFactory.generateSAFriendship();
 		FriendshipId response = saFriendship.delete(requesterUuid, friendUuid);
 
 		if (response != null)
@@ -84,8 +80,7 @@ public class FriendshipController {
 	@ResponseBody
 	public ResponseEntity<TFriendship> getUserById(@PathVariable String requesterUuid,
 			@PathVariable String friendUuid) {
-		SAFactory saFactory = SAFactory.getInstance();
-		SAFriendship saFriendship = saFactory.generateSAFriendship();
+
 		TFriendship response = saFriendship.read(requesterUuid, friendUuid);
 
 		if (response != null)

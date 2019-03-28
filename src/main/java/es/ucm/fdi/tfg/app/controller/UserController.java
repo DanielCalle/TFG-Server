@@ -2,6 +2,7 @@ package es.ucm.fdi.tfg.app.controller;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -23,13 +24,13 @@ import es.ucm.fdi.tfg.app.transfer.TUserFilm;
 @Controller
 @RequestMapping("/users")
 public class UserController {
+	
+	@Autowired
+	SAUser saUserApp = SAFactory.getInstance().generateSAUser();
 
 	@GetMapping({ "", "/" })
 	@ResponseBody
 	public Iterable<TUser> getAllUsers() {
-		SAFactory saFactory = SAFactory.getInstance();
-		SAUser saUserApp = saFactory.generateSAUser();
-
 		return saUserApp.readAll();
 	}
 
@@ -41,8 +42,6 @@ public class UserController {
 				&& tUser.getPassword() != null && tUser.getUuid() != "" && tUser.getName() != ""
 				&& tUser.getEmail() != "" && tUser.getPassword() != "") {
 
-			SAFactory saFactory = SAFactory.getInstance();
-			SAUser saUserApp = saFactory.generateSAUser();
 			TUser response = saUserApp.create(tUser);
 
 			if (response != null)
@@ -58,8 +57,6 @@ public class UserController {
 	@GetMapping("/{uuid}")
 	@ResponseBody
 	public ResponseEntity<TUser> getUserById(@PathVariable String uuid) {
-		SAFactory saFactory = SAFactory.getInstance();
-		SAUser saUserApp = saFactory.generateSAUser();
 		TUser tUser = saUserApp.read(uuid);
 
 		if (tUser != null)
@@ -71,8 +68,6 @@ public class UserController {
 	@DeleteMapping("/{uuid}")
 	@ResponseBody
 	public ResponseEntity<TUser> delete(@PathVariable String uuid) {
-		SAFactory saFactory = SAFactory.getInstance();
-		SAUser saUserApp = saFactory.generateSAUser();
 		String response = saUserApp.delete(uuid);
 
 		if (response != null)
@@ -84,8 +79,6 @@ public class UserController {
 	@GetMapping("/{uuid}/friendships")
 	@ResponseBody
 	public ResponseEntity<List<TFriendship>> getFriends(@PathVariable String uuid) {
-		SAFactory saFactory = SAFactory.getInstance();
-		SAUser saUserApp = saFactory.generateSAUser();
 		List<TFriendship> listFriendships = saUserApp.getFriends(uuid);
 
 		if (listFriendships != null)
@@ -97,8 +90,6 @@ public class UserController {
 	@GetMapping("/{uuid}/plans")
 	@ResponseBody
 	public ResponseEntity<List<TPlan>> getPlans(@PathVariable String uuid) {
-		SAFactory saFactory = SAFactory.getInstance();
-		SAUser saUserApp = saFactory.generateSAUser();
 		List<TPlan> listPlans = saUserApp.getPlans(uuid);
 
 		if (listPlans != null)
@@ -110,8 +101,6 @@ public class UserController {
 	@GetMapping("/{uuid}/films")
 	@ResponseBody
 	public ResponseEntity<List<TUserFilm>> getFilms(@PathVariable String uuid) {
-		SAFactory saFactory = SAFactory.getInstance();
-		SAUser saUserApp = saFactory.generateSAUser();
 		List<TUserFilm> listFilms = saUserApp.getFilms(uuid);
 
 		if (listFilms != null)

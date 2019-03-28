@@ -1,5 +1,6 @@
 package es.ucm.fdi.tfg.app.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -19,12 +20,14 @@ import es.ucm.fdi.tfg.app.transfer.TPlan;
 @Controller
 @RequestMapping("/plans")
 public class PlanController {
+	
+	@Autowired
+	SAPlan saPlan = SAFactory.getInstance().generateSAPlan();
 
 	@GetMapping({ "", "/" })
 	@ResponseBody
 	public Iterable<TPlan> getAllUsers() {
-		SAFactory saFactory = SAFactory.getInstance();
-		SAPlan saPlan = saFactory.generateSAPlan();
+		
 
 		return saPlan.readAll();
 	}
@@ -36,8 +39,6 @@ public class PlanController {
 		if (tPlan.getCreatorUuid() != null && tPlan.getFilmUuid() != null && tPlan.getDate() != null
 				&& tPlan.getCreatorUuid() != "" && tPlan.getFilmUuid() != "" && tPlan.getDate() != "") {
 
-			SAFactory saFactory = SAFactory.getInstance();
-			SAPlan saPlan = saFactory.generateSAPlan();
 			TPlan response = saPlan.create(tPlan);
 
 			if (response != null)
@@ -54,8 +55,6 @@ public class PlanController {
 	@ResponseBody
 	public ResponseEntity<TPlan> join(@PathVariable long id, @PathVariable String userUuid) {
 
-		SAFactory saFactory = SAFactory.getInstance();
-		SAPlan saPlan = saFactory.generateSAPlan();
 		TPlan response = saPlan.join(id, userUuid);
 
 		if (response != null)
@@ -67,8 +66,7 @@ public class PlanController {
 	@DeleteMapping("/{id}")
 	@ResponseBody
 	public ResponseEntity<TPlan> delete(@PathVariable long id) {
-		SAFactory saFactory = SAFactory.getInstance();
-		SAPlan saPlan = saFactory.generateSAPlan();
+
 		Long response = saPlan.delete(id);
 
 		if (response != null)
@@ -80,8 +78,7 @@ public class PlanController {
 	@GetMapping("/{id}")
 	@ResponseBody
 	public ResponseEntity<TPlan> getUserById(@PathVariable long id) {
-		SAFactory saFactory = SAFactory.getInstance();
-		SAPlan saPlan = saFactory.generateSAPlan();
+
 		TPlan response = saPlan.read(id);
 
 		if (response != null)

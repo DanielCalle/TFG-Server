@@ -9,6 +9,7 @@ import java.util.Optional;
 import java.util.TimeZone;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import es.ucm.fdi.tfg.app.entity.Film;
 import es.ucm.fdi.tfg.app.entity.Plan;
@@ -19,6 +20,7 @@ import es.ucm.fdi.tfg.app.repository.UserRepository;
 import es.ucm.fdi.tfg.app.transfer.TPlan;
 import es.ucm.fdi.tfg.app.transfer.TUser;
 
+@Service
 public class SAPlanImp implements SAPlan {
 
 	@Autowired

@@ -2,6 +2,7 @@ package es.ucm.fdi.tfg.app.controller;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -21,12 +22,13 @@ import es.ucm.fdi.tfg.app.transfer.TFilm;
 @Controller
 @RequestMapping("/films")
 public class FilmController {
+	
+	@Autowired
+	SAFilm saFilm = SAFactory.getInstance().generateSAFilm();
 
 	@GetMapping({ "", "/" })
 	@ResponseBody
 	public List<TFilm> getAllFilms() {
-		SAFactory saFactory = SAFactory.getInstance();
-		SAFilm saFilm = saFactory.generateSAFilm();
 
 		return saFilm.readAll();
 	}
@@ -36,9 +38,7 @@ public class FilmController {
 	public ResponseEntity<TFilm> save(@RequestBody TFilm tFilm) {
 
 		if (tFilm.getUuid() != null && tFilm.getName() != null) {
-
-			SAFactory saFactory = SAFactory.getInstance();
-			SAFilm saFilm = saFactory.generateSAFilm();
+			
 			TFilm response = saFilm.create(tFilm);
 
 			if (response != null)
@@ -56,8 +56,6 @@ public class FilmController {
 	public ResponseEntity<TFilm> update(@RequestBody TFilm tFilm) {
 		if (tFilm.getUuid() != null && tFilm.getName() != null) {
 
-			SAFactory saFactory = SAFactory.getInstance();
-			SAFilm saFilm = saFactory.generateSAFilm();
 			TFilm response = saFilm.create(tFilm);
 
 			if (response != null)
@@ -72,8 +70,7 @@ public class FilmController {
 	@GetMapping("/{uuid}")
 	@ResponseBody
 	public ResponseEntity<TFilm> getFilmById(@PathVariable String uuid) {
-		SAFactory saFactory = SAFactory.getInstance();
-		SAFilm saFilm = saFactory.generateSAFilm();
+
 		TFilm tFilm = saFilm.read(uuid);
 
 		if (tFilm != null)
@@ -85,8 +82,7 @@ public class FilmController {
 	@DeleteMapping("/{uuid}")
 	@ResponseBody
 	public ResponseEntity<TFilm> delete(@PathVariable String uuid) {
-		SAFactory saFactory = SAFactory.getInstance();
-		SAFilm saFilm = saFactory.generateSAFilm();
+
 		String response = saFilm.delete(uuid);
 
 		if (response != null)

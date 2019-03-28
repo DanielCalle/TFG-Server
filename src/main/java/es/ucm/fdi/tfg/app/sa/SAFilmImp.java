@@ -5,11 +5,13 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import es.ucm.fdi.tfg.app.entity.Film;
 import es.ucm.fdi.tfg.app.repository.FilmRepository;
 import es.ucm.fdi.tfg.app.transfer.TFilm;
 
+@Service
 public class SAFilmImp implements SAFilm {
 	
     @Autowired

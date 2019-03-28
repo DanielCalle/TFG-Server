@@ -2,6 +2,7 @@ package es.ucm.fdi.tfg.app.controller;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -22,12 +23,12 @@ import es.ucm.fdi.tfg.app.transfer.TUserFilm;
 @RequestMapping("/user-films")
 public class UserFilmController {
 
+	@Autowired
+	SAUserFilm saUserFilm = SAFactory.getInstance().generateSAUserFilm();
+	
 	@GetMapping({ "", "/" })
 	@ResponseBody
 	public List<TUserFilm> getAll() {
-		SAFactory saFactory = SAFactory.getInstance();
-		SAUserFilm saUserFilm = saFactory.generateSAUserFilm();
-
 		return saUserFilm.readAll();
 	}
 
@@ -37,9 +38,7 @@ public class UserFilmController {
 		if (tUserFilm.getUserUuid() != null && tUserFilm.getFilmUuid() != null && tUserFilm.getDate() != null
 				&& tUserFilm.getUserUuid() != "" && tUserFilm.getFilmUuid() != "" && tUserFilm.getDate() != "") {
 
-			SAFactory saFactory = SAFactory.getInstance();
-			SAUserFilm saPlan = saFactory.generateSAUserFilm();
-			TUserFilm response = saPlan.create(tUserFilm);
+			TUserFilm response = saUserFilm.create(tUserFilm);
 
 			if (response != null)
 				return response;
@@ -54,8 +53,6 @@ public class UserFilmController {
 	@ResponseBody
 	public ResponseEntity<TUserFilm> delete(@PathVariable String userUuid, @PathVariable String filmUuid) {
 
-		SAFactory saFactory = SAFactory.getInstance();
-		SAUserFilm saUserFilm = saFactory.generateSAUserFilm();
 		UserFilmId response = saUserFilm.delete(userUuid, filmUuid);
 
 		if (response != null)
@@ -67,8 +64,7 @@ public class UserFilmController {
 	@GetMapping("/{userUuid}/{filmUuid}")
 	@ResponseBody
 	public ResponseEntity<TUserFilm> getUserFilmsById(@PathVariable String userUuid, @PathVariable String filmUuid) {
-		SAFactory saFactory = SAFactory.getInstance();
-		SAUserFilm saUserFilm = saFactory.generateSAUserFilm();
+
 		TUserFilm response = saUserFilm.read(userUuid, filmUuid);
 
 		if (response != null)

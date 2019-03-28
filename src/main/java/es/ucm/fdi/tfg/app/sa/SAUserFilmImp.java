@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import es.ucm.fdi.tfg.app.entity.Film;
 import es.ucm.fdi.tfg.app.entity.UserApp;
@@ -16,6 +17,7 @@ import es.ucm.fdi.tfg.app.repository.UserFilmRepository;
 import es.ucm.fdi.tfg.app.repository.UserRepository;
 import es.ucm.fdi.tfg.app.transfer.TUserFilm;
 
+@Service
 public class SAUserFilmImp implements SAUserFilm {
 
 	@Autowired

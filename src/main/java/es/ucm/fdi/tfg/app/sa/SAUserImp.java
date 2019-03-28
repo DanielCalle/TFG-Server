@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import es.ucm.fdi.tfg.app.entity.Friendship;
 import es.ucm.fdi.tfg.app.entity.Plan;
@@ -16,27 +17,28 @@ import es.ucm.fdi.tfg.app.transfer.TPlan;
 import es.ucm.fdi.tfg.app.transfer.TUser;
 import es.ucm.fdi.tfg.app.transfer.TUserFilm;
 
+@Service
 public class SAUserImp implements SAUser{
 
-    @Autowired
-    private UserRepository userRepository;
-	
+	@Autowired
+	private UserRepository userRepository;
+
 	@Override
 	public TUser create(TUser tUser) {
-    	Optional<UserApp> optUser = userRepository.findById(tUser.getUuid());
-    	if (!optUser.isPresent()) {
-    		UserApp user = new UserApp();
-    		user.setUuid(tUser.getUuid());
-    		user.setEmail(tUser.getEmail());
-    		user.setName(tUser.getName());
-    		user.setPassword(tUser.getPassword());
-    		
-    		user = userRepository.save(user);
-    		
-    		return tUser;
-    	}
-    	
-    	return null;
+		Optional<UserApp> optUser = userRepository.findById(tUser.getUuid());
+		if (!optUser.isPresent()) {
+			UserApp user = new UserApp();
+			user.setUuid(tUser.getUuid());
+			user.setEmail(tUser.getEmail());
+			user.setName(tUser.getName());
+			user.setPassword(tUser.getPassword());
+
+			user = userRepository.save(user);
+
+			return tUser;
+		}
+
+		return null;
 	}
 
 	@Override
@@ -48,7 +50,7 @@ public class SAUserImp implements SAUser{
 	@Override
 	public String delete(String uuid) {
 		Optional<UserApp> optUser = userRepository.findById(uuid);
-		
+
 		if (optUser.isPresent()) {
 			userRepository.delete(optUser.get());
 			
