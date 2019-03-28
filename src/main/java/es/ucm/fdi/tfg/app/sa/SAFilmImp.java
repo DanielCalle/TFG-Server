@@ -83,7 +83,7 @@ public class SAFilmImp implements SAFilm {
 		Optional<Film> optFilm = filmRepository.findById(uuid);
 		
 		if (optFilm.isPresent()) {
-			filmRepository.delete(optFilm.get());
+			//filmRepository.delete(optFilm.get());
 			Film film = optFilm.get();
 			TFilm tFilm = new TFilm();
 			tFilm.setUuid(film.getUuid());
