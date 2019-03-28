@@ -1,5 +1,7 @@
 package es.ucm.fdi.tfg.app.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import es.ucm.fdi.tfg.app.sa.SAFactory;
 import es.ucm.fdi.tfg.app.sa.SAPlan;
 import es.ucm.fdi.tfg.app.transfer.TPlan;
+import es.ucm.fdi.tfg.app.transfer.TUser;
 
 @Controller
 @RequestMapping("/plans")
@@ -80,6 +83,17 @@ public class PlanController {
 	public ResponseEntity<TPlan> getUserById(@PathVariable long id) {
 
 		TPlan response = saPlan.read(id);
+
+		if (response != null)
+			return ResponseEntity.status(HttpStatus.OK).body(response);
+
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+	}
+	
+	@GetMapping("/{id}/joined-users")
+	@ResponseBody
+	public ResponseEntity<List<TUser>> getJoinedUsers(@PathVariable long id) {
+		List<TUser> response = saPlan.getJoinedUsers(id);
 
 		if (response != null)
 			return ResponseEntity.status(HttpStatus.OK).body(response);
