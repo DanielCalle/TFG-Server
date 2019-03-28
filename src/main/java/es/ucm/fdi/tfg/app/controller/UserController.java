@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import es.ucm.fdi.tfg.app.entity.UserApp;
 import es.ucm.fdi.tfg.app.sa.SAFactory;
 import es.ucm.fdi.tfg.app.sa.SAUser;
 import es.ucm.fdi.tfg.app.transfer.TFriendship;
@@ -47,7 +46,7 @@ public class UserController {
 			TUser response = saUserApp.create(tUser);
 
 			if (response != null)
-				return ResponseEntity.status(HttpStatus.CREATED).body(tUser);
+				return ResponseEntity.status(HttpStatus.CREATED).body(response);
 
 			return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
 		}
@@ -71,7 +70,7 @@ public class UserController {
 
 	@DeleteMapping("/{uuid}")
 	@ResponseBody
-	public ResponseEntity<UserApp> delete(@PathVariable String uuid) {
+	public ResponseEntity<TUser> delete(@PathVariable String uuid) {
 		SAFactory saFactory = SAFactory.getInstance();
 		SAUser saUserApp = saFactory.generateSAUser();
 		String response = saUserApp.delete(uuid);

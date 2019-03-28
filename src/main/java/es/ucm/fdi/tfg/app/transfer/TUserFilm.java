@@ -1,7 +1,5 @@
 package es.ucm.fdi.tfg.app.transfer;
 
-import java.util.Date;
-
 public class TUserFilm {
 	
     private String userUuid;

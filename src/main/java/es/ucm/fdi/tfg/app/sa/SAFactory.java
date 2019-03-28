@@ -14,5 +14,11 @@ public abstract class SAFactory {
 	public abstract SAUser generateSAUser();
 
 	public abstract SAFilm generateSAFilm();
+
+	public abstract SAFriendship generateSAFriendship();
+
+	public abstract SAPlan generateSAPlan();
+	
+	public abstract SAUserFilm generateSAUserFilm();
 	
 }

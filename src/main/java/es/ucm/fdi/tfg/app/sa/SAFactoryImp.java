@@ -11,5 +11,20 @@ public class SAFactoryImp extends SAFactory {
 	public SAFilm generateSAFilm() {
 		return new SAFilmImp();
 	}
+	
+	@Override
+	public SAFriendship generateSAFriendship() {
+		return new SAFriendshipImp();
+	}
+	
+	@Override
+	public SAPlan generateSAPlan() {
+		return new SAPlanImp();
+	}
+
+	@Override
+	public SAUserFilm generateSAUserFilm() {
+		return new SAUserFilmImp();
+	}
 
 }

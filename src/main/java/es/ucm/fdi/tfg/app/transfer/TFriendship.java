@@ -4,6 +4,8 @@ public class TFriendship {
 	private String requesterUuid;
 	private String friendUuid;
 	private String date;
+	private boolean active;
+	
 	public String getRequesterUuid() {
 		return requesterUuid;
 	}
@@ -21,6 +23,12 @@ public class TFriendship {
 	}
 	public void setDate(String date) {
 		this.date = date;
+	}
+	public boolean isActive() {
+		return active;
+	}
+	public void setActive(boolean active) {
+		this.active = active;
 	}
 	
 	

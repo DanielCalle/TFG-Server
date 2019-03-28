@@ -2,6 +2,9 @@ package es.ucm.fdi.tfg.app.entity;
 
 import java.io.Serializable;
 
+import javax.persistence.Embeddable;
+
+@Embeddable
 public class FriendshipId implements Serializable{
 
     private static final long serialVersionUID = 1L;

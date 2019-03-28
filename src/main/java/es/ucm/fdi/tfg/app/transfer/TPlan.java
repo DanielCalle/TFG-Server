@@ -1,6 +1,7 @@
 package es.ucm.fdi.tfg.app.transfer;
 
 public class TPlan {
+	private Long id;
 	private String creatorUuid;
 	private String filmUuid;
 	private String date;
@@ -22,6 +23,13 @@ public class TPlan {
 	public void setDate(String date) {
 		this.date = date;
 	}
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	
 	
 	
 }
