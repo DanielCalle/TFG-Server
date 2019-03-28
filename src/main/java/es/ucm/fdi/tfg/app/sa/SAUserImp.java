@@ -133,6 +133,7 @@ public class SAUserImp implements SAUser{
 			List<TPlan> listPlans = new ArrayList<>();
 			for (Plan plan : optUser.get().getCreatedPlans()) {
 				TPlan tPlan = new TPlan();
+				tPlan.setId(plan.getId());
 				tPlan.setCreatorUuid(plan.getCreator().getUuid());
 				tPlan.setFilmUuid(plan.getFilm().getUuid());
 				tPlan.setDate(plan.getDate().toString());
@@ -140,6 +141,7 @@ public class SAUserImp implements SAUser{
 			}
 			for (Plan plan : optUser.get().getJoinedPlans()) {
 				TPlan tPlan = new TPlan();
+				tPlan.setId(plan.getId());
 				tPlan.setCreatorUuid(plan.getCreator().getUuid());
 				tPlan.setFilmUuid(plan.getFilm().getUuid());
 				tPlan.setDate(plan.getDate().toString());
