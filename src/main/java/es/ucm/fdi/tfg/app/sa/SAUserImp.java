@@ -11,11 +11,15 @@ import es.ucm.fdi.tfg.app.entity.Friendship;
 import es.ucm.fdi.tfg.app.entity.Plan;
 import es.ucm.fdi.tfg.app.entity.UserApp;
 import es.ucm.fdi.tfg.app.entity.UserFilm;
+import es.ucm.fdi.tfg.app.entity.Film;
 import es.ucm.fdi.tfg.app.repository.UserRepository;
+import es.ucm.fdi.tfg.app.transfer.TFilm;
 import es.ucm.fdi.tfg.app.transfer.TFriendship;
 import es.ucm.fdi.tfg.app.transfer.TPlan;
 import es.ucm.fdi.tfg.app.transfer.TUser;
 import es.ucm.fdi.tfg.app.transfer.TUserFilm;
+import es.ucm.fdi.tfg.app.transfer.TFilm;
+
 
 @Service
 public class SAUserImp implements SAUser{
@@ -149,20 +153,27 @@ public class SAUserImp implements SAUser{
 	}
 
 	@Override
-	public List<TUserFilm> getFilms(String uuid) {
+	public List<TFilm> getFilms(String uuid) {
 		Optional<UserApp> optUser = userRepository.findById(uuid);
 		
 		if (optUser.isPresent()) {
-			List<TUserFilm> listUserFilm = new ArrayList<>();
+			List<TFilm> listUserFilms = new ArrayList<>();
 			for (UserFilm userFilm : optUser.get().getUserFilms()) {
-				TUserFilm tUserFilm = new TUserFilm();
-				tUserFilm.setUserUuid(userFilm.getUserApp().getUuid());
-				tUserFilm.setFilmUuid(userFilm.getFilm().getUuid());
-				tUserFilm.setDate(userFilm.getDate().toString());
-				listUserFilm.add(tUserFilm);
+				TFilm tFilm = new TFilm();
+				tFilm.setUuid(userFilm.getFilm().getUuid());
+				tFilm.setCountry(userFilm.getFilm().getCountry());
+				tFilm.setDirector(userFilm.getFilm().getDirector());
+				tFilm.setDuration(userFilm.getFilm().getDuration());
+				tFilm.setGenre(userFilm.getFilm().getGenre());
+				tFilm.setImageURL(userFilm.getFilm().getImageURL());
+				tFilm.setInfoURL(userFilm.getFilm().getInfoURL());
+				tFilm.setName(userFilm.getFilm().getName());
+				tFilm.setRating(userFilm.getFilm().getRating());
+				tFilm.setTrailerURL(userFilm.getFilm().getTrailerURL());
+				listUserFilms.add(tFilm);
 			}
 			
-			return listUserFilm;
+			return listUserFilms;
 		}
 		
 		return null;

@@ -6,6 +6,8 @@ import es.ucm.fdi.tfg.app.transfer.TFriendship;
 import es.ucm.fdi.tfg.app.transfer.TPlan;
 import es.ucm.fdi.tfg.app.transfer.TUser;
 import es.ucm.fdi.tfg.app.transfer.TUserFilm;
+import es.ucm.fdi.tfg.app.transfer.TFilm;
+
 
 public interface SAUser {
 	public TUser create(TUser tUser);
@@ -22,5 +24,5 @@ public interface SAUser {
 	
 	public List<TPlan> getPlans(String uuid);
 	
-	public List<TUserFilm> getFilms(String uuid);
+	public List<TFilm> getFilms(String uuid);
 }
