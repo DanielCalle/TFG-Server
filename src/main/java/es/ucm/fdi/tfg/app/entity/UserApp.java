@@ -19,7 +19,9 @@ public class UserApp{
 
     private String email;
 
-    private String password;
+	private String password;
+	
+	private String imageURL;
     
     @JsonIgnore
     @OneToMany(mappedBy = "creator", fetch=FetchType.LAZY) 
@@ -95,7 +97,15 @@ public class UserApp{
      */
 	public void setPassword(String password) {
 		this.password = password;
-    }
+	}
+	
+	public String getImageURL(){
+		return imageURL;
+	}
+
+	public void setImageURL(String imageURL){
+		this.imageURL = imageURL;
+	}
 
 	public List<UserFilm> getUserFilms() {
 		return userFilms;

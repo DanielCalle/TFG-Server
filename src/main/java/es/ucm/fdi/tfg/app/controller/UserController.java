@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.PutMapping;
 
 import es.ucm.fdi.tfg.app.sa.SAFactory;
 import es.ucm.fdi.tfg.app.sa.SAUser;
@@ -40,8 +41,8 @@ public class UserController {
 	public ResponseEntity<TUser> save(@RequestBody TUser tUser) {
 
 		if (tUser.getUuid() != null && tUser.getName() != null && tUser.getEmail() != null
-				&& tUser.getPassword() != null && tUser.getUuid() != "" && tUser.getName() != ""
-				&& tUser.getEmail() != "" && tUser.getPassword() != "") {
+				&& tUser.getPassword() != null && tUser.getImageURL() != null && tUser.getUuid() != "" && tUser.getName() != ""
+				&& tUser.getEmail() != "" && tUser.getPassword() != "" && tUser.getImageURL() != "") {
 
 			TUser response = saUserApp.create(tUser);
 
@@ -54,6 +55,23 @@ public class UserController {
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 
 	}
+
+	@PutMapping({ "", "/" })
+	@ResponseBody
+	public ResponseEntity<TUser> update(@RequestBody TUser tUser) {
+		if (tUser.getUuid() != null && tUser.getName() != null) {
+
+			TUser response = saUserApp.create(tUser);
+
+			if (response != null)
+				return ResponseEntity.status(HttpStatus.OK).body(tUser);
+
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+		}
+
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+	}
+
 
 	@GetMapping("/{uuid}")
 	@ResponseBody

@@ -1,5 +1,7 @@
 package es.ucm.fdi.tfg.app.transfer;
 
+import javax.xml.crypto.dsig.keyinfo.RetrievalMethod;
+
 public class TUser {
     private String uuid;
 
@@ -7,7 +9,9 @@ public class TUser {
 
     private String email;
 
-    private String password;
+	private String password;
+	
+	private String imageURL;
 
 	public String getUuid() {
 		return uuid;
@@ -39,6 +43,14 @@ public class TUser {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public String getImageURL(){
+		return imageURL;
+	}
+
+	public void setImageURL(String imageURL){
+		this.imageURL = imageURL;
 	}
     
     

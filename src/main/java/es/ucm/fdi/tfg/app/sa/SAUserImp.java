@@ -11,14 +11,12 @@ import es.ucm.fdi.tfg.app.entity.Friendship;
 import es.ucm.fdi.tfg.app.entity.Plan;
 import es.ucm.fdi.tfg.app.entity.UserApp;
 import es.ucm.fdi.tfg.app.entity.UserFilm;
-import es.ucm.fdi.tfg.app.entity.Film;
+import es.ucm.fdi.tfg.app.entity.UserApp;
 import es.ucm.fdi.tfg.app.repository.UserRepository;
 import es.ucm.fdi.tfg.app.transfer.TFilm;
 import es.ucm.fdi.tfg.app.transfer.TFriendship;
 import es.ucm.fdi.tfg.app.transfer.TPlan;
 import es.ucm.fdi.tfg.app.transfer.TUser;
-import es.ucm.fdi.tfg.app.transfer.TUserFilm;
-import es.ucm.fdi.tfg.app.transfer.TFilm;
 
 
 @Service
@@ -36,7 +34,7 @@ public class SAUserImp implements SAUser{
 			user.setEmail(tUser.getEmail());
 			user.setName(tUser.getName());
 			user.setPassword(tUser.getPassword());
-
+			user.setImageURL(tUser.getImageURL());
 			user = userRepository.save(user);
 
 			return tUser;
@@ -47,8 +45,22 @@ public class SAUserImp implements SAUser{
 
 	@Override
 	public TUser update(TUser tUser) {
-		// TODO Auto-generated method stub
-		return null;
+		Optional<UserApp> optUser = userRepository.findById(tUser.getUuid());
+    	if (optUser.isPresent()) {
+			UserApp user = optUser.get();
+			user.setUuid(tUser.getUuid());
+			user.setName(tUser.getName());
+			user.setEmail(tUser.getEmail());
+			user.setPassword(tUser.getPassword());
+			user.setImageURL(tUser.getImageURL());
+			
+
+			user = userRepository.save(user);
+    		
+    		return tUser;
+    	}
+    	
+    	return null;
 	}
 
 	@Override
@@ -74,6 +86,7 @@ public class SAUserImp implements SAUser{
 			tUser.setName(optUser.get().getName());
 			tUser.setEmail(optUser.get().getEmail());
 			tUser.setPassword(optUser.get().getPassword());
+			tUser.setImageURL(optUser.get().getImageURL());
 			
 			return tUser;
 		}
@@ -92,6 +105,7 @@ public class SAUserImp implements SAUser{
 			tUser.setName(userApp.getName());
 			tUser.setEmail(userApp.getEmail());
 			tUser.setPassword(userApp.getPassword());
+			tUser.setImageURL(userApp.getImageURL());
 			listTUser.add(tUser);
 		}
 		
