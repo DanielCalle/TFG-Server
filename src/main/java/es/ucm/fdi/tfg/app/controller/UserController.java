@@ -61,7 +61,7 @@ public class UserController {
 	public ResponseEntity<TUser> update(@RequestBody TUser tUser) {
 		if (tUser.getUuid() != null && tUser.getName() != null) {
 
-			TUser response = saUserApp.create(tUser);
+			TUser response = saUserApp.update(tUser);
 
 			if (response != null)
 				return ResponseEntity.status(HttpStatus.OK).body(tUser);
