@@ -140,6 +140,7 @@ public class SAPlanImp implements SAPlan {
 				tUser.setName(userApp.getName());
 				tUser.setEmail(userApp.getEmail());
 				tUser.setPassword(userApp.getPassword());
+				tUser.setImageURL(userApp.getImageURL());
 				listTUser.add(tUser);
 			}
 
