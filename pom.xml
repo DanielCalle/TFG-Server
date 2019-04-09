@@ -36,18 +36,17 @@
             <artifactId>postgresql</artifactId>
             <version>9.4-1206-jdbc42</version>
         </dependency>
-        <!-- H2 --> 
+        <!-- H2 -->
         <dependency>
-		    <groupId>com.h2database</groupId>
-		    <artifactId>h2</artifactId>
-		    <version>1.4.197</version>
-		</dependency>
-		
-        <!-- https://github.com/LambdaExpression/RequestBodyParam -->
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>1.4.197</version>
+        </dependency>
+        <!-- Mapper -->
         <dependency>
-            <groupId>com.github.lambdaexpression</groupId>
-            <artifactId>request-body-param</artifactId>
-            <version>2.0.1.RELEASE</version>
+            <groupId>org.modelmapper</groupId>
+            <artifactId>modelmapper</artifactId>
+            <version>2.3.2</version>
         </dependency>
         <!-- junit -->
         <dependency>
@@ -70,9 +69,9 @@
         </dependency>
         <!-- For JSP files -->
         <dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>jstl</artifactId>
-		</dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.apache.tomcat.embed</groupId>
             <artifactId>tomcat-embed-jasper</artifactId>
@@ -97,7 +96,7 @@
         </profile>
         <profile>
             <id>prod</id>
-            
+
             <properties>
                 <spring.profiles.to.activate>prod</spring.profiles.to.activate>
             </properties>
