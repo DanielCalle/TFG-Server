@@ -31,6 +31,7 @@ public class SAFilmImp implements SAFilm {
 			film.setName(tFilm.getName());
 			film.setImageURL(tFilm.getImageURL());
 			film.setInfoURL(tFilm.getInfoURL());
+			film.setSynopsis(tFilm.getSynopsis());
 			film.setTrailerURL(tFilm.getTrailerURL());
 			film.setRating(tFilm.getRating());
 			film.setCountry(tFilm.getCountry());
@@ -55,6 +56,7 @@ public class SAFilmImp implements SAFilm {
 			film.setName(tFilm.getName());
 			film.setImageURL(tFilm.getImageURL());
 			film.setInfoURL(tFilm.getInfoURL());
+			film.setSynopsis(tFilm.getSynopsis());
 			film.setTrailerURL(tFilm.getTrailerURL());
 			film.setRating(tFilm.getRating());
 			film.setCountry(tFilm.getCountry());
