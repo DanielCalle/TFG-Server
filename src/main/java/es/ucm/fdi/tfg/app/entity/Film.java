@@ -28,6 +28,8 @@ public class Film {
     @Column(name = "info_url")
     private String infoURL;
 
+    private String synopsis;
+
     @Column(name = "image_url")
     private String imageURL;
 
@@ -111,6 +113,20 @@ public class Film {
      */
     public void setInfoURL(String infoURL) {
         this.infoURL = infoURL;
+    }
+
+    /**
+     * @return the synopsis
+     */
+    public String getSynopsis() {
+        return synopsis;
+    }
+
+    /**
+     * @param synopsis the synopsis to set
+     */
+    public void setSynopsis(String synopsis) {
+        this.synopsis = synopsis;
     }
 
     /**

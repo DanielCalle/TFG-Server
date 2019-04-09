@@ -7,6 +7,7 @@ public class TFilm {
 	private String director;
 	private String trailerURL;
 	private String infoURL;
+    private String synopsis;
 	private String imageURL;
 	private String genre;
 	private int duration;
@@ -52,6 +53,14 @@ public class TFilm {
 	public void setInfoURL(String infoURL) {
 		this.infoURL = infoURL;
 	}
+
+    public String getSynopsis() {
+        return synopsis;
+    }
+
+    public void setSynopsis(String synopsis) {
+        this.synopsis = synopsis;
+    }
 
 	public String getImageURL() {
 		return imageURL;
