@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +25,8 @@ public class SAFriendshipImp implements SAFriendship {
 	private FriendshipRepository friendshipRepository;
 	@Autowired
 	private UserRepository userRepository;
+
+	private ModelMapper modelMapper = new ModelMapper();
 
 	@Override
 	public TFriendship create(TFriendship tFriendship) {
@@ -50,8 +55,8 @@ public class SAFriendshipImp implements SAFriendship {
 				friendship.setDate(date);
 				friendship.setActive(false);
 
-				friendshipRepository.save(friendship);
-				return tFriendship;
+				friendship = friendshipRepository.save(friendship);
+				return modelMapper.map(friendship, TFriendship.class);
 
 			}
 
@@ -67,19 +72,14 @@ public class SAFriendshipImp implements SAFriendship {
 		FriendshipId friendshipId = new FriendshipId();
 		friendshipId.setFriend(friendUuid);
 		friendshipId.setRequester(requesterUuid);
+
 		Optional<Friendship> friendship = friendshipRepository.findById(friendshipId);
 
 		if (friendship.isPresent()) {
 			// Change active to true and save the friendship
 			friendship.get().setActive(true);
-			friendshipRepository.save(friendship.get());
-			TFriendship tFriendship = new TFriendship();
-			tFriendship.setFriendUuid(friendUuid);
-			tFriendship.setRequesterUuid(requesterUuid);
-			tFriendship.setDate(friendship.get().getDate().toString());
-			tFriendship.setActive(friendship.get().isActive());
-
-			return tFriendship;
+			Friendship f = friendshipRepository.save(friendship.get());
+			return modelMapper.map(f, TFriendship.class);
 		}
 
 		return null;
@@ -122,12 +122,7 @@ public class SAFriendshipImp implements SAFriendship {
 
 		// if the friendship exist then remove it else return not found
 		if (friendship.isPresent()) {
-			TFriendship tFriendship = new TFriendship();
-			tFriendship.setFriendUuid(friendship.get().getFriend().getUuid());
-			tFriendship.setRequesterUuid(friendship.get().getRequester().getUuid());
-			tFriendship.setDate(friendship.get().getDate().toString());
-			tFriendship.setActive(friendship.get().isActive());
-			return tFriendship;
+			return modelMapper.map(friendship.get(), TFriendship.class);
 		}
 
 		friendshipId.setFriend(uuid2);
@@ -136,12 +131,7 @@ public class SAFriendshipImp implements SAFriendship {
 
 		// if the friendship exist then remove it else return not found
 		if (friendship.isPresent()) {
-			TFriendship tFriendship = new TFriendship();
-			tFriendship.setFriendUuid(friendship.get().getFriend().getUuid());
-			tFriendship.setRequesterUuid(friendship.get().getRequester().getUuid());
-			tFriendship.setDate(friendship.get().getDate().toString());
-			tFriendship.setActive(friendship.get().isActive());
-			return tFriendship;
+			return modelMapper.map(friendship.get(), TFriendship.class);
 		}
 
 		return null;
@@ -149,19 +139,11 @@ public class SAFriendshipImp implements SAFriendship {
 
 	@Override
 	public List<TFriendship> readAll() {
-		List<TFriendship> listTFriendship = new ArrayList<>();
 		Iterable<Friendship> listFriendship = friendshipRepository.findAll();
 
-		for (Friendship friendship : listFriendship) {
-			TFriendship tFriendship = new TFriendship();
-			tFriendship.setFriendUuid(friendship.getFriend().getUuid());
-			tFriendship.setRequesterUuid(friendship.getRequester().getUuid());
-			tFriendship.setDate(friendship.getDate().toString());
-			tFriendship.setActive(friendship.isActive());
-			listTFriendship.add(tFriendship);
-		}
-
-		return listTFriendship;
+		return StreamSupport.stream(listFriendship.spliterator(), false)
+				.map(friendShip -> modelMapper.map(friendShip, TFriendship.class))
+				.collect(Collectors.toList());
 	}
 
 }
