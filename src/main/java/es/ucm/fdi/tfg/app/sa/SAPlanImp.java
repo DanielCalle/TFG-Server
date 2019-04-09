@@ -7,7 +7,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.TimeZone;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +33,8 @@ public class SAPlanImp implements SAPlan {
 	@Autowired
 	private FilmRepository filmRepository;
 
+	private ModelMapper modelMapper = new ModelMapper();
+
 	@Override
 	public TPlan create(TPlan tPlan) {
 		Optional<UserApp> creator = userRepository.findById(tPlan.getCreatorUuid());
@@ -47,9 +52,9 @@ public class SAPlanImp implements SAPlan {
 				plan.setCreator(creator.get());
 				plan.setFilm(film.get());
 				plan.setDate(date);
-				planRepository.save(plan);
+				plan = planRepository.save(plan);
 
-				return tPlan;
+				return modelMapper.map(plan, TPlan.class);
 
 			} catch (ParseException ex) {
 				return null;
@@ -64,21 +69,15 @@ public class SAPlanImp implements SAPlan {
 	public TPlan join(Long id, String userUuid) {
 		Optional<Plan> optPlan = planRepository.findById(id);
 		Optional<UserApp> user = userRepository.findById(userUuid);
+
 		if (optPlan.isPresent() && user.isPresent()) {
 			if (optPlan.get().getCreator().getUuid() != user.get().getUuid()) {
 				List<UserApp> joinedUsers = optPlan.get().getJoinedUsers();
 				joinedUsers.add(user.get());
 				optPlan.get().setJoinedUsers(joinedUsers);
-				planRepository.save(optPlan.get());
-
-				TPlan tPlan = new TPlan();
-				tPlan.setCreatorUuid(optPlan.get().getCreator().getUuid());
-				tPlan.setFilmUuid(optPlan.get().getFilm().getUuid());
-				tPlan.setDate(optPlan.get().getDate().toString());
-
-				return tPlan;
+				Plan plan = planRepository.save(optPlan.get());
+				return modelMapper.map(plan, TPlan.class);
 			}
-			;
 		}
 
 		return null;
@@ -87,9 +86,9 @@ public class SAPlanImp implements SAPlan {
 	@Override
 	public Long delete(Long id) {
 		Optional<Plan> plan = planRepository.findById(id);
+
 		if (plan.isPresent()) {
 			planRepository.delete(plan.get());
-
 			return id;
 		}
 
@@ -99,13 +98,9 @@ public class SAPlanImp implements SAPlan {
 	@Override
 	public TPlan read(Long id) {
 		Optional<Plan> optPlan = planRepository.findById(id);
-		if (optPlan.isPresent()) {
 
-			TPlan tPlan = new TPlan();
-			tPlan.setCreatorUuid(optPlan.get().getCreator().getUuid());
-			tPlan.setFilmUuid(optPlan.get().getFilm().getUuid());
-			tPlan.setDate(optPlan.get().getDate().toString());
-			return tPlan;
+		if (optPlan.isPresent()) {
+			return modelMapper.map(optPlan.get(), TPlan.class);
 		}
 
 		return null;
@@ -113,38 +108,21 @@ public class SAPlanImp implements SAPlan {
 
 	@Override
 	public List<TPlan> readAll() {
-		List<TPlan> listTPlan = new ArrayList<>();
 		Iterable<Plan> listPlan = planRepository.findAll();
 
-		for (Plan plan : listPlan) {
-			TPlan tPlan = new TPlan();
-			tPlan.setId(plan.getId());
-			tPlan.setCreatorUuid(plan.getCreator().getUuid());
-			tPlan.setFilmUuid(plan.getFilm().getUuid());
-			tPlan.setDate(plan.getDate().toString());
-			listTPlan.add(tPlan);
-		}
-
-		return listTPlan;
+		return StreamSupport.stream(listPlan.spliterator(), false)
+				.map(plan -> modelMapper.map(plan, TPlan.class))
+				.collect(Collectors.toList());
 	}
 
 	@Override
 	public List<TUser> getJoinedUsers(Long id) {
 		Optional<Plan> optPlan = planRepository.findById(id);
-		List<TUser> listTUser = new ArrayList<>();
+		
 		if (optPlan.isPresent()) {
-
-			for (UserApp userApp : optPlan.get().getJoinedUsers()) {
-				TUser tUser = new TUser();
-				tUser.setUuid(userApp.getUuid());
-				tUser.setName(userApp.getName());
-				tUser.setEmail(userApp.getEmail());
-				tUser.setPassword(userApp.getPassword());
-				tUser.setImageURL(userApp.getImageURL());
-				listTUser.add(tUser);
-			}
-
-			return listTUser;
+			return optPlan.get().getJoinedUsers().stream()
+				.map(user -> modelMapper.map(user, TUser.class))
+				.collect(Collectors.toList());
 		}
 
 		return null;
