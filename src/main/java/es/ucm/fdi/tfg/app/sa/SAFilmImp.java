@@ -3,7 +3,10 @@ package es.ucm.fdi.tfg.app.sa;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +18,9 @@ import es.ucm.fdi.tfg.app.transfer.TFilm;
 public class SAFilmImp implements SAFilm {
 	
     @Autowired
-    private FilmRepository filmRepository;
+	private FilmRepository filmRepository;
+	
+	private ModelMapper modelMapper = new ModelMapper();
 
 	@Override
 	public TFilm create(TFilm tFilm) {
@@ -35,7 +40,7 @@ public class SAFilmImp implements SAFilm {
     		
 			film = filmRepository.save(film);
     		
-    		return tFilm;
+			return modelMapper.map(film, TFilm.class);
     	}
     	
     	return null;
@@ -59,7 +64,7 @@ public class SAFilmImp implements SAFilm {
     		
 			film = filmRepository.save(film);
     		
-    		return tFilm;
+			return modelMapper.map(film, TFilm.class);
     	}
     	
     	return null;
@@ -71,7 +76,6 @@ public class SAFilmImp implements SAFilm {
 		
 		if (optFilm.isPresent()) {
 			filmRepository.delete(optFilm.get());
-			
 			return uuid;
 		}
 		
@@ -83,21 +87,7 @@ public class SAFilmImp implements SAFilm {
 		Optional<Film> optFilm = filmRepository.findById(uuid);
 		
 		if (optFilm.isPresent()) {
-			//filmRepository.delete(optFilm.get());
-			Film film = optFilm.get();
-			TFilm tFilm = new TFilm();
-			tFilm.setUuid(film.getUuid());
-			tFilm.setName(film.getName());
-			tFilm.setImageURL(film.getImageURL());
-			tFilm.setInfoURL(film.getInfoURL());
-			tFilm.setTrailerURL(film.getTrailerURL());
-			tFilm.setRating(film.getRating());
-			tFilm.setCountry(film.getCountry());
-			tFilm.setDirector(film.getDirector());
-			tFilm.setDuration(film.getDuration());
-			tFilm.setGenre(film.getGenre());
-			
-			return tFilm;
+			return modelMapper.map(optFilm.get(), TFilm.class);
 		}
 		
 		return null;
@@ -105,25 +95,11 @@ public class SAFilmImp implements SAFilm {
 
 	@Override
 	public List<TFilm> readAll() {
-		List<TFilm> listTFilms = new ArrayList<>();
 		Iterable<Film> listFilms = filmRepository.findAll();
 		
-		for (Film film : listFilms) {
-			TFilm tFilm = new TFilm();
-			tFilm.setUuid(film.getUuid());
-			tFilm.setName(film.getName());
-			tFilm.setImageURL(film.getImageURL());
-			tFilm.setInfoURL(film.getInfoURL());
-			tFilm.setTrailerURL(film.getTrailerURL());
-			tFilm.setRating(film.getRating());
-			tFilm.setCountry(film.getCountry());
-			tFilm.setDirector(film.getDirector());
-			tFilm.setDuration(film.getDuration());
-			tFilm.setGenre(film.getGenre());
-			listTFilms.add(tFilm);
-		}
-		
-		return listTFilms;
+		return StreamSupport.stream(listFilms.spliterator(), false)
+			.map(film -> modelMapper.map(film, TFilm.class))
+			.collect(Collectors.toList());
 	}
 
 }
