@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,10 +30,13 @@ public class SAUserFilmImp implements SAUserFilm {
 	@Autowired
 	private UserFilmRepository userFilmRepository;
 
+	private ModelMapper modelMapper = new ModelMapper();
+
 	@Override
 	public TUserFilm create(TUserFilm tUserFilm) {
 		Optional<UserApp> optUser = userRepository.findById(tUserFilm.getUserUuid());
 		Optional<Film> optFilm = filmRepository.findById(tUserFilm.getFilmUuid());
+
 		// Check if user and film exist
 		if (optUser.isPresent() && optFilm.isPresent()) {
 			UserFilmId id = new UserFilmId();
@@ -44,8 +50,7 @@ public class SAUserFilmImp implements SAUserFilm {
 				userFilm.setDate(new Date());
 
 				userFilm = userFilmRepository.save(userFilm);
-
-				return tUserFilm;
+				return modelMapper.map(userFilm, TUserFilm.class);
 			}
 
 		}
@@ -58,7 +63,9 @@ public class SAUserFilmImp implements SAUserFilm {
 		UserFilmId id = new UserFilmId();
 		id.setUser(userUuid);
 		id.setFilm(filmUuid);
+
 		Optional<UserFilm> optUserFilm = userFilmRepository.findById(id);
+
 		if (optUserFilm.isPresent()) {
 			userFilmRepository.delete(optUserFilm.get());
 			return id;
@@ -72,14 +79,11 @@ public class SAUserFilmImp implements SAUserFilm {
 		UserFilmId id = new UserFilmId();
 		id.setUser(userUuid);
 		id.setFilm(filmUuid);
-		Optional<UserFilm> optUserFilm = userFilmRepository.findById(id);
-		if (optUserFilm.isPresent()) {
-			TUserFilm tUserFilm = new TUserFilm();
-			tUserFilm.setUserUuid(userUuid);
-			tUserFilm.setUserUuid(userUuid);
-			tUserFilm.setDate(optUserFilm.get().getDate().toString());
 
-			return tUserFilm;
+		Optional<UserFilm> optUserFilm = userFilmRepository.findById(id);
+
+		if (optUserFilm.isPresent()) {
+			return modelMapper.map(optUserFilm.get(), TUserFilm.class);
 		}
 
 		return null;
@@ -87,18 +91,11 @@ public class SAUserFilmImp implements SAUserFilm {
 
 	@Override
 	public List<TUserFilm> readAll() {
-		List<TUserFilm> listTUserFilm = new ArrayList<>();
 		Iterable<UserFilm> listUserFilm = userFilmRepository.findAll();
 
-		for (UserFilm userFilm : listUserFilm) {
-			TUserFilm tUserFilm = new TUserFilm();
-			tUserFilm.setUserUuid(userFilm.getUserApp().getUuid());
-			tUserFilm.setFilmUuid(userFilm.getFilm().getUuid());
-			tUserFilm.setDate(userFilm.getDate().toString());
-			listTUserFilm.add(tUserFilm);
-		}
-
-		return listTUserFilm;
+		return StreamSupport.stream(listUserFilm.spliterator(), false)
+				.map(userFilm -> modelMapper.map(userFilm, TUserFilm.class))
+				.collect(Collectors.toList());
 	}
 
 }
