@@ -1,10 +1,12 @@
 package es.ucm.fdi.tfg.app.transfer;
 
+import java.util.Date;
+
 public class TPlan {
 	private Long id;
 	private String creatorUuid;
 	private String filmUuid;
-	private String date;
+	private Date date;
 	public String getCreatorUuid() {
 		return creatorUuid;
 	}
@@ -17,10 +19,10 @@ public class TPlan {
 	public void setFilmUuid(String filmUuid) {
 		this.filmUuid = filmUuid;
 	}
-	public String getDate() {
+	public Date getDate() {
 		return date;
 	}
-	public void setDate(String date) {
+	public void setDate(Date date) {
 		this.date = date;
 	}
 	public Long getId() {
