@@ -28,7 +28,7 @@ public class Film {
     @Column(name = "info_url")
     private String infoURL;
 
-    @Column(length = 100000)
+    @Column(columnDefinition="LONGVARCHAR")
     private String synopsis;
 
     @Column(name = "image_url")
