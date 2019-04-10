@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.TimeZone;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -41,15 +42,23 @@ public class SAPlanImp implements SAPlan {
 		Optional<Film> film = filmRepository.findById(filmUuid);
 		// Check if user and film exist
 		if (creator.isPresent() && film.isPresent()) {
-			// Create plan and save
-			Plan plan = new Plan();
-			plan.setCreator(creator.get());
-			plan.setFilm(film.get());
-			plan.setDate(new Date());
-			plan = planRepository.save(plan);
+			try {
+				// Create plan and save
+				SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy hh:mm");
+				df.setTimeZone(TimeZone.getTimeZone("UTC"));
 
-			return modelMapper.map(plan, TPlan.class);
+				Plan plan = new Plan();
+				plan.setCreator(creator.get());
+				plan.setFilm(film.get());
+				plan.setDate(df.parse(df.format(new Date())));
+				plan = planRepository.save(plan);
 
+				return modelMapper.map(plan, TPlan.class);
+
+			} catch (ParseException ex) {
+				ex.printStackTrace();
+				return null;
+			}
 		}
 
 		return null;
@@ -100,19 +109,17 @@ public class SAPlanImp implements SAPlan {
 	public List<TPlan> readAll() {
 		Iterable<Plan> listPlan = planRepository.findAll();
 
-		return StreamSupport.stream(listPlan.spliterator(), false)
-				.map(plan -> modelMapper.map(plan, TPlan.class))
+		return StreamSupport.stream(listPlan.spliterator(), false).map(plan -> modelMapper.map(plan, TPlan.class))
 				.collect(Collectors.toList());
 	}
 
 	@Override
 	public List<TUser> getJoinedUsers(Long id) {
 		Optional<Plan> optPlan = planRepository.findById(id);
-		
+
 		if (optPlan.isPresent()) {
-			return optPlan.get().getJoinedUsers().stream()
-				.map(user -> modelMapper.map(user, TUser.class))
-				.collect(Collectors.toList());
+			return optPlan.get().getJoinedUsers().stream().map(user -> modelMapper.map(user, TUser.class))
+					.collect(Collectors.toList());
 		}
 
 		return null;
