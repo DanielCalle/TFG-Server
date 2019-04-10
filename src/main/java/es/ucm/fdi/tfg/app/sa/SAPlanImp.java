@@ -53,6 +53,8 @@ public class SAPlanImp implements SAPlan {
 				plan.setDate(df.parse(df.format(new Date())));
 				plan = planRepository.save(plan);
 
+				plan.setDate(df.parse(df.format(plan.getDate())));
+
 				return modelMapper.map(plan, TPlan.class);
 
 			} catch (ParseException ex) {
