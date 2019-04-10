@@ -42,25 +42,13 @@ public class SAPlanImp implements SAPlan {
 		Optional<Film> film = filmRepository.findById(filmUuid);
 		// Check if user and film exist
 		if (creator.isPresent() && film.isPresent()) {
-			try {
-				// Create plan and save
-				SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy hh:mm");
-				df.setTimeZone(TimeZone.getTimeZone("UTC"));
-
 				Plan plan = new Plan();
 				plan.setCreator(creator.get());
 				plan.setFilm(film.get());
-				plan.setDate(df.parse(df.format(new Date())));
+				plan.setDate(new Date());
 				plan = planRepository.save(plan);
 
-				plan.setDate(df.parse(df.format(plan.getDate())));
-
 				return modelMapper.map(plan, TPlan.class);
-
-			} catch (ParseException ex) {
-				ex.printStackTrace();
-				return null;
-			}
 		}
 
 		return null;
