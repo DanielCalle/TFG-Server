@@ -9,7 +9,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.Column;
 import javax.persistence.Id;
-import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 
 @Entity
@@ -29,8 +28,6 @@ public class Film {
     @Column(name = "info_url")
     private String infoURL;
 
-    @Lob
-    @Column(columnDefinition = "text")
     private String synopsis;
 
     @Column(name = "image_url")
