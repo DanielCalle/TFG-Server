@@ -56,7 +56,7 @@ public class FilmController {
 	public ResponseEntity<TFilm> update(@RequestBody TFilm tFilm) {
 		if (tFilm.getUuid() != null && tFilm.getName() != null) {
 
-			TFilm response = saFilm.create(tFilm);
+			TFilm response = saFilm.update(tFilm);
 
 			if (response != null)
 				return ResponseEntity.status(HttpStatus.OK).body(tFilm);
