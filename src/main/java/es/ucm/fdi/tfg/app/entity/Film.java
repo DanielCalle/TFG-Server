@@ -30,7 +30,7 @@ public class Film {
     private String infoURL;
 
     @Lob
-    @Column(length = 511)
+    @Column(columnDefinition = "text")
     private String synopsis;
 
     @Column(name = "image_url")
