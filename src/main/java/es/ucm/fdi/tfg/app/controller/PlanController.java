@@ -35,14 +35,13 @@ public class PlanController {
 		return saPlan.readAll();
 	}
 
-	@PostMapping({ "", "/" })
+	@PostMapping("{creatorUuid}/{filmUuid}")
 	@ResponseBody
-	public ResponseEntity<TPlan> save(@RequestBody TPlan tPlan) {
+	public ResponseEntity<TPlan> save(@PathVariable String creatorUuid, @PathVariable String filmUuid) {
 
-		if (tPlan.getCreatorUuid() != null && tPlan.getFilmUuid() != null && tPlan.getDate() != null
-				&& tPlan.getCreatorUuid() != "" && tPlan.getFilmUuid() != "" && tPlan.getDate() != "") {
+		if (creatorUuid != null && filmUuid != null) {
 
-			TPlan response = saPlan.create(tPlan);
+			TPlan response = saPlan.create(creatorUuid, filmUuid);
 
 			if (response != null)
 				return ResponseEntity.status(HttpStatus.CREATED).body(response);

@@ -6,7 +6,7 @@ import es.ucm.fdi.tfg.app.transfer.TPlan;
 import es.ucm.fdi.tfg.app.transfer.TUser;
 
 public interface SAPlan {
-	public TPlan create(TPlan tPlan);
+	public TPlan create(String creatorUuid, String filmUuid);
 
 	public TPlan join(Long id, String userUuid);
 

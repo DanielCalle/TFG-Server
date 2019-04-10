@@ -2,11 +2,11 @@ package es.ucm.fdi.tfg.app.sa;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.TimeZone;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -36,29 +36,19 @@ public class SAPlanImp implements SAPlan {
 	private ModelMapper modelMapper = new ModelMapper();
 
 	@Override
-	public TPlan create(TPlan tPlan) {
-		Optional<UserApp> creator = userRepository.findById(tPlan.getCreatorUuid());
-		Optional<Film> film = filmRepository.findById(tPlan.getFilmUuid());
+	public TPlan create(String creatorUuid, String filmUuid) {
+		Optional<UserApp> creator = userRepository.findById(creatorUuid);
+		Optional<Film> film = filmRepository.findById(filmUuid);
 		// Check if user and film exist
 		if (creator.isPresent() && film.isPresent()) {
-			try {
-				// Parse string date, if it's not posible then return bad request
-				SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy hh:mm");
-				df.setTimeZone(TimeZone.getTimeZone("UTC"));
-				Date date = df.parse(tPlan.getDate());
+			// Create plan and save
+			Plan plan = new Plan();
+			plan.setCreator(creator.get());
+			plan.setFilm(film.get());
+			plan.setDate(new Date());
+			plan = planRepository.save(plan);
 
-				// Create plan and save
-				Plan plan = new Plan();
-				plan.setCreator(creator.get());
-				plan.setFilm(film.get());
-				plan.setDate(date);
-				plan = planRepository.save(plan);
-
-				return modelMapper.map(plan, TPlan.class);
-
-			} catch (ParseException ex) {
-				return null;
-			}
+			return modelMapper.map(plan, TPlan.class);
 
 		}
 
