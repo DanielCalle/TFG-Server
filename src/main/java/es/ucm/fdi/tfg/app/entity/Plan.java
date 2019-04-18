@@ -14,22 +14,26 @@ import javax.persistence.Temporal;
 @Entity
 @Table(name = "plan")
 public class Plan {
-	
+
 	@Id
 	@GeneratedValue
 	private Long id;
-	
-	@ManyToOne
-    private UserApp creator;
-    
-	@ManyToOne
-    private Film film;
 
-    @ManyToMany
-    private List<UserApp> joinedUsers;
-    
-    @Temporal(javax.persistence.TemporalType.DATE)
-    private Date date;
+	@ManyToOne
+	private UserApp creator;
+
+	@ManyToOne
+	private Film film;
+
+	@ManyToMany
+	private List<UserApp> joinedUsers;
+
+	@Temporal(javax.persistence.TemporalType.DATE)
+	private Date date;
+
+	private String location;
+
+	private String description;
 
 	public Long getId() {
 		return id;
@@ -70,6 +74,21 @@ public class Plan {
 	public void setDate(Date date) {
 		this.date = date;
 	}
-    
-    
+
+	public String getLocation() {
+		return location;
+	}
+
+	public void setLocation(String location) {
+		this.location = location;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
 }

@@ -8,39 +8,54 @@ public class TPlan {
 	private String creatorUuid;
 	private String filmUuid;
 	private Date date;
-	private List<String> joinedUsers;
+	private String location;
+	private String description;
 
 	public String getCreatorUuid() {
 		return creatorUuid;
 	}
+
 	public void setCreatorUuid(String creatorUuid) {
 		this.creatorUuid = creatorUuid;
 	}
+
 	public String getFilmUuid() {
 		return filmUuid;
 	}
+
 	public void setFilmUuid(String filmUuid) {
 		this.filmUuid = filmUuid;
 	}
+
 	public Date getDate() {
 		return date;
 	}
+
 	public void setDate(Date date) {
 		this.date = date;
 	}
+
 	public Long getId() {
 		return id;
 	}
+
 	public void setId(Long id) {
 		this.id = id;
 	}
-	public List<String> getJoinedUsers(){
-		return joinedUsers;
+
+	public String getLocation() {
+		return location;
 	}
-	public void setJoinedUsers(List<String> joinedUsers){
-		this.joinedUsers = joinedUsers;
+
+	public void setLocation(String location) {
+		this.location = location;
 	}
-	
-	
-	
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
 }
