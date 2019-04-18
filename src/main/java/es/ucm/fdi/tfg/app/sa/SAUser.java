@@ -25,4 +25,6 @@ public interface SAUser {
 	public List<TPlan> getPlans(String uuid);
 	
 	public List<TFilm> getFilms(String uuid);
+
+	public TUser login(String email, String password);
 }

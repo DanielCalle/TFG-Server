@@ -93,9 +93,8 @@ public class SAUserImp implements SAUser {
 	public List<TUser> readAll() {
 		Iterable<UserApp> listUserApp = userRepository.findAll();
 
-		return StreamSupport.stream(listUserApp.spliterator(), false)
-			.map(user -> modelMapper.map(user, TUser.class))
-			.collect(Collectors.toList());
+		return StreamSupport.stream(listUserApp.spliterator(), false).map(user -> modelMapper.map(user, TUser.class))
+				.collect(Collectors.toList());
 	}
 
 	@Override
@@ -103,12 +102,12 @@ public class SAUserImp implements SAUser {
 		Optional<UserApp> optUser = userRepository.findById(uuid);
 
 		if (optUser.isPresent()) {
-			return Stream.concat(
-				optUser.get().getFriendRequests().stream()
-					.map(friendShip -> modelMapper.map(friendShip, TFriendship.class)),
-					optUser.get().getFriends().stream()
-					.map(friendShip -> modelMapper.map(friendShip, TFriendship.class))
-			).distinct().collect(Collectors.toList());
+			return Stream
+					.concat(optUser.get().getFriendRequests().stream()
+							.map(friendShip -> modelMapper.map(friendShip, TFriendship.class)),
+							optUser.get().getFriends().stream()
+									.map(friendShip -> modelMapper.map(friendShip, TFriendship.class)))
+					.distinct().collect(Collectors.toList());
 		}
 
 		return null;
@@ -119,12 +118,10 @@ public class SAUserImp implements SAUser {
 		Optional<UserApp> optUser = userRepository.findById(uuid);
 
 		if (optUser.isPresent()) {
-			return Stream.concat(
-				optUser.get().getCreatedPlans().stream()
-					.map(plan -> modelMapper.map(plan, TPlan.class)),
-				optUser.get().getJoinedPlans().stream()
-					.map(plan -> modelMapper.map(plan, TPlan.class))
-			).distinct().collect(Collectors.toList());
+			return Stream
+					.concat(optUser.get().getCreatedPlans().stream().map(plan -> modelMapper.map(plan, TPlan.class)),
+							optUser.get().getJoinedPlans().stream().map(plan -> modelMapper.map(plan, TPlan.class)))
+					.distinct().collect(Collectors.toList());
 		}
 
 		return null;
@@ -137,6 +134,17 @@ public class SAUserImp implements SAUser {
 		if (optUser.isPresent()) {
 			return optUser.get().getUserFilms().stream()
 					.map(userFilm -> modelMapper.map(userFilm.getFilm(), TFilm.class)).collect(Collectors.toList());
+		}
+
+		return null;
+	}
+
+	@Override
+	public TUser login(String email, String password) {
+		Optional<UserApp> optUser = userRepository.findByEmail(email);
+
+		if (optUser.isPresent() && optUser.get().getPassword().equalsIgnoreCase(password)) {
+			return modelMapper.map(optUser.get(), TUser.class);
 		}
 
 		return null;

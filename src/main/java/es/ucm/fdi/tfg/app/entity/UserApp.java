@@ -2,6 +2,7 @@ package es.ucm.fdi.tfg.app.entity;
 
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
@@ -17,6 +18,7 @@ public class UserApp{
 
     private String name;
 
+	@Column(unique = true)
     private String email;
 
 	private String password;

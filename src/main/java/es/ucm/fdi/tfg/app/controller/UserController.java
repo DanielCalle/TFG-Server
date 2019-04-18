@@ -128,4 +128,16 @@ public class UserController {
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 	}
 
+	@PostMapping("/login")
+	@ResponseBody
+	public ResponseEntity<TUser> login(@RequestBody TUser user) {
+		TUser result = saUserApp.login(user.getEmail(), user.getPassword());
+
+		if (result != null) {
+			return ResponseEntity.status(HttpStatus.OK).body(result);
+		}
+
+		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+	}
+
 }
