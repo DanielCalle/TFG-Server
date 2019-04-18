@@ -37,15 +37,17 @@ public class SAPlanImp implements SAPlan {
 	private ModelMapper modelMapper = new ModelMapper();
 
 	@Override
-	public TPlan create(String creatorUuid, String filmUuid) {
-		Optional<UserApp> creator = userRepository.findById(creatorUuid);
-		Optional<Film> film = filmRepository.findById(filmUuid);
+	public TPlan create(TPlan tPlan) {
+		Optional<UserApp> creator = userRepository.findById(tPlan.getCreatorUuid());
+		Optional<Film> film = filmRepository.findById(tPlan.getFilmUuid());
 		// Check if user and film exist
 		if (creator.isPresent() && film.isPresent()) {
 				Plan plan = new Plan();
 				plan.setCreator(creator.get());
 				plan.setFilm(film.get());
 				plan.setDate(new Date());
+				plan.setLocation(tPlan.getLocation());
+				plan.setDescription(tPlan.getDescription());
 				plan = planRepository.save(plan);
 
 				return modelMapper.map(plan, TPlan.class);
