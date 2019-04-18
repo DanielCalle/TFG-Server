@@ -45,7 +45,7 @@ public class SAPlanImp implements SAPlan {
 				Plan plan = new Plan();
 				plan.setCreator(creator.get());
 				plan.setFilm(film.get());
-				plan.setDate(new Date());
+				plan.setDate(tPlan.getDate());
 				plan.setLocation(tPlan.getLocation());
 				plan.setDescription(tPlan.getDescription());
 				plan = planRepository.save(plan);
