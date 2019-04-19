@@ -40,9 +40,7 @@ public class UserController {
 	@ResponseBody
 	public ResponseEntity<TUser> save(@RequestBody TUser tUser) {
 
-		if (tUser.getUuid() != null && tUser.getName() != null && tUser.getEmail() != null
-				&& tUser.getPassword() != null && tUser.getImageURL() != null && tUser.getUuid() != "" && tUser.getName() != ""
-				&& tUser.getEmail() != "" && tUser.getPassword() != "" && tUser.getImageURL() != "") {
+		if (tUser != null) {
 
 			TUser response = saUserApp.create(tUser);
 
