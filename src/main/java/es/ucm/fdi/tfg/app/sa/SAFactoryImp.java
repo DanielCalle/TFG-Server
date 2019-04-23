@@ -27,4 +27,9 @@ public class SAFactoryImp extends SAFactory {
 		return new SAUserFilmImp();
 	}
 
+	@Override
+	public SARatingFilm generateSaRatingFilm() {
+		return new SARatingFilmImp();
+	}
+
 }

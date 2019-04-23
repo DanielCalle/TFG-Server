@@ -17,7 +17,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import es.ucm.fdi.tfg.app.sa.SAFactory;
 import es.ucm.fdi.tfg.app.sa.SAFilm;
+import es.ucm.fdi.tfg.app.sa.SARatingFilm;
 import es.ucm.fdi.tfg.app.transfer.TFilm;
+import es.ucm.fdi.tfg.app.transfer.TRatingFilm;
 
 @Controller
 @RequestMapping("/films")
@@ -25,6 +27,8 @@ public class FilmController {
 	
 	@Autowired
 	SAFilm saFilm = SAFactory.getInstance().generateSAFilm();
+	@Autowired
+	SARatingFilm saRatingFilm = SAFactory.getInstance().generateSaRatingFilm();
 
 	@GetMapping({ "", "/" })
 	@ResponseBody
@@ -87,6 +91,30 @@ public class FilmController {
 
 		if (response != null)
 			return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+	}
+
+	@GetMapping("/{uuid}/user/{userUuid}/rating")
+	@ResponseBody
+	public ResponseEntity<TRatingFilm> getRating(@PathVariable String uuid, @PathVariable String userUuid) {
+		TRatingFilm ratingFilm = saRatingFilm.read(userUuid, uuid);
+
+		if (ratingFilm != null) {
+			return ResponseEntity.status(HttpStatus.OK).body(ratingFilm);
+		}
+
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+	}
+	
+	@PostMapping("/rate")
+	@ResponseBody
+	public ResponseEntity<TRatingFilm> rate(@RequestBody TRatingFilm tRatingFilm){
+		TRatingFilm ratingFilm = saRatingFilm.save(tRatingFilm);
+
+		if (ratingFilm != null) {
+			return ResponseEntity.status(HttpStatus.OK).body(ratingFilm);
+		}
 
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 	}
