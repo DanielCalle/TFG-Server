@@ -1,5 +1,6 @@
 package es.ucm.fdi.tfg.app.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,7 @@ import es.ucm.fdi.tfg.app.transfer.TFilm;
 @Controller
 @RequestMapping("/users")
 public class UserController {
-	
+
 	@Autowired
 	SAUser saUserApp = SAFactory.getInstance().generateSAUser();
 
@@ -68,7 +69,6 @@ public class UserController {
 
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 	}
-
 
 	@GetMapping("/{uuid}")
 	@ResponseBody
@@ -135,6 +135,26 @@ public class UserController {
 		}
 
 		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+	}
+
+	@GetMapping("/{uuid}/friendships/plans")
+	@ResponseBody
+	public ResponseEntity<List<TPlan>> getFriendsPlans(@PathVariable String uuid) {
+		List<TFriendship> listFriendships = saUserApp.getFriends(uuid);
+		if (listFriendships != null) {
+			List<TPlan> result = new ArrayList<TPlan>();
+			for (int i = 0; i < listFriendships.size(); i++) {
+				List<TPlan> listPlans = saUserApp.getPlans(listFriendships.get(i).getFriendUuid());
+				if (listPlans != null) {
+					for (int j = 0; j < listPlans.size(); j++) {
+						result.add(listPlans.get(j));
+					}
+				}
+			}
+			return ResponseEntity.status(HttpStatus.OK).body(result);
+		}
+
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 	}
 
 }
