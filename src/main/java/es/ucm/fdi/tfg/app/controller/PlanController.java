@@ -29,7 +29,7 @@ public class PlanController {
 
 	@GetMapping({ "", "/" })
 	@ResponseBody
-	public Iterable<TPlan> getAllUsers() {
+	public Iterable<TPlan> getAllPlans() {
 		
 
 		return saPlan.readAll();
