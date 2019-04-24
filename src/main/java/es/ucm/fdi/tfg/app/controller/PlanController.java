@@ -1,5 +1,6 @@
 package es.ucm.fdi.tfg.app.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import es.ucm.fdi.tfg.app.sa.SAFactory;
 import es.ucm.fdi.tfg.app.sa.SAPlan;
+import es.ucm.fdi.tfg.app.sa.SAUser;
 import es.ucm.fdi.tfg.app.transfer.TPlan;
 import es.ucm.fdi.tfg.app.transfer.TUser;
 
@@ -26,6 +28,8 @@ public class PlanController {
 	
 	@Autowired
 	SAPlan saPlan = SAFactory.getInstance().generateSAPlan();
+	@Autowired
+	SAUser saUser = SAFactory.getInstance().generateSAUser();
 
 	@GetMapping({ "", "/" })
 	@ResponseBody
@@ -96,6 +100,24 @@ public class PlanController {
 
 		if (response != null)
 			return ResponseEntity.status(HttpStatus.OK).body(response);
+
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+	}
+
+	@GetMapping("/{id}/users")
+	@ResponseBody
+	public ResponseEntity<List<TUser>> getUsers(@PathVariable long id) {
+		List<TUser> response = new ArrayList<>();
+		TPlan plan = saPlan.read(id);
+		if (plan != null) {
+			TUser creator = saUser.read(plan.getCreatorUuid());
+			List<TUser> joinedUsers = saPlan.getJoinedUsers(id);
+			if (joinedUsers != null && creator != null) {
+				response.add(creator);
+				response.addAll(joinedUsers);
+				return ResponseEntity.status(HttpStatus.OK).body(response);
+			}
+		}
 
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 	}
