@@ -17,13 +17,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.PutMapping;
 
 import es.ucm.fdi.tfg.app.sa.SAFactory;
-import es.ucm.fdi.tfg.app.sa.SARatingFilm;
 import es.ucm.fdi.tfg.app.sa.SAUser;
 import es.ucm.fdi.tfg.app.transfer.TFriendship;
 import es.ucm.fdi.tfg.app.transfer.TPlan;
-import es.ucm.fdi.tfg.app.transfer.TRatingFilm;
 import es.ucm.fdi.tfg.app.transfer.TUser;
-import es.ucm.fdi.tfg.app.transfer.TUserFilm;
 import es.ucm.fdi.tfg.app.transfer.TFilm;
 
 @Controller

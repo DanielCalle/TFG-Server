@@ -12,18 +12,20 @@ import javax.persistence.Temporal;
 @Entity
 @Table(name = "user_film")
 @IdClass(UserFilmId.class)
-public class UserFilm{
+public class UserFilm {
 
-    @Id
-    @ManyToOne
-    private UserApp userApp;
+	@Id
+	@ManyToOne
+	private UserApp userApp;
 
-    @Id
-    @ManyToOne
-    private Film film;
-    
-    @Temporal(javax.persistence.TemporalType.DATE)
-    private Date date;
+	@Id
+	@ManyToOne
+	private Film film;
+
+	@Temporal(javax.persistence.TemporalType.DATE)
+	private Date date;
+
+	private float rating;
 
 	public UserApp getUserApp() {
 		return userApp;
@@ -49,5 +51,12 @@ public class UserFilm{
 		this.date = date;
 	}
 
-    
+	public void setRating(float rating) {
+		this.rating = rating;
+	}
+
+	public float getRating() {
+		return rating;
+	}
+
 }

@@ -20,7 +20,5 @@ public abstract class SAFactory {
 	public abstract SAPlan generateSAPlan();
 	
 	public abstract SAUserFilm generateSAUserFilm();
-
-	public abstract SARatingFilm generateSaRatingFilm();
 	
 }

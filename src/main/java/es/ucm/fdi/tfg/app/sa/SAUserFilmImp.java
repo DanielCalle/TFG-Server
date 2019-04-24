@@ -48,6 +48,7 @@ public class SAUserFilmImp implements SAUserFilm {
 				userFilm.setFilm(optFilm.get());
 				userFilm.setUserApp(optUser.get());
 				userFilm.setDate(new Date());
+				userFilm.setRating(tUserFilm.getRating());
 
 				userFilm = userFilmRepository.save(userFilm);
 				return modelMapper.map(userFilm, TUserFilm.class);
@@ -55,6 +56,23 @@ public class SAUserFilmImp implements SAUserFilm {
 
 		}
 
+		return null;
+	}
+
+	@Override
+	public TUserFilm save(TUserFilm tUserFilm) {
+		Optional<UserApp> user = userRepository.findById(tUserFilm.getUserUuid());
+		Optional<Film> film = filmRepository.findById(tUserFilm.getFilmUuid());
+
+		if (user.isPresent() && film.isPresent()) {
+			UserFilm userFilm = new UserFilm();
+			userFilm.setUserApp(user.get());
+			userFilm.setFilm(film.get());
+			userFilm.setRating(tUserFilm.getRating());
+			
+			userFilm = userFilmRepository.save(userFilm);
+			return modelMapper.map(userFilm, TUserFilm.class);
+		}
 		return null;
 	}
 
