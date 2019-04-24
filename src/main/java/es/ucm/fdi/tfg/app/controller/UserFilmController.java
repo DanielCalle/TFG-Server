@@ -54,7 +54,6 @@ public class UserFilmController {
 	@ResponseBody
 	public ResponseEntity<TUserFilm> rate(@PathVariable String userUuid, @PathVariable String filmUuid,
 			@PathVariable float rating) {
-				System.out.println("dkajwdkajdn a          " + rating);
 		TUserFilm userFilm = saUserFilm.rate(userUuid, filmUuid, rating);
 
 		if (userFilm != null)
@@ -73,5 +72,18 @@ public class UserFilmController {
 			return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
 
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+	}
+
+	@GetMapping("/{userUuid}/{filmUuid}")
+	@ResponseBody
+	public ResponseEntity<TUserFilm> getUserFilmsById(@PathVariable String userUuid, @PathVariable String filmUuid) {
+
+		TUserFilm response = saUserFilm.read(userUuid, filmUuid);
+
+		if (response != null)
+			return ResponseEntity.status(HttpStatus.OK).body(response);
+
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+
 	}
 }
