@@ -147,10 +147,12 @@ public class UserController {
 		if (listFriendships != null) {
 			List<TPlan> result = new ArrayList<TPlan>();
 			for (int i = 0; i < listFriendships.size(); i++) {
-				List<TPlan> listPlans = saUserApp.getPlans(listFriendships.get(i).getFriendUuid());
-				if (listPlans != null) {
-					for (int j = 0; j < listPlans.size(); j++) {
-						result.add(listPlans.get(j));
+				if (listFriendships.get(i).isActive()) {
+					List<TPlan> listPlans = saUserApp.getPlans(listFriendships.get(i).getFriendUuid());
+					if (listPlans != null) {
+						for (int j = 0; j < listPlans.size(); j++) {
+							result.add(listPlans.get(j));
+						}
 					}
 				}
 			}
