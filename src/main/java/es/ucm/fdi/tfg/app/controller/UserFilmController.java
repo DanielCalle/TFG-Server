@@ -76,8 +76,8 @@ public class UserFilmController {
 
 	@GetMapping("/{userUuid}/{filmUuid}/rating")
 	@ResponseBody
-	public ResponseEntity<TUserFilm> getRating(@PathVariable String uuid, @PathVariable String userUuid) {
-		TUserFilm userFilm = saUserFilm.read(userUuid, uuid);
+	public ResponseEntity<TUserFilm> getRating(@PathVariable String userUuid, @PathVariable String filmUuid) {
+		TUserFilm userFilm = saUserFilm.read(userUuid, filmUuid);
 
 		if (userFilm != null) {
 			return ResponseEntity.status(HttpStatus.OK).body(userFilm);
