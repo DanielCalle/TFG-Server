@@ -13,4 +13,6 @@ public interface SAUserFilm {
 	public TUserFilm read(String userUuid, String filmUuid);
 	
 	public List<TUserFilm> readAll();
+	
+	public TUserFilm save(TUserFilm tUserFilm);
 }

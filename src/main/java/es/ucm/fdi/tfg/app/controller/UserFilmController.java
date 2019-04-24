@@ -73,4 +73,28 @@ public class UserFilmController {
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 
 	}
+
+	@GetMapping("/{userUuid}/{filmUuid}/rating")
+	@ResponseBody
+	public ResponseEntity<TUserFilm> getRating(@PathVariable String uuid, @PathVariable String userUuid) {
+		TUserFilm userFilm = saUserFilm.read(userUuid, uuid);
+
+		if (userFilm != null) {
+			return ResponseEntity.status(HttpStatus.OK).body(userFilm);
+		}
+
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+	}
+	
+	@PostMapping("/rate")
+	@ResponseBody
+	public ResponseEntity<TUserFilm> rate(@RequestBody TUserFilm tUserFilm){
+		TUserFilm userFilm = saUserFilm.save(tUserFilm);
+
+		if (userFilm != null) {
+			return ResponseEntity.status(HttpStatus.OK).body(userFilm);
+		}
+
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+	}
 }
