@@ -15,4 +15,6 @@ public interface SAUserFilm {
 	public List<TUserFilm> readAll();
 	
 	public TUserFilm save(TUserFilm tUserFilm);
+
+	public TUserFilm rate(String userUuid, String filmUuid, float rating);
 }

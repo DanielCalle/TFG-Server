@@ -93,6 +93,24 @@ public class SAUserFilmImp implements SAUserFilm {
 	}
 
 	@Override
+	public TUserFilm rate(String userUuid, String filmUuid, float rating) {
+		UserFilmId id = new UserFilmId();
+		id.setUser(userUuid);
+		id.setFilm(filmUuid);
+
+		Optional<UserFilm> optUserFilm = userFilmRepository.findById(id);
+
+		if (optUserFilm.isPresent()) {
+			UserFilm userFilm = optUserFilm.get();
+			userFilm.setRating(rating);
+			userFilm = userFilmRepository.save(userFilm);
+			return modelMapper.map(userFilm, TUserFilm.class);
+		}
+
+		return null;
+	}
+
+	@Override
 	public TUserFilm read(String userUuid, String filmUuid) {
 		UserFilmId id = new UserFilmId();
 		id.setUser(userUuid);

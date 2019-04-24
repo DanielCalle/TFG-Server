@@ -1,10 +1,12 @@
 package es.ucm.fdi.tfg.app.transfer;
 
+import java.util.Date;
+
 public class TUserFilm {
 
 	private String userUuid;
 	private String filmUuid;
-	private String date;
+	private Date date;
 	private float rating;
 
 	public String getUserUuid() {
@@ -23,11 +25,11 @@ public class TUserFilm {
 		this.filmUuid = filmUuid;
 	}
 
-	public String getDate() {
+	public Date getDate() {
 		return date;
 	}
 
-	public void setDate(String date) {
+	public void setDate(Date date) {
 		this.date = date;
 	}
 
