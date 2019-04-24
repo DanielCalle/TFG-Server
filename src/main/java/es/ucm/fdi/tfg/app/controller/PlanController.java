@@ -79,7 +79,7 @@ public class PlanController {
 
 	@GetMapping("/{id}")
 	@ResponseBody
-	public ResponseEntity<TPlan> getUserById(@PathVariable long id) {
+	public ResponseEntity<TPlan> getPlansById(@PathVariable long id) {
 
 		TPlan response = saPlan.read(id);
 
