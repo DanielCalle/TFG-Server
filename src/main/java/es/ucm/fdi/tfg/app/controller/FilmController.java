@@ -28,9 +28,8 @@ public class FilmController {
 
 	@GetMapping({ "", "/" })
 	@ResponseBody
-	public List<TFilm> getAllFilms() {
-
-		return saFilm.readAll();
+	public ResponseEntity<List<TFilm>> getAllFilms() {
+		return ResponseEntity.status(HttpStatus.OK).body(saFilm.readAll());
 	}
 
 	@PostMapping({ "", "/" })
@@ -65,6 +64,12 @@ public class FilmController {
 		}
 
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+	}
+
+	@GetMapping("/search/{name}")
+	@ResponseBody
+	public ResponseEntity<List<TFilm>> searchLikeByName(@PathVariable String name) {
+		return ResponseEntity.status(HttpStatus.OK).body(saFilm.searchLikeByName(name));
 	}
 
 	@GetMapping("/{uuid}")

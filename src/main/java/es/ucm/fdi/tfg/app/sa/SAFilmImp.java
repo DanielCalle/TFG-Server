@@ -105,4 +105,13 @@ public class SAFilmImp implements SAFilm {
 			.collect(Collectors.toList());
 	}
 
+	@Override
+	public List<TFilm> searchLikeByName(String name) {
+		Iterable<Film> listFilms = filmRepository.findByNameContainingIgnoreCase(name);
+		
+		return StreamSupport.stream(listFilms.spliterator(), false)
+			.map(film -> modelMapper.map(film, TFilm.class))
+			.collect(Collectors.toList());
+	}
+
 }
