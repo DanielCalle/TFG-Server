@@ -34,8 +34,6 @@ public class PlanController {
 	@GetMapping({ "", "/" })
 	@ResponseBody
 	public Iterable<TPlan> getAllPlans() {
-		
-
 		return saPlan.readAll();
 	}
 
@@ -120,5 +118,11 @@ public class PlanController {
 		}
 
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+	}
+
+	@GetMapping("/search/{title}")
+	@ResponseBody
+	public ResponseEntity<List<TPlan>> searchLikeByName(@PathVariable String title) {
+		return ResponseEntity.status(HttpStatus.OK).body(saPlan.searchLikeByTitle(title));
 	}
 }

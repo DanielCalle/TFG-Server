@@ -7,6 +7,7 @@ public class TPlan {
 	private Long id;
 	private String creatorUuid;
 	private String filmUuid;
+	private String title;
 	private Date date;
 	private String location;
 	private String description;
@@ -45,6 +46,14 @@ public class TPlan {
 
 	public String getLocation() {
 		return location;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
 	}
 
 	public void setLocation(String location) {

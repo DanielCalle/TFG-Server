@@ -43,6 +43,7 @@ public class SAPlanImp implements SAPlan {
 		// Check if user and film exist
 		if (creator.isPresent() && film.isPresent()) {
 				Plan plan = new Plan();
+				plan.setTitle(tPlan.getTitle());
 				plan.setCreator(creator.get());
 				plan.setFilm(film.get());
 				plan.setDate(tPlan.getDate());
@@ -115,6 +116,15 @@ public class SAPlanImp implements SAPlan {
 		}
 
 		return null;
+	}
+
+	@Override
+	public List<TPlan> searchLikeByTitle(String title) {
+		Iterable<Plan> listPlans = planRepository.findByTitleContainingIgnoreCase(title);
+		
+		return StreamSupport.stream(listPlans.spliterator(), false)
+			.map(plan -> modelMapper.map(plan, TPlan.class))
+			.collect(Collectors.toList());
 	}
 
 }

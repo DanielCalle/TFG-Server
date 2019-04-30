@@ -17,4 +17,6 @@ public interface SAPlan {
 	public List<TPlan> readAll();
 
 	public List<TUser> getJoinedUsers(Long id);
+
+	public List<TPlan> searchLikeByTitle(String title);
 }
