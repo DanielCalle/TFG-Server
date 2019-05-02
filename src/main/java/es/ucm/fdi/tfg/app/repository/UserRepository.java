@@ -14,4 +14,6 @@ public interface UserRepository extends CrudRepository<UserApp, String> {
 
     public Optional<UserApp> findByEmail(@Param("email") String email);
 
+    public Iterable<UserApp> findByNameContainingIgnoreCase(String name);
+
 }

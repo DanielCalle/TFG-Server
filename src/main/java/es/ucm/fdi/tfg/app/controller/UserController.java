@@ -150,6 +150,12 @@ public class UserController {
 		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
 	}
 
+	@GetMapping("/search/{name}")
+	@ResponseBody
+	public ResponseEntity<List<TUser>> searchLikeByName(@PathVariable String name) {
+		return ResponseEntity.status(HttpStatus.OK).body(saUserApp.searchLikeByName(name));
+	}
+
 	@GetMapping("/{uuid}/friendships/plans")
 	@ResponseBody
 	public ResponseEntity<List<TPlan>> getFriendsPlans(@PathVariable String uuid) {

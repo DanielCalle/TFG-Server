@@ -29,4 +29,6 @@ public interface SAUser {
 	public TUser login(String email, String password);
 
 	public List<TUser> getUsers(List<String> ids);
+
+	public List<TUser> searchLikeByName(String name);
 }
