@@ -22,7 +22,7 @@ public class Film {
     @GeneratedValue
     private Long id;
 
-    @NotNull
+    @NotNull(message = "uuid must not be null")
     @Column(unique = true)
     private String uuid;
 
