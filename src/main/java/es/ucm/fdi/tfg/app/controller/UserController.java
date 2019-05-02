@@ -2,6 +2,7 @@ package es.ucm.fdi.tfg.app.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -94,13 +95,25 @@ public class UserController {
 
 	@GetMapping("/{uuid}/friendships")
 	@ResponseBody
-	public ResponseEntity<List<TFriendship>> getFriends(@PathVariable String uuid) {
+	public ResponseEntity<List<TFriendship>> getFriendships(@PathVariable String uuid) {
 		List<TFriendship> listFriendships = saUserApp.getFriends(uuid);
 
 		if (listFriendships != null)
 			return ResponseEntity.status(HttpStatus.OK).body(listFriendships);
 
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+	}
+
+	@GetMapping("/{uuid}/friends")
+	@ResponseBody
+	public ResponseEntity<List<TUser>> getFriends(@PathVariable String uuid) {
+		List<TFriendship> listFriendships = saUserApp.getFriends(uuid);
+
+		List<String> ids = listFriendships.stream().map(friendship -> {
+			return friendship.getFriendUuid().equalsIgnoreCase(uuid) ? friendship.getRequesterUuid() : friendship.getFriendUuid();
+		}).collect(Collectors.toList());
+
+		return ResponseEntity.status(HttpStatus.OK).body(saUserApp.getUsers(ids));
 	}
 
 	@GetMapping("/{uuid}/plans")

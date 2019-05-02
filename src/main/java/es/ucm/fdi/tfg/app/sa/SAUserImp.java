@@ -110,7 +110,15 @@ public class SAUserImp implements SAUser {
 					.distinct().collect(Collectors.toList());
 		}
 
-		return null;
+		return new ArrayList<TFriendship>();
+	}
+	
+	@Override
+	public List<TUser> getUsers(List<String> ids) {
+		Iterable<UserApp> listUserApp = userRepository.findAllById(ids);
+
+		return StreamSupport.stream(listUserApp.spliterator(), false).map(user -> modelMapper.map(user, TUser.class))
+				.collect(Collectors.toList());
 	}
 
 	@Override
