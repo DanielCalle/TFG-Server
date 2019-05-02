@@ -34,14 +34,14 @@ public class SAUserFilmImp implements SAUserFilm {
 
 	@Override
 	public TUserFilm create(TUserFilm tUserFilm) {
-		Optional<UserApp> optUser = userRepository.findById(tUserFilm.getUserUuid());
-		Optional<Film> optFilm = filmRepository.findById(tUserFilm.getFilmUuid());
+		Optional<UserApp> optUser = userRepository.findById(tUserFilm.getUserId());
+		Optional<Film> optFilm = filmRepository.findById(tUserFilm.getFilmId());
 
 		// Check if user and film exist
 		if (optUser.isPresent() && optFilm.isPresent()) {
 			UserFilmId id = new UserFilmId();
-			id.setFilm(tUserFilm.getFilmUuid());
-			id.setUser(tUserFilm.getUserUuid());
+			id.setFilm(tUserFilm.getFilmId());
+			id.setUserApp(tUserFilm.getUserId());
 			Optional<UserFilm> optUserFilm = userFilmRepository.findById(id);
 			if (!optUserFilm.isPresent()) {
 				UserFilm userFilm = new UserFilm();
@@ -61,8 +61,8 @@ public class SAUserFilmImp implements SAUserFilm {
 
 	@Override
 	public TUserFilm save(TUserFilm tUserFilm) {
-		Optional<UserApp> user = userRepository.findById(tUserFilm.getUserUuid());
-		Optional<Film> film = filmRepository.findById(tUserFilm.getFilmUuid());
+		Optional<UserApp> user = userRepository.findById(tUserFilm.getUserId());
+		Optional<Film> film = filmRepository.findById(tUserFilm.getFilmId());
 
 		if (user.isPresent() && film.isPresent()) {
 			UserFilm userFilm = new UserFilm();
@@ -77,10 +77,10 @@ public class SAUserFilmImp implements SAUserFilm {
 	}
 
 	@Override
-	public UserFilmId delete(String userUuid, String filmUuid) {
+	public UserFilmId delete(Long userId, Long filmId) {
 		UserFilmId id = new UserFilmId();
-		id.setUser(userUuid);
-		id.setFilm(filmUuid);
+		id.setUserApp(userId);
+		id.setFilm(filmId);
 
 		Optional<UserFilm> optUserFilm = userFilmRepository.findById(id);
 
@@ -93,10 +93,10 @@ public class SAUserFilmImp implements SAUserFilm {
 	}
 
 	@Override
-	public TUserFilm rate(String userUuid, String filmUuid, float rating) {
+	public TUserFilm rate(Long userId, Long filmId, float rating) {
 		UserFilmId id = new UserFilmId();
-		id.setUser(userUuid);
-		id.setFilm(filmUuid);
+		id.setUserApp(userId);
+		id.setFilm(filmId);
 
 		Optional<UserFilm> optUserFilm = userFilmRepository.findById(id);
 
@@ -111,10 +111,10 @@ public class SAUserFilmImp implements SAUserFilm {
 	}
 
 	@Override
-	public TUserFilm read(String userUuid, String filmUuid) {
+	public TUserFilm read(Long userId, Long filmId) {
 		UserFilmId id = new UserFilmId();
-		id.setUser(userUuid);
-		id.setFilm(filmUuid);
+		id.setUserApp(userId);
+		id.setFilm(filmId);
 
 		Optional<UserFilm> optUserFilm = userFilmRepository.findById(id);
 

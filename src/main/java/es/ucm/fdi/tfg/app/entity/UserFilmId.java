@@ -5,37 +5,38 @@ import java.io.Serializable;
 import javax.persistence.Embeddable;
 
 @Embeddable
-public class UserFilmId implements Serializable{
+public class UserFilmId implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-    private String userApp;
-    private String film;
+    private static final long serialVersionUID = -3051838202465144461L;
+    
+    private Long userApp;
+    private Long film;
 
     /**
-     * @return the user
+     * @return the userApp
      */
-    public String getUser() {
+    public Long getUserApp() {
         return userApp;
+    }
+
+    /**
+     * @param userApp the userApp to set
+     */
+    public void setUserApp(Long userApp) {
+        this.userApp = userApp;
     }
 
     /**
      * @return the film
      */
-    public String getFilm() {
+    public Long getFilm() {
         return film;
     }
 
     /**
      * @param film the film to set
      */
-    public void setFilm(String film) {
+    public void setFilm(Long film) {
         this.film = film;
-    }
-
-    /**
-     * @param userApp the user to set
-     */
-    public void setUser(String user) {
-        this.userApp = user;
     }
 }

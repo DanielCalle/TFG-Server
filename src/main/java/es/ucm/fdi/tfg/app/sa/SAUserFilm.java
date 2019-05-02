@@ -8,13 +8,13 @@ import es.ucm.fdi.tfg.app.transfer.TUserFilm;
 public interface SAUserFilm {
 	public TUserFilm create(TUserFilm tUserFilm);
 	
-	public UserFilmId delete(String userUuid, String filmUuid);
+	public UserFilmId delete(Long userId, Long filmId);
 	
-	public TUserFilm read(String userUuid, String filmUuid);
+	public TUserFilm read(Long userId, Long filmId);
 	
 	public List<TUserFilm> readAll();
 	
 	public TUserFilm save(TUserFilm tUserFilm);
 
-	public TUserFilm rate(String userUuid, String filmUuid, float rating);
+	public TUserFilm rate(Long userId, Long filmId, float rating);
 }

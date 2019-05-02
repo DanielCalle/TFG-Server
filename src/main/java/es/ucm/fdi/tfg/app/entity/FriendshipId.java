@@ -5,23 +5,38 @@ import java.io.Serializable;
 import javax.persistence.Embeddable;
 
 @Embeddable
-public class FriendshipId implements Serializable{
+public class FriendshipId implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-    private String requester;
-    private String friend;
-	public String getRequester() {
+	private static final long serialVersionUID = 410853427679353546L;
+
+	private Long requester;
+	private Long friend;
+
+	/**
+	 * @return the requester
+	 */
+	public Long getRequester() {
 		return requester;
 	}
-	public void setRequester(String requester) {
+
+	/**
+	 * @param requester the requester to set
+	 */
+	public void setRequester(Long requester) {
 		this.requester = requester;
 	}
-	public String getFriend() {
+
+	/**
+	 * @return the friend
+	 */
+	public Long getFriend() {
 		return friend;
 	}
-	public void setFriend(String friend) {
+
+	/**
+	 * @param friend the friend to set
+	 */
+	public void setFriend(Long friend) {
 		this.friend = friend;
 	}
-    
-    
 }

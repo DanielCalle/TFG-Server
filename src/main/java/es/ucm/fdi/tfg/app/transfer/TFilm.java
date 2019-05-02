@@ -2,17 +2,26 @@ package es.ucm.fdi.tfg.app.transfer;
 
 public class TFilm {
 
+	private Long id;
 	private String uuid;
 	private String name;
 	private String director;
 	private String trailerURL;
 	private String infoURL;
-    private String synopsis;
+	private String synopsis;
 	private String imageURL;
 	private String genre;
 	private int duration;
 	private double rating;
 	private String country;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
 
 	public String getUuid() {
 		return uuid;
@@ -54,13 +63,13 @@ public class TFilm {
 		this.infoURL = infoURL;
 	}
 
-    public String getSynopsis() {
-        return synopsis;
-    }
+	public String getSynopsis() {
+		return synopsis;
+	}
 
-    public void setSynopsis(String synopsis) {
-        this.synopsis = synopsis;
-    }
+	public void setSynopsis(String synopsis) {
+		this.synopsis = synopsis;
+	}
 
 	public String getImageURL() {
 		return imageURL;
@@ -101,6 +110,5 @@ public class TFilm {
 	public void setCountry(String country) {
 		this.country = country;
 	}
-    
-    
+
 }

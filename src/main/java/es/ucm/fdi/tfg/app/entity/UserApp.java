@@ -5,17 +5,22 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-public class UserApp{
-    @Id
-    private String uuid;
+public class UserApp {
 
+	@Id
+	@GeneratedValue
+    private Long id;
+
+	@NotNull
     private String name;
 
 	@Column(unique = true)
@@ -45,110 +50,143 @@ public class UserApp{
     @OneToMany(mappedBy = "friend", fetch=FetchType.LAZY) 
     private List<Friendship> friends;
 
-    /**
-     * @return the uuid
-     */
-	public String getUuid() {
-		return uuid;
+	/**
+	 * @return the id
+	 */
+	public Long getId() {
+		return id;
 	}
 
-    /**
-     * @param uuid the uuid to set
-     */
-	public void setUuid(String uuid) {
-		this.uuid = uuid;
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(Long id) {
+		this.id = id;
 	}
 
-    /**
-     * @return the name
-     */
+	/**
+	 * @return the name
+	 */
 	public String getName() {
 		return name;
 	}
 
-    /**
-     * @param name the name to set
-     */
+	/**
+	 * @param name the name to set
+	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
-    /**
-     * @return the email
-     */
+	/**
+	 * @return the email
+	 */
 	public String getEmail() {
 		return email;
 	}
 
-    /**
-     * @param name the email to set
-     */
+	/**
+	 * @param email the email to set
+	 */
 	public void setEmail(String email) {
 		this.email = email;
 	}
 
-    /**
-     * @return the password
-     */
+	/**
+	 * @return the password
+	 */
 	public String getPassword() {
 		return password;
 	}
 
-    /**
-     * @param name the password to set
-     */
+	/**
+	 * @param password the password to set
+	 */
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
-	public String getImageURL(){
+
+	/**
+	 * @return the imageURL
+	 */
+	public String getImageURL() {
 		return imageURL;
 	}
 
-	public void setImageURL(String imageURL){
+	/**
+	 * @param imageURL the imageURL to set
+	 */
+	public void setImageURL(String imageURL) {
 		this.imageURL = imageURL;
 	}
 
-	public List<UserFilm> getUserFilms() {
-		return userFilms;
-	}
-
-	public List<Friendship> getFriendRequests() {
-		return friendRequests;
-	}
-
-	public List<Friendship> getFriends() {
-		return friends;
-	}
-
+	/**
+	 * @return the createdPlans
+	 */
 	public List<Plan> getCreatedPlans() {
 		return createdPlans;
 	}
 
+	/**
+	 * @param createdPlans the createdPlans to set
+	 */
 	public void setCreatedPlans(List<Plan> createdPlans) {
 		this.createdPlans = createdPlans;
 	}
 
+	/**
+	 * @return the joinedPlans
+	 */
 	public List<Plan> getJoinedPlans() {
 		return joinedPlans;
 	}
 
+	/**
+	 * @param joinedPlans the joinedPlans to set
+	 */
 	public void setJoinedPlans(List<Plan> joinedPlans) {
 		this.joinedPlans = joinedPlans;
 	}
 
+	/**
+	 * @return the userFilms
+	 */
+	public List<UserFilm> getUserFilms() {
+		return userFilms;
+	}
+
+	/**
+	 * @param userFilms the userFilms to set
+	 */
 	public void setUserFilms(List<UserFilm> userFilms) {
 		this.userFilms = userFilms;
 	}
 
+	/**
+	 * @return the friendRequests
+	 */
+	public List<Friendship> getFriendRequests() {
+		return friendRequests;
+	}
+
+	/**
+	 * @param friendRequests the friendRequests to set
+	 */
 	public void setFriendRequests(List<Friendship> friendRequests) {
 		this.friendRequests = friendRequests;
 	}
 
+	/**
+	 * @return the friends
+	 */
+	public List<Friendship> getFriends() {
+		return friends;
+	}
+
+	/**
+	 * @param friends the friends to set
+	 */
 	public void setFriends(List<Friendship> friends) {
 		this.friends = friends;
 	}
-	
-	
-    
 }

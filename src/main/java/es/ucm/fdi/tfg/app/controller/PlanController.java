@@ -41,7 +41,7 @@ public class PlanController {
 	@ResponseBody
 	public ResponseEntity<TPlan> save(@RequestBody TPlan tPlan) {
 
-		if (tPlan.getCreatorUuid() != null && tPlan.getFilmUuid() != null) {
+		if (tPlan.getCreatorId() != null && tPlan.getFilmId() != null) {
 
 			TPlan response = saPlan.create(tPlan);
 
@@ -55,11 +55,11 @@ public class PlanController {
 
 	}
 
-	@PutMapping("{id}/join/{userUuid}")
+	@PutMapping("{id}/join/{userId}")
 	@ResponseBody
-	public ResponseEntity<TPlan> join(@PathVariable long id, @PathVariable String userUuid) {
+	public ResponseEntity<TPlan> join(@PathVariable long id, @PathVariable Long userId) {
 
-		TPlan response = saPlan.join(id, userUuid);
+		TPlan response = saPlan.join(id, userId);
 
 		if (response != null)
 			return ResponseEntity.status(HttpStatus.OK).body(response);
@@ -108,7 +108,7 @@ public class PlanController {
 		List<TUser> response = new ArrayList<>();
 		TPlan plan = saPlan.read(id);
 		if (plan != null) {
-			TUser creator = saUser.read(plan.getCreatorUuid());
+			TUser creator = saUser.read(plan.getCreatorId());
 			List<TUser> joinedUsers = saPlan.getJoinedUsers(id);
 			if (joinedUsers != null && creator != null) {
 				response.add(creator);

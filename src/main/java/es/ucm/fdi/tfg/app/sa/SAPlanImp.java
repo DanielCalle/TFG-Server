@@ -38,8 +38,8 @@ public class SAPlanImp implements SAPlan {
 
 	@Override
 	public TPlan create(TPlan tPlan) {
-		Optional<UserApp> creator = userRepository.findById(tPlan.getCreatorUuid());
-		Optional<Film> film = filmRepository.findById(tPlan.getFilmUuid());
+		Optional<UserApp> creator = userRepository.findById(tPlan.getCreatorId());
+		Optional<Film> film = filmRepository.findById(tPlan.getFilmId());
 		// Check if user and film exist
 		if (creator.isPresent() && film.isPresent()) {
 				Plan plan = new Plan();
@@ -58,12 +58,12 @@ public class SAPlanImp implements SAPlan {
 	}
 
 	@Override
-	public TPlan join(Long id, String userUuid) {
+	public TPlan join(Long id, Long userId) {
 		Optional<Plan> optPlan = planRepository.findById(id);
-		Optional<UserApp> user = userRepository.findById(userUuid);
+		Optional<UserApp> user = userRepository.findById(userId);
 
 		if (optPlan.isPresent() && user.isPresent()) {
-			if (optPlan.get().getCreator().getUuid() != user.get().getUuid()) {
+			if (optPlan.get().getCreator().getId() != user.get().getId()) {
 				List<UserApp> joinedUsers = optPlan.get().getJoinedUsers();
 				joinedUsers.add(user.get());
 				optPlan.get().setJoinedUsers(joinedUsers);

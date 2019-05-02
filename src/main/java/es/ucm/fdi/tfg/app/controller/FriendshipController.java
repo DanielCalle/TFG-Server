@@ -26,7 +26,7 @@ public class FriendshipController {
 
 	@Autowired
 	SAFriendship saFriendship = SAFactory.getInstance().generateSAFriendship();
-	
+
 	@GetMapping({ "", "/" })
 	@ResponseBody
 	public List<TFriendship> getAllUsers() {
@@ -38,7 +38,7 @@ public class FriendshipController {
 	@ResponseBody
 	public ResponseEntity<TFriendship> save(@RequestBody TFriendship tFriendship) {
 
-		if (tFriendship.getRequesterUuid() != null && tFriendship.getFriendUuid() != null) {
+		if (tFriendship.getRequesterId() != null && tFriendship.getFriendId() != null) {
 
 			TFriendship response = saFriendship.create(tFriendship);
 
@@ -52,11 +52,11 @@ public class FriendshipController {
 
 	}
 
-	@PutMapping("/{requesterUuid}/{friendUuid}/accept")
+	@PutMapping("/{requesterId}/{friendId}/accept")
 	@ResponseBody
-	public ResponseEntity<TFriendship> accept(@PathVariable String requesterUuid, @PathVariable String friendUuid) {
+	public ResponseEntity<TFriendship> accept(@PathVariable Long requesterId, @PathVariable Long friendId) {
 
-		TFriendship response = saFriendship.accept(requesterUuid, friendUuid);
+		TFriendship response = saFriendship.accept(requesterId, friendId);
 
 		if (response != null)
 			return ResponseEntity.status(HttpStatus.OK).body(response);
@@ -64,11 +64,11 @@ public class FriendshipController {
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 	}
 
-	@DeleteMapping("/{requesterUuid}/{friendUuid}")
+	@DeleteMapping("/{requesterId}/{friendId}")
 	@ResponseBody
-	public ResponseEntity<TFriendship> delete(@PathVariable String requesterUuid, @PathVariable String friendUuid) {
+	public ResponseEntity<TFriendship> delete(@PathVariable Long requesterId, @PathVariable Long friendId) {
 
-		FriendshipId response = saFriendship.delete(requesterUuid, friendUuid);
+		FriendshipId response = saFriendship.delete(requesterId, friendId);
 
 		if (response != null)
 			return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
@@ -76,12 +76,11 @@ public class FriendshipController {
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 	}
 
-	@GetMapping("/{requesterUuid}/{friendUuid}")
+	@GetMapping("/{requesterId}/{friendId}")
 	@ResponseBody
-	public ResponseEntity<TFriendship> getUserById(@PathVariable String requesterUuid,
-			@PathVariable String friendUuid) {
+	public ResponseEntity<TFriendship> getUserById(@PathVariable Long requesterId, @PathVariable Long friendId) {
 
-		TFriendship response = saFriendship.read(requesterUuid, friendUuid);
+		TFriendship response = saFriendship.read(requesterId, friendId);
 
 		if (response != null)
 			return ResponseEntity.status(HttpStatus.OK).body(response);

@@ -35,25 +35,18 @@ public class FilmController {
 	@PostMapping({ "", "/" })
 	@ResponseBody
 	public ResponseEntity<TFilm> save(@RequestBody TFilm tFilm) {
+		TFilm response = saFilm.create(tFilm);
 
-		if (tFilm.getUuid() != null && tFilm.getName() != null) {
+		if (response != null)
+			return ResponseEntity.status(HttpStatus.CREATED).body(response);
 
-			TFilm response = saFilm.create(tFilm);
-
-			if (response != null)
-				return ResponseEntity.status(HttpStatus.CREATED).body(response);
-
-			return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
-		}
-
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-
+		return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
 	}
 
 	@PutMapping({ "", "/" })
 	@ResponseBody
 	public ResponseEntity<TFilm> update(@RequestBody TFilm tFilm) {
-		if (tFilm.getUuid() != null && tFilm.getName() != null) {
+		if (tFilm.getId() != null && tFilm.getName() != null) {
 
 			TFilm response = saFilm.update(tFilm);
 
@@ -72,11 +65,11 @@ public class FilmController {
 		return ResponseEntity.status(HttpStatus.OK).body(saFilm.searchLikeByName(name));
 	}
 
-	@GetMapping("/{uuid}")
+	@GetMapping("/{id}")
 	@ResponseBody
-	public ResponseEntity<TFilm> getFilmById(@PathVariable String uuid) {
+	public ResponseEntity<TFilm> getFilmById(@PathVariable Long id) {
 
-		TFilm tFilm = saFilm.read(uuid);
+		TFilm tFilm = saFilm.read(id);
 
 		if (tFilm != null)
 			return ResponseEntity.status(HttpStatus.OK).body(tFilm);
@@ -84,11 +77,11 @@ public class FilmController {
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 	}
 
-	@DeleteMapping("/{uuid}")
+	@DeleteMapping("/{id}")
 	@ResponseBody
-	public ResponseEntity<TFilm> delete(@PathVariable String uuid) {
+	public ResponseEntity<TFilm> delete(@PathVariable Long id) {
 
-		String response = saFilm.delete(uuid);
+		Long response = saFilm.delete(id);
 
 		if (response != null)
 			return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);

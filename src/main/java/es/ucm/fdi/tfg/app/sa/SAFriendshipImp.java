@@ -31,18 +31,18 @@ public class SAFriendshipImp implements SAFriendship {
 	@Override
 	public TFriendship create(TFriendship tFriendship) {
 		// Find users for to see exist
-		Optional<UserApp> optRequester = userRepository.findById(tFriendship.getRequesterUuid());
-		Optional<UserApp> optFriend = userRepository.findById(tFriendship.getFriendUuid());
+		Optional<UserApp> optRequester = userRepository.findById(tFriendship.getRequesterId());
+		Optional<UserApp> optFriend = userRepository.findById(tFriendship.getFriendId());
 
 		if (optRequester.isPresent() && optFriend.isPresent()) {
 
 			// Find friendship of this users, if it's exist then return bad request
 			FriendshipId friendshipId1 = new FriendshipId();
 			FriendshipId friendshipId2 = new FriendshipId();
-			friendshipId1.setFriend(tFriendship.getRequesterUuid());
-			friendshipId1.setRequester(tFriendship.getFriendUuid());
-			friendshipId2.setFriend(tFriendship.getFriendUuid());
-			friendshipId2.setRequester(tFriendship.getRequesterUuid());
+			friendshipId1.setFriend(tFriendship.getRequesterId());
+			friendshipId1.setRequester(tFriendship.getFriendId());
+			friendshipId2.setFriend(tFriendship.getFriendId());
+			friendshipId2.setRequester(tFriendship.getRequesterId());
 			Optional<Friendship> optFriendship1 = friendshipRepository.findById(friendshipId1);
 			Optional<Friendship> optFriendship2 = friendshipRepository.findById(friendshipId2);
 
@@ -67,11 +67,11 @@ public class SAFriendshipImp implements SAFriendship {
 	}
 
 	@Override
-	public TFriendship accept(String requesterUuid, String friendUuid) {
+	public TFriendship accept(Long requesterId, Long friendId) {
 		// Find Friendship and if not exist return not found
 		FriendshipId friendshipId = new FriendshipId();
-		friendshipId.setFriend(friendUuid);
-		friendshipId.setRequester(requesterUuid);
+		friendshipId.setFriend(friendId);
+		friendshipId.setRequester(requesterId);
 
 		Optional<Friendship> friendship = friendshipRepository.findById(friendshipId);
 
@@ -86,11 +86,11 @@ public class SAFriendshipImp implements SAFriendship {
 	}
 
 	@Override
-	public FriendshipId delete(String uuid1, String uuid2) {
+	public FriendshipId delete(Long id1, Long id2) {
 		// Find the friendship
 		FriendshipId friendshipId = new FriendshipId();
-		friendshipId.setFriend(uuid1);
-		friendshipId.setRequester(uuid2);
+		friendshipId.setFriend(id1);
+		friendshipId.setRequester(id2);
 		Optional<Friendship> friendship = friendshipRepository.findById(friendshipId);
 
 		// if the friendship exist then remove it else return not found
@@ -99,8 +99,8 @@ public class SAFriendshipImp implements SAFriendship {
 			return friendshipId;
 		}
 
-		friendshipId.setFriend(uuid2);
-		friendshipId.setRequester(uuid1);
+		friendshipId.setFriend(id2);
+		friendshipId.setRequester(id1);
 		friendship = friendshipRepository.findById(friendshipId);
 
 		// if the friendship exist then remove it else return not found
@@ -113,11 +113,11 @@ public class SAFriendshipImp implements SAFriendship {
 	}
 
 	@Override
-	public TFriendship read(String uuid1, String uuid2) {
+	public TFriendship read(Long id1, Long id2) {
 		// Find the friendship
 		FriendshipId friendshipId = new FriendshipId();
-		friendshipId.setFriend(uuid1);
-		friendshipId.setRequester(uuid2);
+		friendshipId.setFriend(id1);
+		friendshipId.setRequester(id2);
 		Optional<Friendship> friendship = friendshipRepository.findById(friendshipId);
 
 		// if the friendship exist then remove it else return not found
@@ -125,8 +125,8 @@ public class SAFriendshipImp implements SAFriendship {
 			return modelMapper.map(friendship.get(), TFriendship.class);
 		}
 
-		friendshipId.setFriend(uuid2);
-		friendshipId.setRequester(uuid1);
+		friendshipId.setFriend(id2);
+		friendshipId.setRequester(id1);
 		friendship = friendshipRepository.findById(friendshipId);
 
 		// if the friendship exist then remove it else return not found

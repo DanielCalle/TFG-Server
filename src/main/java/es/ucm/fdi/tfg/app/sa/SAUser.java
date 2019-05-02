@@ -14,21 +14,21 @@ public interface SAUser {
 	
 	public TUser update(TUser tUser);
 	
-	public String delete(String uuid);
+	public Long delete(Long id);
 	
-	public TUser read(String uuid);
+	public TUser read(Long id);
 	
 	public List<TUser> readAll();
 	
-	public List<TFriendship> getFriends(String uuid);
+	public List<TFriendship> getFriends(Long id);
 	
-	public List<TPlan> getPlans(String uuid);
+	public List<TPlan> getPlans(Long id);
 	
-	public List<TFilm> getFilms(String uuid);
+	public List<TFilm> getFilms(Long id);
 
 	public TUser login(String email, String password);
 
-	public List<TUser> getUsers(List<String> ids);
+	public List<TUser> getUsers(List<Long> ids);
 
 	public List<TUser> searchLikeByName(String name);
 }

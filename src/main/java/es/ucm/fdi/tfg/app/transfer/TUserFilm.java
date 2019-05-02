@@ -4,41 +4,64 @@ import java.util.Date;
 
 public class TUserFilm {
 
-	private String userUuid;
-	private String filmUuid;
+	private Long userId;
+	private Long filmId;
 	private Date date;
 	private float rating;
 
-	public String getUserUuid() {
-		return userUuid;
+	/**
+	 * @return the userId
+	 */
+	public Long getUserId() {
+		return userId;
 	}
 
-	public void setUserUuid(String userUuid) {
-		this.userUuid = userUuid;
+	/**
+	 * @param userId the userId to set
+	 */
+	public void setUserId(Long userId) {
+		this.userId = userId;
 	}
 
-	public String getFilmUuid() {
-		return filmUuid;
+	/**
+	 * @return the filmId
+	 */
+	public Long getFilmId() {
+		return filmId;
 	}
 
-	public void setFilmUuid(String filmUuid) {
-		this.filmUuid = filmUuid;
+	/**
+	 * @param filmId the filmId to set
+	 */
+	public void setFilmId(Long filmId) {
+		this.filmId = filmId;
 	}
 
+	/**
+	 * @return the date
+	 */
 	public Date getDate() {
 		return date;
 	}
 
+	/**
+	 * @param date the date to set
+	 */
 	public void setDate(Date date) {
 		this.date = date;
 	}
 
-	public void setRating(float rating) {
-		this.rating = rating;
-	}
-
+	/**
+	 * @return the rating
+	 */
 	public float getRating() {
 		return rating;
 	}
 
+	/**
+	 * @param rating the rating to set
+	 */
+	public void setRating(float rating) {
+		this.rating = rating;
+	}
 }

@@ -2,48 +2,67 @@ package es.ucm.fdi.tfg.app.entity;
 
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import org.springframework.beans.factory.annotation.Value;
 
 @Entity
 @Table(name = "film")
 public class Film {
 
     @Id
+    @GeneratedValue
+    private Long id;
+
+    @NotNull
+    @Column(unique = true)
     private String uuid;
 
+    @NotNull(message = "name must not be null")
     private String name;
 
     private String director;
 
-    @Column(name = "trailer_url")
     private String trailerURL;
-
-    @Column(name = "info_url")
-    private String infoURL;
 
     private String synopsis;
 
-    @Column(name = "image_url")
     private String imageURL;
 
     private String genre;
-
+    
+    @Value("${some.key:0}")
     private int duration;
 
     private double rating;
 
     private String country;
-    
+
     @JsonIgnore
     @OneToMany(mappedBy = "film")
     private List<UserFilm> userFilms;
+
+    /**
+     * @return the id
+     */
+    public Long getId() {
+        return id;
+    }
+
+    /**
+     * @param id the id to set
+     */
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     /**
      * @return the uuid
@@ -102,20 +121,6 @@ public class Film {
     }
 
     /**
-     * @return the infoURL
-     */
-    public String getInfoURL() {
-        return infoURL;
-    }
-
-    /**
-     * @param infoURL the infoURL to set
-     */
-    public void setInfoURL(String infoURL) {
-        this.infoURL = infoURL;
-    }
-
-    /**
      * @return the synopsis
      */
     public String getSynopsis() {
@@ -130,14 +135,14 @@ public class Film {
     }
 
     /**
-     * @return the image
+     * @return the imageURL
      */
     public String getImageURL() {
         return imageURL;
     }
 
     /**
-     * @param image the image to set
+     * @param imageURL the imageURL to set
      */
     public void setImageURL(String imageURL) {
         this.imageURL = imageURL;
@@ -212,7 +217,4 @@ public class Film {
     public void setUserFilms(List<UserFilm> userFilms) {
         this.userFilms = userFilms;
     }
-
-
-    
 }
