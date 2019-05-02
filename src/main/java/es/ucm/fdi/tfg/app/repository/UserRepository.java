@@ -5,12 +5,12 @@ import java.util.Optional;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
-import es.ucm.fdi.tfg.app.entity.UserApp;
+import es.ucm.fdi.tfg.app.entity.User;
 
-public interface UserRepository extends CrudRepository<UserApp, Long> {
+public interface UserRepository extends CrudRepository<User, Long> {
 
-    public Optional<UserApp> findByEmail(@Param("email") String email);
+    public Optional<User> findByEmail(@Param("email") String email);
 
-    public Iterable<UserApp> findByNameContainingIgnoreCase(String name);
+    public Iterable<User> findByNameContainingIgnoreCase(String name);
 
 }

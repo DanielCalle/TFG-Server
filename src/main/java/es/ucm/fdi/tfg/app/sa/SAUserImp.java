@@ -13,9 +13,9 @@ import org.springframework.stereotype.Service;
 
 import es.ucm.fdi.tfg.app.entity.Friendship;
 import es.ucm.fdi.tfg.app.entity.Plan;
-import es.ucm.fdi.tfg.app.entity.UserApp;
+import es.ucm.fdi.tfg.app.entity.User;
 import es.ucm.fdi.tfg.app.entity.UserFilm;
-import es.ucm.fdi.tfg.app.entity.UserApp;
+import es.ucm.fdi.tfg.app.entity.User;
 import es.ucm.fdi.tfg.app.repository.UserRepository;
 import es.ucm.fdi.tfg.app.transfer.TFilm;
 import es.ucm.fdi.tfg.app.transfer.TFriendship;
@@ -32,16 +32,16 @@ public class SAUserImp implements SAUser {
 
 	@Override
 	public TUser create(TUser tUser) {
-		UserApp user = userRepository.save(modelMapper.map(tUser, UserApp.class));
+		User user = userRepository.save(modelMapper.map(tUser, User.class));
 		return modelMapper.map(user, TUser.class);
 	}
 
 	@Override
 	public TUser update(TUser tUser) {
-		Optional<UserApp> optUser = userRepository.findById(tUser.getId());
+		Optional<User> optUser = userRepository.findById(tUser.getId());
 
 		if (optUser.isPresent()) {
-			UserApp user = userRepository.save(modelMapper.map(tUser, UserApp.class));
+			User user = userRepository.save(modelMapper.map(tUser, User.class));
 			return modelMapper.map(user, TUser.class);
 		}
 
@@ -50,7 +50,7 @@ public class SAUserImp implements SAUser {
 
 	@Override
 	public Long delete(Long id) {
-		Optional<UserApp> optUser = userRepository.findById(id);
+		Optional<User> optUser = userRepository.findById(id);
 
 		if (optUser.isPresent()) {
 			userRepository.delete(optUser.get());
@@ -62,7 +62,7 @@ public class SAUserImp implements SAUser {
 
 	@Override
 	public TUser read(Long id) {
-		Optional<UserApp> optUser = userRepository.findById(id);
+		Optional<User> optUser = userRepository.findById(id);
 
 		if (optUser.isPresent()) {
 			return modelMapper.map(optUser.get(), TUser.class);
@@ -73,7 +73,7 @@ public class SAUserImp implements SAUser {
 
 	@Override
 	public List<TUser> readAll() {
-		Iterable<UserApp> listUserApp = userRepository.findAll();
+		Iterable<User> listUserApp = userRepository.findAll();
 
 		return StreamSupport.stream(listUserApp.spliterator(), false).map(user -> modelMapper.map(user, TUser.class))
 				.collect(Collectors.toList());
@@ -81,7 +81,7 @@ public class SAUserImp implements SAUser {
 
 	@Override
 	public List<TFriendship> getFriends(Long id) {
-		Optional<UserApp> optUser = userRepository.findById(id);
+		Optional<User> optUser = userRepository.findById(id);
 
 		if (optUser.isPresent()) {
 			return Stream
@@ -97,7 +97,7 @@ public class SAUserImp implements SAUser {
 
 	@Override
 	public List<TUser> getUsers(List<Long> ids) {
-		Iterable<UserApp> listUserApp = userRepository.findAllById(ids);
+		Iterable<User> listUserApp = userRepository.findAllById(ids);
 
 		return StreamSupport.stream(listUserApp.spliterator(), false).map(user -> modelMapper.map(user, TUser.class))
 				.collect(Collectors.toList());
@@ -105,7 +105,7 @@ public class SAUserImp implements SAUser {
 
 	@Override
 	public List<TPlan> getPlans(Long id) {
-		Optional<UserApp> optUser = userRepository.findById(id);
+		Optional<User> optUser = userRepository.findById(id);
 
 		if (optUser.isPresent()) {
 			return Stream
@@ -119,7 +119,7 @@ public class SAUserImp implements SAUser {
 
 	@Override
 	public List<TFilm> getFilms(Long id) {
-		Optional<UserApp> optUser = userRepository.findById(id);
+		Optional<User> optUser = userRepository.findById(id);
 
 		if (optUser.isPresent()) {
 			return optUser.get().getUserFilms().stream()
@@ -131,7 +131,7 @@ public class SAUserImp implements SAUser {
 
 	@Override
 	public TUser login(String email, String password) {
-		Optional<UserApp> optUser = userRepository.findByEmail(email);
+		Optional<User> optUser = userRepository.findByEmail(email);
 
 		if (optUser.isPresent() && optUser.get().getPassword().equalsIgnoreCase(password)) {
 			return modelMapper.map(optUser.get(), TUser.class);
@@ -142,7 +142,7 @@ public class SAUserImp implements SAUser {
 
 	@Override
 	public List<TUser> searchLikeByName(String name) {
-		Iterable<UserApp> listUsers = userRepository.findByNameContainingIgnoreCase(name);
+		Iterable<User> listUsers = userRepository.findByNameContainingIgnoreCase(name);
 
 		return StreamSupport.stream(listUsers.spliterator(), false).map(user -> modelMapper.map(user, TUser.class))
 				.collect(Collectors.toList());

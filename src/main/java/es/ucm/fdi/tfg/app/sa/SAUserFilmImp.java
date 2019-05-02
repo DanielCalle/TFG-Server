@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import es.ucm.fdi.tfg.app.entity.Film;
-import es.ucm.fdi.tfg.app.entity.UserApp;
+import es.ucm.fdi.tfg.app.entity.User;
 import es.ucm.fdi.tfg.app.entity.UserFilm;
 import es.ucm.fdi.tfg.app.entity.UserFilmId;
 import es.ucm.fdi.tfg.app.repository.FilmRepository;
@@ -34,7 +34,7 @@ public class SAUserFilmImp implements SAUserFilm {
 
 	@Override
 	public TUserFilm create(TUserFilm tUserFilm) {
-		Optional<UserApp> optUser = userRepository.findById(tUserFilm.getUserId());
+		Optional<User> optUser = userRepository.findById(tUserFilm.getUserId());
 		Optional<Film> optFilm = filmRepository.findById(tUserFilm.getFilmId());
 
 		// Check if user and film exist
@@ -61,7 +61,7 @@ public class SAUserFilmImp implements SAUserFilm {
 
 	@Override
 	public TUserFilm save(TUserFilm tUserFilm) {
-		Optional<UserApp> user = userRepository.findById(tUserFilm.getUserId());
+		Optional<User> user = userRepository.findById(tUserFilm.getUserId());
 		Optional<Film> film = filmRepository.findById(tUserFilm.getFilmId());
 
 		if (user.isPresent() && film.isPresent()) {

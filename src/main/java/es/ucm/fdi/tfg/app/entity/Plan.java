@@ -22,13 +22,13 @@ public class Plan {
 	private String title;
 
 	@ManyToOne
-	private UserApp creator;
+	private User creator;
 
 	@ManyToOne
 	private Film film;
 
 	@ManyToMany
-	private List<UserApp> joinedUsers;
+	private List<User> joinedUsers;
 
 	@Temporal(javax.persistence.TemporalType.DATE)
 	private Date date;
@@ -53,11 +53,11 @@ public class Plan {
 		this.title = title;
 	}
 
-	public UserApp getCreator() {
+	public User getCreator() {
 		return creator;
 	}
 
-	public void setCreator(UserApp creator) {
+	public void setCreator(User creator) {
 		this.creator = creator;
 	}
 
@@ -69,11 +69,11 @@ public class Plan {
 		this.film = film;
 	}
 
-	public List<UserApp> getJoinedUsers() {
+	public List<User> getJoinedUsers() {
 		return joinedUsers;
 	}
 
-	public void setJoinedUsers(List<UserApp> joinedUsers) {
+	public void setJoinedUsers(List<User> joinedUsers) {
 		this.joinedUsers = joinedUsers;
 	}
 

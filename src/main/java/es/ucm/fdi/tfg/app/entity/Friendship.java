@@ -17,11 +17,11 @@ public class Friendship {
 
     @Id
     @ManyToOne
-    private UserApp requester;
+    private User requester;
 
     @Id
     @ManyToOne
-    private UserApp friend;
+    private User friend;
 
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date date;
@@ -29,19 +29,19 @@ public class Friendship {
     @Column(nullable = false)
     private boolean active;
 
-	public UserApp getRequester() {
+	public User getRequester() {
 		return requester;
 	}
 
-	public void setRequester(UserApp requester) {
+	public void setRequester(User requester) {
 		this.requester = requester;
 	}
 
-	public UserApp getFriend() {
+	public User getFriend() {
 		return friend;
 	}
 
-	public void setFriend(UserApp friend) {
+	public void setFriend(User friend) {
 		this.friend = friend;
 	}
 

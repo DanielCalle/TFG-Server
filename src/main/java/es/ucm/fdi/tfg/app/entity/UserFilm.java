@@ -16,7 +16,7 @@ public class UserFilm {
 
 	@Id
 	@ManyToOne
-	private UserApp userApp;
+	private User User;
 
 	@Id
 	@ManyToOne
@@ -27,12 +27,12 @@ public class UserFilm {
 
 	private float rating;
 
-	public UserApp getUserApp() {
-		return userApp;
+	public User getUserApp() {
+		return User;
 	}
 
-	public void setUserApp(UserApp userApp) {
-		this.userApp = userApp;
+	public void setUserApp(User User) {
+		this.User = User;
 	}
 
 	public Film getFilm() {

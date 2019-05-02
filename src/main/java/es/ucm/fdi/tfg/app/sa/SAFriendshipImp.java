@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 
 import es.ucm.fdi.tfg.app.entity.Friendship;
 import es.ucm.fdi.tfg.app.entity.FriendshipId;
-import es.ucm.fdi.tfg.app.entity.UserApp;
+import es.ucm.fdi.tfg.app.entity.User;
 import es.ucm.fdi.tfg.app.repository.FriendshipRepository;
 import es.ucm.fdi.tfg.app.repository.UserRepository;
 import es.ucm.fdi.tfg.app.transfer.TFriendship;
@@ -31,8 +31,8 @@ public class SAFriendshipImp implements SAFriendship {
 	@Override
 	public TFriendship create(TFriendship tFriendship) {
 		// Find users for to see exist
-		Optional<UserApp> optRequester = userRepository.findById(tFriendship.getRequesterId());
-		Optional<UserApp> optFriend = userRepository.findById(tFriendship.getFriendId());
+		Optional<User> optRequester = userRepository.findById(tFriendship.getRequesterId());
+		Optional<User> optFriend = userRepository.findById(tFriendship.getFriendId());
 
 		if (optRequester.isPresent() && optFriend.isPresent()) {
 

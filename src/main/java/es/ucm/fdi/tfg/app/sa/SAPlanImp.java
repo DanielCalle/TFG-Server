@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 
 import es.ucm.fdi.tfg.app.entity.Film;
 import es.ucm.fdi.tfg.app.entity.Plan;
-import es.ucm.fdi.tfg.app.entity.UserApp;
+import es.ucm.fdi.tfg.app.entity.User;
 import es.ucm.fdi.tfg.app.repository.FilmRepository;
 import es.ucm.fdi.tfg.app.repository.PlanRepository;
 import es.ucm.fdi.tfg.app.repository.UserRepository;
@@ -38,7 +38,7 @@ public class SAPlanImp implements SAPlan {
 
 	@Override
 	public TPlan create(TPlan tPlan) {
-		Optional<UserApp> creator = userRepository.findById(tPlan.getCreatorId());
+		Optional<User> creator = userRepository.findById(tPlan.getCreatorId());
 		Optional<Film> film = filmRepository.findById(tPlan.getFilmId());
 		// Check if user and film exist
 		if (creator.isPresent() && film.isPresent()) {
@@ -60,11 +60,11 @@ public class SAPlanImp implements SAPlan {
 	@Override
 	public TPlan join(Long id, Long userId) {
 		Optional<Plan> optPlan = planRepository.findById(id);
-		Optional<UserApp> user = userRepository.findById(userId);
+		Optional<User> user = userRepository.findById(userId);
 
 		if (optPlan.isPresent() && user.isPresent()) {
 			if (optPlan.get().getCreator().getId() != user.get().getId()) {
-				List<UserApp> joinedUsers = optPlan.get().getJoinedUsers();
+				List<User> joinedUsers = optPlan.get().getJoinedUsers();
 				joinedUsers.add(user.get());
 				optPlan.get().setJoinedUsers(joinedUsers);
 				Plan plan = planRepository.save(optPlan.get());
