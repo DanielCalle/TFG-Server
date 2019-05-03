@@ -41,7 +41,7 @@ public class User {
     private List<Plan> joinedPlans;
     
     @JsonIgnore
-    @OneToMany(mappedBy = "User", fetch=FetchType.LAZY) 
+    @OneToMany(mappedBy = "user", fetch=FetchType.LAZY) 
     private List<UserFilm> userFilms;
     
     @JsonIgnore

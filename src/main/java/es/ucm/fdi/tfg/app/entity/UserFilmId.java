@@ -9,21 +9,21 @@ public class UserFilmId implements Serializable {
 
     private static final long serialVersionUID = -3051838202465144461L;
     
-    private Long User;
+    private Long user;
     private Long film;
 
     /**
-     * @return the User
+     * @return the user
      */
-    public Long getUserApp() {
-        return User;
+    public Long getUser() {
+        return user;
     }
 
     /**
-     * @param User the User to set
+     * @param user the user to set
      */
-    public void setUserApp(Long User) {
-        this.User = User;
+    public void setUser(Long user) {
+        this.user = user;
     }
 
     /**

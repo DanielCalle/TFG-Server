@@ -41,12 +41,12 @@ public class SAUserFilmImp implements SAUserFilm {
 		if (optUser.isPresent() && optFilm.isPresent()) {
 			UserFilmId id = new UserFilmId();
 			id.setFilm(tUserFilm.getFilmId());
-			id.setUserApp(tUserFilm.getUserId());
+			id.setUser(tUserFilm.getUserId());
 			Optional<UserFilm> optUserFilm = userFilmRepository.findById(id);
 			if (!optUserFilm.isPresent()) {
 				UserFilm userFilm = new UserFilm();
 				userFilm.setFilm(optFilm.get());
-				userFilm.setUserApp(optUser.get());
+				userFilm.setUser(optUser.get());
 				userFilm.setDate(new Date());
 				userFilm.setRating(tUserFilm.getRating());
 
@@ -66,7 +66,7 @@ public class SAUserFilmImp implements SAUserFilm {
 
 		if (user.isPresent() && film.isPresent()) {
 			UserFilm userFilm = new UserFilm();
-			userFilm.setUserApp(user.get());
+			userFilm.setUser(user.get());
 			userFilm.setFilm(film.get());
 			userFilm.setRating(tUserFilm.getRating());
 			
@@ -79,7 +79,7 @@ public class SAUserFilmImp implements SAUserFilm {
 	@Override
 	public UserFilmId delete(Long userId, Long filmId) {
 		UserFilmId id = new UserFilmId();
-		id.setUserApp(userId);
+		id.setUser(userId);
 		id.setFilm(filmId);
 
 		Optional<UserFilm> optUserFilm = userFilmRepository.findById(id);
@@ -95,7 +95,7 @@ public class SAUserFilmImp implements SAUserFilm {
 	@Override
 	public TUserFilm rate(Long userId, Long filmId, float rating) {
 		UserFilmId id = new UserFilmId();
-		id.setUserApp(userId);
+		id.setUser(userId);
 		id.setFilm(filmId);
 
 		Optional<UserFilm> optUserFilm = userFilmRepository.findById(id);
@@ -113,7 +113,7 @@ public class SAUserFilmImp implements SAUserFilm {
 	@Override
 	public TUserFilm read(Long userId, Long filmId) {
 		UserFilmId id = new UserFilmId();
-		id.setUserApp(userId);
+		id.setUser(userId);
 		id.setFilm(filmId);
 
 		Optional<UserFilm> optUserFilm = userFilmRepository.findById(id);
