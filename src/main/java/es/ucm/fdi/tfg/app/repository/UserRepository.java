@@ -2,16 +2,15 @@ package es.ucm.fdi.tfg.app.repository;
 
 import java.util.Optional;
 
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
-import org.springframework.stereotype.Repository;
 
-import es.ucm.fdi.tfg.app.entity.UserApp;
+import es.ucm.fdi.tfg.app.entity.User;
 
-public interface UserRepository extends CrudRepository<UserApp, String> {
+public interface UserRepository extends CrudRepository<User, Long> {
 
-    public Optional<UserApp> findByEmail(@Param("email") String email);
+    public Optional<User> findByEmail(@Param("email") String email);
+
+    public Iterable<User> findByNameContainingIgnoreCase(String name);
 
 }

@@ -109,7 +109,6 @@
         </profile>
         <profile>
             <id>prod</id>
-
             <properties>
                 <spring.profiles.to.activate>prod</spring.profiles.to.activate>
             </properties>

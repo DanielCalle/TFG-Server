@@ -8,7 +8,7 @@ import es.ucm.fdi.tfg.app.transfer.TUser;
 public interface SAPlan {
 	public TPlan create(TPlan tPlan);
 
-	public TPlan join(Long id, String userUuid);
+	public TPlan join(Long id, Long userId);
 
 	public Long delete(Long id);
 	

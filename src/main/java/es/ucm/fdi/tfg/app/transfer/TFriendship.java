@@ -1,35 +1,65 @@
 package es.ucm.fdi.tfg.app.transfer;
 
 public class TFriendship {
-	private String requesterUuid;
-	private String friendUuid;
+
+	private Long requesterId;
+	private Long friendId;
 	private String date;
 	private boolean active;
-	
-	public String getRequesterUuid() {
-		return requesterUuid;
+
+	/**
+	 * @return the requesterId
+	 */
+	public Long getRequesterId() {
+		return requesterId;
 	}
-	public void setRequesterUuid(String requesterUuid) {
-		this.requesterUuid = requesterUuid;
+
+	/**
+	 * @param requesterId the requesterId to set
+	 */
+	public void setRequesterId(Long requesterId) {
+		this.requesterId = requesterId;
 	}
-	public String getFriendUuid() {
-		return friendUuid;
+
+	/**
+	 * @return the friendId
+	 */
+	public Long getFriendId() {
+		return friendId;
 	}
-	public void setFriendUuid(String friendUuid) {
-		this.friendUuid = friendUuid;
+
+	/**
+	 * @param friendId the friendId to set
+	 */
+	public void setFriendId(Long friendId) {
+		this.friendId = friendId;
 	}
+
+	/**
+	 * @return the date
+	 */
 	public String getDate() {
 		return date;
 	}
+
+	/**
+	 * @param date the date to set
+	 */
 	public void setDate(String date) {
 		this.date = date;
 	}
+
+	/**
+	 * @return the active
+	 */
 	public boolean isActive() {
 		return active;
 	}
+
+	/**
+	 * @param active the active to set
+	 */
 	public void setActive(boolean active) {
 		this.active = active;
 	}
-	
-	
 }

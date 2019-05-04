@@ -16,7 +16,7 @@ public class UserFilm {
 
 	@Id
 	@ManyToOne
-	private UserApp userApp;
+	private User user;
 
 	@Id
 	@ManyToOne
@@ -27,36 +27,59 @@ public class UserFilm {
 
 	private float rating;
 
-	public UserApp getUserApp() {
-		return userApp;
+	/**
+	 * @return the user
+	 */
+	public User getUser() {
+		return user;
 	}
 
-	public void setUserApp(UserApp userApp) {
-		this.userApp = userApp;
+	/**
+	 * @param user the user to set
+	 */
+	public void setUser(User user) {
+		this.user = user;
 	}
 
+	/**
+	 * @return the film
+	 */
 	public Film getFilm() {
 		return film;
 	}
 
+	/**
+	 * @param film the film to set
+	 */
 	public void setFilm(Film film) {
 		this.film = film;
 	}
 
+	/**
+	 * @return the date
+	 */
 	public Date getDate() {
 		return date;
 	}
 
+	/**
+	 * @param date the date to set
+	 */
 	public void setDate(Date date) {
 		this.date = date;
 	}
 
-	public void setRating(float rating) {
-		this.rating = rating;
-	}
-
+	/**
+	 * @return the rating
+	 */
 	public float getRating() {
 		return rating;
 	}
 
+	/**
+	 * @param rating the rating to set
+	 */
+	public void setRating(float rating) {
+		this.rating = rating;
+	}
 }

@@ -1,57 +1,80 @@
 package es.ucm.fdi.tfg.app.transfer;
 
-import javax.xml.crypto.dsig.keyinfo.RetrievalMethod;
-
 public class TUser {
-    private String uuid;
 
+    private Long id;
     private String name;
-
     private String email;
-
 	private String password;
-	
 	private String imageURL;
 
-	public String getUuid() {
-		return uuid;
+	/**
+	 * @return the id
+	 */
+	public Long getId() {
+		return id;
 	}
 
-	public void setUuid(String uuid) {
-		this.uuid = uuid;
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(Long id) {
+		this.id = id;
 	}
 
+	/**
+	 * @return the name
+	 */
 	public String getName() {
 		return name;
 	}
 
+	/**
+	 * @param name the name to set
+	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
+	/**
+	 * @return the email
+	 */
 	public String getEmail() {
 		return email;
 	}
 
+	/**
+	 * @param email the email to set
+	 */
 	public void setEmail(String email) {
 		this.email = email;
 	}
 
+	/**
+	 * @return the password
+	 */
 	public String getPassword() {
 		return password;
 	}
 
+	/**
+	 * @param password the password to set
+	 */
 	public void setPassword(String password) {
 		this.password = password;
 	}
 
-	public String getImageURL(){
+	/**
+	 * @return the imageURL
+	 */
+	public String getImageURL() {
 		return imageURL;
 	}
 
-	public void setImageURL(String imageURL){
+	/**
+	 * @param imageURL the imageURL to set
+	 */
+	public void setImageURL(String imageURL) {
 		this.imageURL = imageURL;
 	}
-    
-    
 }

@@ -37,7 +37,7 @@ public class UserFilmController {
 	@PostMapping({ "", "/" })
 	@ResponseBody
 	public ResponseEntity<TUserFilm> save(@RequestBody TUserFilm tUserFilm) {
-		if (tUserFilm.getUserUuid() != null && tUserFilm.getFilmUuid() != null) {
+		if (tUserFilm.getUserId() != null && tUserFilm.getFilmId() != null) {
 
 			tUserFilm.setDate(new Date());
 			TUserFilm response = saUserFilm.create(tUserFilm);
@@ -50,11 +50,11 @@ public class UserFilmController {
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 	}
 
-	@PutMapping("/{userUuid}/{filmUuid}/rate/{rating}")
+	@PutMapping("/{userId}/{filmId}/rate/{rating}")
 	@ResponseBody
-	public ResponseEntity<TUserFilm> rate(@PathVariable String userUuid, @PathVariable String filmUuid,
+	public ResponseEntity<TUserFilm> rate(@PathVariable Long userId, @PathVariable Long filmId,
 			@PathVariable float rating) {
-		TUserFilm userFilm = saUserFilm.rate(userUuid, filmUuid, rating);
+		TUserFilm userFilm = saUserFilm.rate(userId, filmId, rating);
 
 		if (userFilm != null)
 			return ResponseEntity.status(HttpStatus.OK).body(userFilm);
@@ -62,11 +62,11 @@ public class UserFilmController {
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 	}
 
-	@DeleteMapping("/{userUuid}/{filmUuid}")
+	@DeleteMapping("/{userId}/{filmId}")
 	@ResponseBody
-	public ResponseEntity<TUserFilm> delete(@PathVariable String userUuid, @PathVariable String filmUuid) {
+	public ResponseEntity<TUserFilm> delete(@PathVariable Long userId, @PathVariable Long filmId) {
 
-		UserFilmId response = saUserFilm.delete(userUuid, filmUuid);
+		UserFilmId response = saUserFilm.delete(userId, filmId);
 
 		if (response != null)
 			return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
@@ -74,11 +74,11 @@ public class UserFilmController {
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 	}
 
-	@GetMapping("/{userUuid}/{filmUuid}")
+	@GetMapping("/{userId}/{filmId}")
 	@ResponseBody
-	public ResponseEntity<TUserFilm> getUserFilmsById(@PathVariable String userUuid, @PathVariable String filmUuid) {
+	public ResponseEntity<TUserFilm> getUserFilmsById(@PathVariable Long userId, @PathVariable Long filmId) {
 
-		TUserFilm response = saUserFilm.read(userUuid, filmUuid);
+		TUserFilm response = saUserFilm.read(userId, filmId);
 
 		if (response != null)
 			return ResponseEntity.status(HttpStatus.OK).body(response);

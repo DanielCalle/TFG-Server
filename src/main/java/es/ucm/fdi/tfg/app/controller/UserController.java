@@ -2,6 +2,7 @@ package es.ucm.fdi.tfg.app.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -57,7 +58,7 @@ public class UserController {
 	@PutMapping({ "", "/" })
 	@ResponseBody
 	public ResponseEntity<TUser> update(@RequestBody TUser tUser) {
-		if (tUser.getUuid() != null && tUser.getName() != null) {
+		if (tUser.getId() != null && tUser.getName() != null) {
 
 			TUser response = saUserApp.update(tUser);
 
@@ -70,10 +71,10 @@ public class UserController {
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 	}
 
-	@GetMapping("/{uuid}")
+	@GetMapping("/{id}")
 	@ResponseBody
-	public ResponseEntity<TUser> getUserById(@PathVariable String uuid) {
-		TUser tUser = saUserApp.read(uuid);
+	public ResponseEntity<TUser> getUserById(@PathVariable Long id) {
+		TUser tUser = saUserApp.read(id);
 
 		if (tUser != null)
 			return ResponseEntity.status(HttpStatus.OK).body(tUser);
@@ -81,10 +82,10 @@ public class UserController {
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 	}
 
-	@DeleteMapping("/{uuid}")
+	@DeleteMapping("/{id}")
 	@ResponseBody
-	public ResponseEntity<TUser> delete(@PathVariable String uuid) {
-		String response = saUserApp.delete(uuid);
+	public ResponseEntity<TUser> delete(@PathVariable Long id) {
+		Long response = saUserApp.delete(id);
 
 		if (response != null)
 			return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
@@ -92,10 +93,10 @@ public class UserController {
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 	}
 
-	@GetMapping("/{uuid}/friendships")
+	@GetMapping("/{id}/friendships")
 	@ResponseBody
-	public ResponseEntity<List<TFriendship>> getFriends(@PathVariable String uuid) {
-		List<TFriendship> listFriendships = saUserApp.getFriends(uuid);
+	public ResponseEntity<List<TFriendship>> getFriendships(@PathVariable Long id) {
+		List<TFriendship> listFriendships = saUserApp.getFriends(id);
 
 		if (listFriendships != null)
 			return ResponseEntity.status(HttpStatus.OK).body(listFriendships);
@@ -103,10 +104,22 @@ public class UserController {
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 	}
 
-	@GetMapping("/{uuid}/plans")
+	@GetMapping("/{id}/friends")
 	@ResponseBody
-	public ResponseEntity<List<TPlan>> getPlans(@PathVariable String uuid) {
-		List<TPlan> listPlans = saUserApp.getPlans(uuid);
+	public ResponseEntity<List<TUser>> getFriends(@PathVariable Long id) {
+		List<TFriendship> listFriendships = saUserApp.getFriends(id);
+
+		List<Long> ids = listFriendships.stream().map(friendship -> {
+			return friendship.getFriendId() == id ? friendship.getRequesterId() : friendship.getFriendId();
+		}).collect(Collectors.toList());
+
+		return ResponseEntity.status(HttpStatus.OK).body(saUserApp.getUsers(ids));
+	}
+
+	@GetMapping("/{id}/plans")
+	@ResponseBody
+	public ResponseEntity<List<TPlan>> getPlans(@PathVariable Long id) {
+		List<TPlan> listPlans = saUserApp.getPlans(id);
 
 		if (listPlans != null)
 			return ResponseEntity.status(HttpStatus.OK).body(listPlans);
@@ -114,10 +127,10 @@ public class UserController {
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 	}
 
-	@GetMapping("/{uuid}/films")
+	@GetMapping("/{id}/films")
 	@ResponseBody
-	public ResponseEntity<List<TFilm>> getFilms(@PathVariable String uuid) {
-		List<TFilm> listFilms = saUserApp.getFilms(uuid);
+	public ResponseEntity<List<TFilm>> getFilms(@PathVariable Long id) {
+		List<TFilm> listFilms = saUserApp.getFilms(id);
 
 		if (listFilms != null)
 			return ResponseEntity.status(HttpStatus.OK).body(listFilms);
@@ -137,15 +150,21 @@ public class UserController {
 		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
 	}
 
-	@GetMapping("/{uuid}/friendships/plans")
+	@GetMapping("/search/{name}")
 	@ResponseBody
-	public ResponseEntity<List<TPlan>> getFriendsPlans(@PathVariable String uuid) {
-		List<TFriendship> listFriendships = saUserApp.getFriends(uuid);
+	public ResponseEntity<List<TUser>> searchLikeByName(@PathVariable String name) {
+		return ResponseEntity.status(HttpStatus.OK).body(saUserApp.searchLikeByName(name));
+	}
+
+	@GetMapping("/{id}/friendships/plans")
+	@ResponseBody
+	public ResponseEntity<List<TPlan>> getFriendsPlans(@PathVariable Long id) {
+		List<TFriendship> listFriendships = saUserApp.getFriends(id);
 		if (listFriendships != null) {
 			List<TPlan> result = new ArrayList<TPlan>();
 			for (int i = 0; i < listFriendships.size(); i++) {
 				if (listFriendships.get(i).isActive()) {
-					List<TPlan> listPlans = saUserApp.getPlans(listFriendships.get(i).getFriendUuid());
+					List<TPlan> listPlans = saUserApp.getPlans(listFriendships.get(i).getFriendId());
 					if (listPlans != null) {
 						for (int j = 0; j < listPlans.size(); j++) {
 							result.add(listPlans.get(j));
