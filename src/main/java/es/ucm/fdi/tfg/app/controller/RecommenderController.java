@@ -26,6 +26,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import es.ucm.fdi.tfg.app.MahoutDataModel;
+
 @Controller
 @RequestMapping("/recommendations")
 public class RecommenderController {
@@ -36,7 +38,8 @@ public class RecommenderController {
     @GetMapping("/{id}")
     @ResponseBody
     public List<String> recommendUserFilms(@PathVariable int id) throws IOException, TasteException {
-        DataModel model = new FileDataModel(new File(servletContext.getRealPath("/WEB-INF/csv/rating.csv")));
+        //DataModel model = new FileDataModel(new File(servletContext.getRealPath("/WEB-INF/csv/rating.csv")));
+        DataModel model = MahoutDataModel.getDataModelFromPostreSQL();
         UserSimilarity similarity = new PearsonCorrelationSimilarity(model);
         UserNeighborhood neighborhood = new ThresholdUserNeighborhood(0.0001, similarity, model);
         neighborhood = new NearestNUserNeighborhood(25, similarity, model);

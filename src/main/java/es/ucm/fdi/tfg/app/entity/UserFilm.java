@@ -8,6 +8,7 @@ import javax.persistence.IdClass;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "user_film")
@@ -21,9 +22,6 @@ public class UserFilm {
 	@Id
 	@ManyToOne
 	private Film film;
-
-	@Temporal(javax.persistence.TemporalType.DATE)
-	private Date date;
 
 	private float rating;
 

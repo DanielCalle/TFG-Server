@@ -87,8 +87,8 @@
         <!-- Mahout -->
         <dependency>
             <groupId>org.apache.mahout</groupId>
-            <artifactId>mahout-mr</artifactId>
-            <version>0.10.0</version>
+            <artifactId>mahout-integration</artifactId>
+            <version>0.13.0</version>
         </dependency>
     </dependencies>
 
