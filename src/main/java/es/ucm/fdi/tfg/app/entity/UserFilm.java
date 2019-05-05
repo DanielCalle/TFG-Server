@@ -2,6 +2,7 @@ package es.ucm.fdi.tfg.app.entity;
 
 import java.util.Date;
 
+import javax.jdo.annotations.Index;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;

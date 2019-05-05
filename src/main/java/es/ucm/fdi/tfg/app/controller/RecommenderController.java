@@ -9,6 +9,7 @@ import javax.servlet.ServletContext;
 
 import org.apache.mahout.cf.taste.common.TasteException;
 import org.apache.mahout.cf.taste.impl.model.file.FileDataModel;
+import org.apache.mahout.cf.taste.impl.model.jdbc.PostgreSQLJDBCDataModel;
 import org.apache.mahout.cf.taste.impl.neighborhood.NearestNUserNeighborhood;
 import org.apache.mahout.cf.taste.impl.neighborhood.ThresholdUserNeighborhood;
 import org.apache.mahout.cf.taste.impl.recommender.GenericUserBasedRecommender;
@@ -40,12 +41,15 @@ public class RecommenderController {
     public List<String> recommendUserFilms(@PathVariable int id) throws IOException, TasteException {
         //DataModel model = new FileDataModel(new File(servletContext.getRealPath("/WEB-INF/csv/rating.csv")));
         DataModel model = MahoutDataModel.getDataModelFromPostreSQL();
+        //DataModel model = new PostgreSQLJDBCDataModel();
         UserSimilarity similarity = new PearsonCorrelationSimilarity(model);
-        UserNeighborhood neighborhood = new ThresholdUserNeighborhood(0.0001, similarity, model);
+        UserNeighborhood neighborhood = new ThresholdUserNeighborhood(0.1, similarity, model);
         neighborhood = new NearestNUserNeighborhood(25, similarity, model);
         UserBasedRecommender recommender = new GenericUserBasedRecommender(model, neighborhood, similarity);
+    
         List<String> list = new ArrayList<String>();
         List<RecommendedItem> recommendations = recommender.recommend(id, 3);
+        System.out.println("recom");
         for (RecommendedItem recommendation : recommendations) {
             list.add(recommendation.toString());
         }

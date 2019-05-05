@@ -1,5 +1,6 @@
 package es.ucm.fdi.tfg.app;
 
+import org.apache.mahout.cf.taste.impl.model.jdbc.PostgreSQLBooleanPrefJDBCDataModel;
 import org.apache.mahout.cf.taste.impl.model.jdbc.PostgreSQLJDBCDataModel;
 import org.apache.mahout.cf.taste.model.DataModel;
 import org.postgresql.ds.PGPoolingDataSource;
@@ -14,8 +15,9 @@ public class MahoutDataModel {
         dataSource.setPassword("admin");
         
         DataModel datamodel = new PostgreSQLJDBCDataModel(
-            dataSource, "user_film", "user_id", "film_id", "rating", "date"
+            dataSource
         );
+        
         return datamodel;
     }
 
