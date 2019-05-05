@@ -47,7 +47,6 @@ public class SAUserFilmImp implements SAUserFilm {
 				UserFilm userFilm = new UserFilm();
 				userFilm.setFilm(optFilm.get());
 				userFilm.setUser(optUser.get());
-				userFilm.setDate(new Date());
 				userFilm.setRating(tUserFilm.getRating());
 
 				userFilm = userFilmRepository.save(userFilm);
