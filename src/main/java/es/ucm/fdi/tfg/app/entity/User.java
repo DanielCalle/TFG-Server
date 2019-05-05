@@ -21,10 +21,6 @@ public class User {
 	@Id
 	@GeneratedValue
 	private Long id;
-	
-	@NotNull
-	@Column(unique = true)
-	private String uuid;
 
 	@NotNull
     private String name;
@@ -68,20 +64,6 @@ public class User {
 	 */
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	/**
-	 * @return the uuid
-	 */
-	public String getUuid() {
-		return uuid;
-	}
-
-	/**
-	 * @param uuid the uuid to set
-	 */
-	public void setUuid(String uuid) {
-		this.uuid = uuid;
 	}
 
 	/**

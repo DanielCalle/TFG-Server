@@ -3,7 +3,6 @@ package es.ucm.fdi.tfg.app.transfer;
 public class TUser {
 
 	private Long id;
-	private String uuid;
     private String name;
     private String email;
 	private String password;
@@ -21,20 +20,6 @@ public class TUser {
 	 */
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	/**
-	 * @return the uuid
-	 */
-	public String getUuid() {
-		return uuid;
-	}
-
-	/**
-	 * @param uuid the uuid to set
-	 */
-	public void setUuid(String uuid) {
-		this.uuid = uuid;
 	}
 
 	/**
