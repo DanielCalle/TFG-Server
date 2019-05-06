@@ -8,11 +8,11 @@ import org.postgresql.ds.PGSimpleDataSource;
 
 public class MahoutDataModel {
 
-    public static DataModel getDataModelFromPostreSQL() {
+    public static DataModel getDataModelFromPostreSQL(String url, String user, String password) {
         PGPoolingDataSource dataSource = new PGPoolingDataSource();
-        dataSource.setUrl("jdbc:postgresql://localhost:5433/films");
-        dataSource.setUser("postgres");
-        dataSource.setPassword("admin");
+        dataSource.setUrl(url);
+        dataSource.setUser(user);
+        dataSource.setPassword(password);
         
         DataModel datamodel = new PostgreSQLJDBCDataModel(
             dataSource, "user_film", "user_id", "film_id", "rating", null
