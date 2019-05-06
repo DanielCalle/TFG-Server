@@ -15,7 +15,7 @@ public class MahoutDataModel {
         dataSource.setPassword("admin");
         
         DataModel datamodel = new PostgreSQLJDBCDataModel(
-            dataSource
+            dataSource, "user_film", "user_id", "film_id", "rating", null
         );
         
         return datamodel;
