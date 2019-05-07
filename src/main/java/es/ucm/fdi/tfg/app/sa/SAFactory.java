@@ -21,4 +21,6 @@ public abstract class SAFactory {
 	
 	public abstract SAUserFilm generateSAUserFilm();
 	
+	public abstract SARecommendation generateSARecommendation();
+	
 }
