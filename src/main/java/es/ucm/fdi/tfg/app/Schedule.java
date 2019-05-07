@@ -56,7 +56,7 @@ public class Schedule {
 	SARecommendation saRecommendation = SAFactory.getInstance().generateSARecommendation();
 
 
-    @Scheduled(fixedDelay = 600000 /*86400000*/)
+    @Scheduled(fixedDelay = 1000 * 60 * 60 * 24 * 7)
     public void test() throws TasteException, IOException {
         System.out.println("Starting recommendation");
         
