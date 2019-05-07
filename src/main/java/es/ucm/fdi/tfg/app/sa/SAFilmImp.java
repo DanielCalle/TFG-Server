@@ -18,7 +18,7 @@ import es.ucm.fdi.tfg.app.transfer.TFilm;
 @Service
 public class SAFilmImp implements SAFilm {
 
-	private static final int MAX_RESULTS = 100;
+	private static final int MAX_RESULTS = 10;
 
 	@Autowired
 	private FilmRepository filmRepository;
@@ -82,7 +82,7 @@ public class SAFilmImp implements SAFilm {
 
 	@Override
 	public List<TFilm> searchLikeByName(String name) {
-		Iterable<Film> listFilms = filmRepository.findByNameContainingIgnoreCase(name);
+		Iterable<Film> listFilms = filmRepository.findByNameContainingIgnoreCase(name, PageRequest.of(0, MAX_RESULTS));
 
 		return StreamSupport.stream(listFilms.spliterator(), false).map(film -> modelMapper.map(film, TFilm.class))
 				.collect(Collectors.toList());

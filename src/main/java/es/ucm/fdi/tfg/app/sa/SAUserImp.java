@@ -26,7 +26,7 @@ import es.ucm.fdi.tfg.app.transfer.TUser;
 @Service
 public class SAUserImp implements SAUser {
 
-	private static final int MAX_RESULTS = 100;
+	private static final int MAX_RESULTS = 10;
 
 	@Autowired
 	private UserRepository userRepository;
