@@ -145,7 +145,7 @@ public class SAUserImp implements SAUser {
 
 	@Override
 	public List<TUser> searchLikeByName(String name) {
-		Iterable<User> listUsers = userRepository.findByNameContainingIgnoreCase(name);
+		Iterable<User> listUsers = userRepository.findByNameContainingIgnoreCase(name, PageRequest.of(0, MAX_RESULTS));
 
 		return StreamSupport.stream(listUsers.spliterator(), false).map(user -> modelMapper.map(user, TUser.class))
 				.collect(Collectors.toList());
