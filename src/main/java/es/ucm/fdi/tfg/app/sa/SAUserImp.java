@@ -9,6 +9,7 @@ import java.util.stream.StreamSupport;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import es.ucm.fdi.tfg.app.entity.Friendship;
@@ -24,6 +25,8 @@ import es.ucm.fdi.tfg.app.transfer.TUser;
 
 @Service
 public class SAUserImp implements SAUser {
+
+	private static final int MAX_RESULTS = 100;
 
 	@Autowired
 	private UserRepository userRepository;
@@ -73,7 +76,7 @@ public class SAUserImp implements SAUser {
 
 	@Override
 	public List<TUser> readAll() {
-		Iterable<User> listUserApp = userRepository.findAll();
+		Iterable<User> listUserApp = userRepository.findAll(PageRequest.of(0, MAX_RESULTS));
 
 		return StreamSupport.stream(listUserApp.spliterator(), false).map(user -> modelMapper.map(user, TUser.class))
 				.collect(Collectors.toList());

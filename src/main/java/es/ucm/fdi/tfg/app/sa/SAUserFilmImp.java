@@ -129,7 +129,7 @@ public class SAUserFilmImp implements SAUserFilm {
 
 	@Override
 	public List<TUserFilm> readAll() {
-		Iterable<UserFilm> listUserFilm = userFilmRepository.findAll(PageRequest.of(2, MAX_RESULTS));
+		Iterable<UserFilm> listUserFilm = userFilmRepository.findAll(PageRequest.of(0, MAX_RESULTS));
 
 		return StreamSupport.stream(listUserFilm.spliterator(), false)
 				.map(userFilm -> modelMapper.map(userFilm, TUserFilm.class))
