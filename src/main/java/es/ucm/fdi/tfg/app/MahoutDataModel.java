@@ -9,6 +9,9 @@ import org.postgresql.ds.PGSimpleDataSource;
 public class MahoutDataModel {
 
     public static DataModel getDataModelFromPostreSQL(String url, String user, String password) {
+        System.out.println(url);
+        System.out.println(user);
+        System.out.println(password);
         PGPoolingDataSource dataSource = new PGPoolingDataSource();
         dataSource.setUrl(url);
         dataSource.setUser(user);
