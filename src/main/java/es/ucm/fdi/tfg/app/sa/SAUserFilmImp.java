@@ -9,6 +9,7 @@ import java.util.stream.StreamSupport;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import es.ucm.fdi.tfg.app.entity.Film;
@@ -22,6 +23,8 @@ import es.ucm.fdi.tfg.app.transfer.TUserFilm;
 
 @Service
 public class SAUserFilmImp implements SAUserFilm {
+
+	private static final int MAX_RESULTS = 100;
 
 	@Autowired
 	private UserRepository userRepository;
@@ -126,7 +129,7 @@ public class SAUserFilmImp implements SAUserFilm {
 
 	@Override
 	public List<TUserFilm> readAll() {
-		Iterable<UserFilm> listUserFilm = userFilmRepository.findAll();
+		Iterable<UserFilm> listUserFilm = userFilmRepository.findAll(PageRequest.of(2, MAX_RESULTS));
 
 		return StreamSupport.stream(listUserFilm.spliterator(), false)
 				.map(userFilm -> modelMapper.map(userFilm, TUserFilm.class))
