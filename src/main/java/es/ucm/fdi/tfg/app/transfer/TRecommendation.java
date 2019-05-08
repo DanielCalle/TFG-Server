@@ -1,11 +1,14 @@
 package es.ucm.fdi.tfg.app.transfer;
 
+import java.util.Date;
+
 public class TRecommendation {
 
 	private Long id;
 	private Long userId;
 	private Long filmId;
 	private float rating;
+	private Date creationDate;
 
     /**
      * @return the id
@@ -62,4 +65,19 @@ public class TRecommendation {
 	public void setRating(float rating) {
 		this.rating = rating;
 	}
+
+    /**
+     * @return the creationDate
+     */
+    public Date getCreationDate() {
+        return creationDate;
+    }
+
+    /**
+     * @param creationDate the creationDate to set
+     */
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
+    }
+
 }

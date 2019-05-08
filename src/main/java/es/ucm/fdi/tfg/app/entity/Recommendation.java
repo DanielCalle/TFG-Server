@@ -10,22 +10,29 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import org.hibernate.annotations.CreationTimestamp;
 
 @Entity
 @Table(name = "recommendation")
 public class Recommendation {
 
-	@Id
-	@GeneratedValue
-	private Long id;
+    @Id
+    @GeneratedValue
+    private Long id;
 
-	@ManyToOne
-	private User user;
+    @ManyToOne
+    private User user;
 
-	@ManyToOne
+    @ManyToOne
     private Film film;
 
-	private float rating;
+    private float rating;
+
+    @CreationTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date creationDate;
 
     /**
      * @return the id
@@ -81,6 +88,20 @@ public class Recommendation {
      */
     public void setRating(float rating) {
         this.rating = rating;
+    }
+
+    /**
+     * @return the creationDate
+     */
+    public Date getCreationDate() {
+        return creationDate;
+    }
+
+    /**
+     * @param creationDate the creationDate to set
+     */
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
     }
 
 }
