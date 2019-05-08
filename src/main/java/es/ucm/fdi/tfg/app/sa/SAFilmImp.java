@@ -9,6 +9,7 @@ import java.util.stream.StreamSupport;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import es.ucm.fdi.tfg.app.entity.Film;
@@ -75,7 +76,7 @@ public class SAFilmImp implements SAFilm {
 	@Override
 	public TFilm findByUuid(String uuid) {
 		Optional<Film> optFilm = filmRepository.findByUuid(uuid);
-		
+
 		if (optFilm.isPresent()) {
 			return modelMapper.map(optFilm.get(), TFilm.class);
 		}
@@ -86,6 +87,15 @@ public class SAFilmImp implements SAFilm {
 	@Override
 	public List<TFilm> readAll() {
 		Iterable<Film> listFilms = filmRepository.findAll(PageRequest.of(0, MAX_RESULTS));
+
+		return StreamSupport.stream(listFilms.spliterator(), false).map(film -> modelMapper.map(film, TFilm.class))
+				.collect(Collectors.toList());
+	}
+
+	@Override
+	public List<TFilm> readAllByPremiere() {
+		Iterable<Film> listFilms = filmRepository
+				.findAll(PageRequest.of(0, MAX_RESULTS, Sort.by("premiere").descending()));
 
 		return StreamSupport.stream(listFilms.spliterator(), false).map(film -> modelMapper.map(film, TFilm.class))
 				.collect(Collectors.toList());

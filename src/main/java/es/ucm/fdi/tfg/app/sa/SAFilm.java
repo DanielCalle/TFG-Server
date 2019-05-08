@@ -14,6 +14,8 @@ public interface SAFilm {
 	public TFilm read(Long uuid);
 	
 	public List<TFilm> readAll();
+	
+	public List<TFilm> readAllByPremiere();
 
 	public List<TFilm> searchLikeByName(String name);
 

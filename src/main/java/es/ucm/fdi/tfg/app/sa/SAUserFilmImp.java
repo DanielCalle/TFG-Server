@@ -1,5 +1,6 @@
 package es.ucm.fdi.tfg.app.sa;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -7,9 +8,11 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+import org.javatuples.Pair;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import es.ucm.fdi.tfg.app.entity.Film;
@@ -19,12 +22,14 @@ import es.ucm.fdi.tfg.app.entity.UserFilmId;
 import es.ucm.fdi.tfg.app.repository.FilmRepository;
 import es.ucm.fdi.tfg.app.repository.UserFilmRepository;
 import es.ucm.fdi.tfg.app.repository.UserRepository;
+import es.ucm.fdi.tfg.app.transfer.TFilm;
 import es.ucm.fdi.tfg.app.transfer.TUserFilm;
 
 @Service
 public class SAUserFilmImp implements SAUserFilm {
 
 	private static final int MAX_RESULTS = 100;
+	private static final int MIN_VALORATIONS_FOR_TRENDING = 3;
 
 	@Autowired
 	private UserRepository userRepository;
@@ -71,7 +76,7 @@ public class SAUserFilmImp implements SAUserFilm {
 			userFilm.setUser(user.get());
 			userFilm.setFilm(film.get());
 			userFilm.setRating(tUserFilm.getRating());
-			
+
 			userFilm = userFilmRepository.save(userFilm);
 			return modelMapper.map(userFilm, TUserFilm.class);
 		}
@@ -128,12 +133,21 @@ public class SAUserFilmImp implements SAUserFilm {
 	}
 
 	@Override
+	public List<TFilm> getTredingFilms() {
+		Iterable<BigInteger> listFilmIds = userFilmRepository.getTredingFilms(MIN_VALORATIONS_FOR_TRENDING, PageRequest.of(0, MAX_RESULTS, Sort.unsorted()));
+
+		return StreamSupport
+				.stream(filmRepository.findAllById(StreamSupport.stream(listFilmIds.spliterator(), false)
+						.map(filmId -> filmId.longValue()).collect(Collectors.toList())).spliterator(), false)
+				.map(film -> modelMapper.map(film, TFilm.class)).collect(Collectors.toList());
+	}
+
+	@Override
 	public List<TUserFilm> readAll() {
 		Iterable<UserFilm> listUserFilm = userFilmRepository.findAll(PageRequest.of(0, MAX_RESULTS));
 
 		return StreamSupport.stream(listUserFilm.spliterator(), false)
-				.map(userFilm -> modelMapper.map(userFilm, TUserFilm.class))
-				.collect(Collectors.toList());
+				.map(userFilm -> modelMapper.map(userFilm, TUserFilm.class)).collect(Collectors.toList());
 	}
 
 }

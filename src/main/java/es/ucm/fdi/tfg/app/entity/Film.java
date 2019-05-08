@@ -1,5 +1,6 @@
 package es.ucm.fdi.tfg.app.entity;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -45,6 +46,8 @@ public class Film {
     private double rating;
 
     private String country;
+
+    private Date premiere;
 
     @JsonIgnore
     @OneToMany(mappedBy = "film")
@@ -216,5 +219,19 @@ public class Film {
      */
     public void setUserFilms(List<UserFilm> userFilms) {
         this.userFilms = userFilms;
+    }
+
+    /**
+     * @return the premiere
+     */
+    public Date getPremiere() {
+        return premiere;
+    }
+
+    /**
+     * @param premiere the premiere to set
+     */
+    public void setPremiere(Date premiere) {
+        this.premiere = premiere;
     }
 }

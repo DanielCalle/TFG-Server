@@ -10,6 +10,7 @@ import java.util.stream.StreamSupport;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import es.ucm.fdi.tfg.app.entity.Film;
@@ -23,6 +24,7 @@ import es.ucm.fdi.tfg.app.repository.PlanRepository;
 import es.ucm.fdi.tfg.app.repository.RecommendationRepository;
 import es.ucm.fdi.tfg.app.repository.UserFilmRepository;
 import es.ucm.fdi.tfg.app.repository.UserRepository;
+import es.ucm.fdi.tfg.app.transfer.TFilm;
 import es.ucm.fdi.tfg.app.transfer.TRecommendation;
 import es.ucm.fdi.tfg.app.transfer.TUserFilm;
 
@@ -111,6 +113,15 @@ public class SARecommendationImp implements SARecommendation {
 
 		return StreamSupport.stream(listRecommendation.spliterator(), false)
 				.map(recommendation -> modelMapper.map(recommendation, TRecommendation.class))
+				.collect(Collectors.toList());
+	}
+
+	@Override
+	public List<TFilm> findFilmsByUserId(long id) {
+		Iterable<Recommendation> listRecommendation = recommendationRepository.findAllByUserId(id, PageRequest.of(0, MAX_RESULTS, Sort.by("date").descending()));
+		
+		return StreamSupport.stream(listRecommendation.spliterator(), false)
+				.map(recommendation -> modelMapper.map(recommendation.getFilm(), TFilm.class))
 				.collect(Collectors.toList());
 	}
 

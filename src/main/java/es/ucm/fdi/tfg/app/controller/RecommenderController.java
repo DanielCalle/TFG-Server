@@ -21,6 +21,7 @@ import es.ucm.fdi.tfg.app.sa.SAFilm;
 import es.ucm.fdi.tfg.app.sa.SAPlan;
 import es.ucm.fdi.tfg.app.sa.SARecommendation;
 import es.ucm.fdi.tfg.app.sa.SAUser;
+import es.ucm.fdi.tfg.app.sa.SAUserFilm;
 import es.ucm.fdi.tfg.app.transfer.TFilm;
 import es.ucm.fdi.tfg.app.transfer.TPlan;
 import es.ucm.fdi.tfg.app.transfer.TUser;
@@ -44,6 +45,9 @@ public class RecommenderController {
     @Autowired
     SAFilm saFilm = SAFactory.getInstance().generateSAFilm();
 
+    @Autowired
+    SAUserFilm saUserFilm = SAFactory.getInstance().generateSAUserFilm();
+
     @GetMapping({ "", "/" })
     @ResponseBody
     public ResponseEntity<List<TRecommendation>> getAll() {
@@ -61,6 +65,24 @@ public class RecommenderController {
     @ResponseBody
     public ResponseEntity<List<TRecommendation>> recommend(@PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(saRecommendation.findByUserId(id));
+    }
+
+    @GetMapping("/{id}/films")
+    @ResponseBody
+    public ResponseEntity<List<TFilm>> findFilmsByUserId(@PathVariable Long id) {
+        return ResponseEntity.status(HttpStatus.OK).body(saRecommendation.findFilmsByUserId(id));
+    }
+
+    @GetMapping("/premiere")
+    @ResponseBody
+    public ResponseEntity<List<TFilm>> getPremiereFilms() {
+        return ResponseEntity.status(HttpStatus.OK).body(saFilm.readAllByPremiere());
+    }
+
+    @GetMapping("/trending")
+    @ResponseBody
+    public ResponseEntity<List<TFilm>> getTrendingFilms() {
+        return ResponseEntity.status(HttpStatus.OK).body(saUserFilm.getTredingFilms());
     }
 
     @GetMapping("/{id}/plans/{friendId}")

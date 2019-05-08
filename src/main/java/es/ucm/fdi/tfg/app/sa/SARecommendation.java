@@ -2,6 +2,7 @@ package es.ucm.fdi.tfg.app.sa;
 
 import java.util.List;
 
+import es.ucm.fdi.tfg.app.transfer.TFilm;
 import es.ucm.fdi.tfg.app.transfer.TRecommendation;
 
 public interface SARecommendation {
@@ -17,5 +18,7 @@ public interface SARecommendation {
 	public TRecommendation save(TRecommendation tRecommendation);
 
 	public TRecommendation read(Long userId, long filmId);
+
+	public List<TFilm> findFilmsByUserId(long id);
 
 }
