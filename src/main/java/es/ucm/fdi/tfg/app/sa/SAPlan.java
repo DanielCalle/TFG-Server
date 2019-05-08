@@ -10,6 +10,8 @@ public interface SAPlan {
 
 	public TPlan join(Long id, Long userId);
 
+	public TPlan quit(Long id, Long userId);
+
 	public Long delete(Long id);
 	
 	public TPlan read(Long id);

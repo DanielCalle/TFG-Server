@@ -67,6 +67,18 @@ public class PlanController {
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 	}
 
+	@PutMapping("{id}/quit/{userId}")
+	@ResponseBody
+	public ResponseEntity<TPlan> quit(@PathVariable long id, @PathVariable Long userId) {
+
+		TPlan response = saPlan.quit(id, userId);
+
+		if (response != null)
+			return ResponseEntity.status(HttpStatus.OK).body(response);
+
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+	}
+
 	@DeleteMapping("/{id}")
 	@ResponseBody
 	public ResponseEntity<TPlan> delete(@PathVariable long id) {

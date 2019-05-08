@@ -76,6 +76,24 @@ public class SAPlanImp implements SAPlan {
 	}
 
 	@Override
+	public TPlan quit(Long id, Long userId) {
+		Optional<Plan> optPlan = planRepository.findById(id);
+		Optional<User> user = userRepository.findById(userId);
+
+		if (optPlan.isPresent() && user.isPresent()) {
+			if (optPlan.get().getCreator().getId() != user.get().getId()) {
+				List<User> joinedUsers = optPlan.get().getJoinedUsers();
+				joinedUsers.remove(user.get());
+				optPlan.get().setJoinedUsers(joinedUsers);
+				Plan plan = planRepository.save(optPlan.get());
+				return modelMapper.map(plan, TPlan.class);
+			}
+		}
+
+		return null;
+	}
+
+	@Override
 	public Long delete(Long id) {
 		Optional<Plan> plan = planRepository.findById(id);
 
