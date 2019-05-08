@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,16 +23,23 @@ public class RecommenderController {
     @Autowired
     SARecommendation saRecommendation = SAFactory.getInstance().generateSARecommendation();
 
-	@GetMapping({ "", "/" })
-	@ResponseBody
-	public ResponseEntity<List<TRecommendation>> getAll() {
-		return ResponseEntity.status(HttpStatus.OK).body(saRecommendation.readAll());
-	}
+    @GetMapping({ "", "/" })
+    @ResponseBody
+    public ResponseEntity<List<TRecommendation>> getAll() {
+        return ResponseEntity.status(HttpStatus.OK).body(saRecommendation.readAll());
+    }
+
+    @DeleteMapping({ "", "/" })
+    @ResponseBody
+    public ResponseEntity<TRecommendation> deleteAll() {
+        saRecommendation.deleteAll();
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+    }
 
     @GetMapping("/{id}")
     @ResponseBody
     public ResponseEntity<List<TRecommendation>> recommend(@PathVariable int id) {
-		return ResponseEntity.status(HttpStatus.OK).body(saRecommendation.findByUserId(id));
+        return ResponseEntity.status(HttpStatus.OK).body(saRecommendation.findByUserId(id));
     }
 
 }

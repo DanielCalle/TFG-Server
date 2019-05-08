@@ -12,4 +12,6 @@ public interface SARecommendation {
 
 	public List<TRecommendation> findByUserId(long id);
 
+	public void deleteAll();
+
 }

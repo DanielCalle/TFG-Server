@@ -76,4 +76,9 @@ public class SARecommendationImp implements SARecommendation {
 				.collect(Collectors.toList());
 	}
 
+	@Override
+	public void deleteAll() {
+		recommendationRepository.deleteAll();
+	}
+
 }
