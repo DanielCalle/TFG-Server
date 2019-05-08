@@ -73,6 +73,17 @@ public class SAFilmImp implements SAFilm {
 	}
 
 	@Override
+	public TFilm findByUuid(String uuid) {
+		Optional<Film> optFilm = filmRepository.findByUuid(uuid);
+		
+		if (optFilm.isPresent()) {
+			return modelMapper.map(optFilm.get(), TFilm.class);
+		}
+
+		return null;
+	}
+
+	@Override
 	public List<TFilm> readAll() {
 		Iterable<Film> listFilms = filmRepository.findAll(PageRequest.of(0, MAX_RESULTS));
 

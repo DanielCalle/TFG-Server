@@ -77,6 +77,17 @@ public class FilmController {
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 	}
 
+	@GetMapping("/uuid/{uuid}")
+	@ResponseBody
+	public ResponseEntity<TFilm> getFilmByUuid(@PathVariable String uuid) {
+		TFilm tFilm = saFilm.findByUuid(uuid);
+
+		if (tFilm != null)
+			return ResponseEntity.status(HttpStatus.OK).body(tFilm);
+
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+	}
+
 	@DeleteMapping("/{id}")
 	@ResponseBody
 	public ResponseEntity<TFilm> delete(@PathVariable Long id) {
