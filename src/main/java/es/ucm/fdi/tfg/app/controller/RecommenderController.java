@@ -71,7 +71,8 @@ public class RecommenderController {
 
         return ResponseEntity.status(HttpStatus.OK).body(plans.stream()
                 .map(plan -> new Pair<TPlan, TRecommendation>(plan, saRecommendation.read(id, plan.getFilmId())))
-                .filter(pair -> pair.getValue0() != null).sorted((a, b) -> a.getValue1().getRating() < b.getValue1().getRating() ? -1 : 1)
+                .filter(pair -> pair.getValue1() != null)
+                .sorted((a, b) -> a.getValue1().getRating() < b.getValue1().getRating() ? -1 : 1)
                 .limit(MAX_PLAN_RECOMMENDATIONS)
                 .map(pair -> {
                     Quartet<TPlan, TRecommendation, TFilm, List<TUser>> quartet = Quartet.with(
