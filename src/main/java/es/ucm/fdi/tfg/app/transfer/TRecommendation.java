@@ -2,9 +2,24 @@ package es.ucm.fdi.tfg.app.transfer;
 
 public class TRecommendation {
 
+	private Long id;
 	private Long userId;
 	private Long filmId;
 	private float rating;
+
+    /**
+     * @return the id
+     */
+    public Long getId() {
+        return id;
+    }
+
+    /**
+     * @param id the id to set
+     */
+    public void setId(Long id) {
+        this.id = id;
+    }
 
 	/**
 	 * @return the userId
