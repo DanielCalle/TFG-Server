@@ -21,6 +21,7 @@ import es.ucm.fdi.tfg.app.sa.SAFilm;
 import es.ucm.fdi.tfg.app.sa.SAPlan;
 import es.ucm.fdi.tfg.app.sa.SARecommendation;
 import es.ucm.fdi.tfg.app.sa.SAUser;
+import es.ucm.fdi.tfg.app.transfer.TFilm;
 import es.ucm.fdi.tfg.app.transfer.TPlan;
 import es.ucm.fdi.tfg.app.transfer.TUser;
 import es.ucm.fdi.tfg.app.transfer.TRecommendation;
@@ -64,7 +65,7 @@ public class RecommenderController {
 
     @GetMapping("/{id}/plans/{friendId}")
     @ResponseBody
-    public ResponseEntity<List<Quartet<TPlan, TRecommendation, String, List<TUser>>>> recommendPlanForFriend(@PathVariable Long id,
+    public ResponseEntity<List<Quartet<TPlan, TRecommendation, TFilm, List<TUser>>>> recommendPlanForFriend(@PathVariable Long id,
             @PathVariable Long friendId) {
         List<TPlan> plans = saUser.getPlans(friendId);
 
@@ -73,10 +74,10 @@ public class RecommenderController {
                 .filter(pair -> pair.getValue0() != null).sorted((a, b) -> a.getValue1().getRating() < b.getValue1().getRating() ? -1 : 1)
                 .limit(MAX_PLAN_RECOMMENDATIONS)
                 .map(pair -> {
-                    Quartet<TPlan, TRecommendation, String, List<TUser>> quartet = Quartet.with(
+                    Quartet<TPlan, TRecommendation, TFilm, List<TUser>> quartet = Quartet.with(
                         pair.getValue0(),
                         pair.getValue1(),
-                        saFilm.read(pair.getValue0().getFilmId()).getImageURL(),
+                        saFilm.read(pair.getValue0().getFilmId()),
                         saPlan.getJoinedUsers(pair.getValue0().getId())
                     );
                     return quartet;
