@@ -102,10 +102,10 @@ ALTER TABLE public.plan_joined_users OWNER TO postgres;
 --
 
 CREATE TABLE public.recommendation (
-    id bigint NOT NULL,
+    date timestamp without time zone,
     rating real NOT NULL,
-    film_id bigint,
-    user_id bigint
+    film_id bigint NOT NULL,
+    user_id bigint NOT NULL
 );
 
 
@@ -200,7 +200,7 @@ COPY public.plan_joined_users (plan_id, joined_users_id) FROM stdin;
 -- Data for Name: recommendation; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.recommendation (id, rating, film_id, user_id) FROM stdin;
+COPY public.recommendation (date, rating, film_id, user_id) FROM stdin;
 \.
 
 
@@ -268,7 +268,7 @@ COPY public.user_film (rating, film_id, user_id) FROM stdin;
 -- Name: hibernate_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.hibernate_sequence', 26, true);
+SELECT pg_catalog.setval('public.hibernate_sequence', 62, true);
 
 
 --
@@ -300,7 +300,7 @@ ALTER TABLE ONLY public.plan
 --
 
 ALTER TABLE ONLY public.recommendation
-    ADD CONSTRAINT recommendation_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT recommendation_pkey PRIMARY KEY (film_id, user_id);
 
 
 --
@@ -379,6 +379,14 @@ ALTER TABLE ONLY public.user_app_joined_plans
 
 ALTER TABLE ONLY public.plan_joined_users
     ADD CONSTRAINT fk8k02ls57v8v15pnrf0m7wmx FOREIGN KEY (plan_id) REFERENCES public.plan(id);
+
+
+--
+-- Name: user_film fk9035mkpx6x9m8mbeapvfobdo1; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.user_film
+    ADD CONSTRAINT fk9035mkpx6x9m8mbeapvfobdo1 FOREIGN KEY (film_id) REFERENCES public.film(id);
 
 
 --

@@ -49,12 +49,31 @@ public class SARecommendationImp implements SARecommendation {
 			recommendation.setFilm(optFilm.get());
 			recommendation.setUser(optUser.get());
 			recommendation.setRating(tRecommendation.getRating());
+			recommendation.setDate(tRecommendation.getDate());
 
 			recommendation = recommendationRepository.save(recommendation);
 			return modelMapper.map(recommendation, TRecommendation.class);
 
 		}
 
+		return null;
+	}
+
+	@Override
+	public TRecommendation save(TRecommendation tRecommendation) {
+		Optional<User> user = userRepository.findById(tRecommendation.getUserId());
+		Optional<Film> film = filmRepository.findById(tRecommendation.getFilmId());
+
+		if (user.isPresent() && film.isPresent()) {
+			Recommendation recommendation = new Recommendation();
+			recommendation.setUser(user.get());
+			recommendation.setFilm(film.get());
+			recommendation.setRating(tRecommendation.getRating());
+			recommendation.setDate(tRecommendation.getDate());
+			
+			recommendation = recommendationRepository.save(recommendation);
+			return modelMapper.map(recommendation, TRecommendation.class);
+		}
 		return null;
 	}
 

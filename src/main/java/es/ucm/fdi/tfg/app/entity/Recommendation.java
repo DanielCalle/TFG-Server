@@ -3,48 +3,33 @@ package es.ucm.fdi.tfg.app.entity;
 import java.util.Date;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity
 @Table(name = "recommendation")
+@IdClass(RecommendationId.class)
 public class Recommendation {
 
     @Id
-    @GeneratedValue
-    private Long id;
-
     @ManyToOne
     private User user;
 
+    @Id
     @ManyToOne
     private Film film;
 
     private float rating;
 
-    @CreationTimestamp
+    @UpdateTimestamp
     @Temporal(TemporalType.TIMESTAMP)
-    private Date creationDate;
-
-    /**
-     * @return the id
-     */
-    public Long getId() {
-        return id;
-    }
-
-    /**
-     * @param id the id to set
-     */
-    public void setId(Long id) {
-        this.id = id;
-    }
+    private Date date;
 
     /**
      * @return the user
@@ -89,17 +74,17 @@ public class Recommendation {
     }
 
     /**
-     * @return the creationDate
+     * @return the date
      */
-    public Date getCreationDate() {
-        return creationDate;
+    public Date getDate() {
+        return date;
     }
 
     /**
-     * @param creationDate the creationDate to set
+     * @param date the date to set
      */
-    public void setCreationDate(Date creationDate) {
-        this.creationDate = creationDate;
+    public void setDate(Date date) {
+        this.date = date;
     }
 
 }

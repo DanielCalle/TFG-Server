@@ -14,4 +14,6 @@ public interface SARecommendation {
 
 	public void deleteAll();
 
+	public TRecommendation save(TRecommendation tRecommendation);
+
 }
