@@ -76,7 +76,7 @@ public class Schedule {
                 tRecommendation.setUserId(user.getId());
                 tRecommendation.setFilmId(recommendedItem.getItemID());
                 tRecommendation.setRating(recommendedItem.getValue());
-                saRecommendation.create(tRecommendation);
+                saRecommendation.save(tRecommendation);
             }
         };
     }
