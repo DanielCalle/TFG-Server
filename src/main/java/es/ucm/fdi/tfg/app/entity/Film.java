@@ -47,6 +47,7 @@ public class Film {
 
     private String country;
 
+    @NotNull(message = "premiere must not be null")
     private Date premiere;
 
     @JsonIgnore
