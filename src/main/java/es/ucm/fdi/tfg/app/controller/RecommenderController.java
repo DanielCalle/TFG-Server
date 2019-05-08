@@ -5,6 +5,7 @@ import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import org.javatuples.Pair;
+import org.javatuples.Quartet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,10 +17,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import es.ucm.fdi.tfg.app.sa.SAFactory;
+import es.ucm.fdi.tfg.app.sa.SAFilm;
 import es.ucm.fdi.tfg.app.sa.SAPlan;
 import es.ucm.fdi.tfg.app.sa.SARecommendation;
 import es.ucm.fdi.tfg.app.sa.SAUser;
 import es.ucm.fdi.tfg.app.transfer.TPlan;
+import es.ucm.fdi.tfg.app.transfer.TUser;
 import es.ucm.fdi.tfg.app.transfer.TRecommendation;
 
 @Controller
@@ -33,6 +36,12 @@ public class RecommenderController {
 
     @Autowired
     SAUser saUser = SAFactory.getInstance().generateSAUser();
+
+    @Autowired
+    SAPlan saPlan = SAFactory.getInstance().generateSAPlan();
+
+    @Autowired
+    SAFilm saFilm = SAFactory.getInstance().generateSAFilm();
 
     @GetMapping({ "", "/" })
     @ResponseBody
@@ -55,7 +64,7 @@ public class RecommenderController {
 
     @GetMapping("/{id}/plans/{friendId}")
     @ResponseBody
-    public ResponseEntity<List<Pair<TPlan, TRecommendation>>> recommendPlanForFriend(@PathVariable Long id,
+    public ResponseEntity<List<Quartet<TPlan, TRecommendation, String, List<TUser>>>> recommendPlanForFriend(@PathVariable Long id,
             @PathVariable Long friendId) {
         List<TPlan> plans = saUser.getPlans(friendId);
 
@@ -63,6 +72,15 @@ public class RecommenderController {
                 .map(plan -> new Pair<TPlan, TRecommendation>(plan, saRecommendation.read(id, plan.getFilmId())))
                 .filter(pair -> pair.getValue0() != null).sorted((a, b) -> a.getValue1().getRating() < b.getValue1().getRating() ? -1 : 1)
                 .limit(MAX_PLAN_RECOMMENDATIONS)
+                .map(pair -> {
+                    Quartet<TPlan, TRecommendation, String, List<TUser>> quartet = Quartet.with(
+                        pair.getValue0(),
+                        pair.getValue1(),
+                        saFilm.read(pair.getValue0().getFilmId()).getImageURL(),
+                        saPlan.getJoinedUsers(pair.getValue0().getId())
+                    );
+                    return quartet;
+                })
                 .collect(Collectors.toList())
         );
     }
