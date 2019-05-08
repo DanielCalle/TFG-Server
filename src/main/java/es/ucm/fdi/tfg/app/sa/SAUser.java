@@ -17,6 +17,8 @@ public interface SAUser {
 	public Long delete(Long id);
 	
 	public TUser read(Long id);
+
+	public TUser findByUuid(String uuid);
 	
 	public List<TUser> readAll();
 	

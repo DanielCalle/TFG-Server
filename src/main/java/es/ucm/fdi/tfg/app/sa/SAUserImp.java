@@ -133,6 +133,17 @@ public class SAUserImp implements SAUser {
 	}
 
 	@Override
+	public TUser findByUuid(String uuid) {
+		Optional<User> optUser = userRepository.findByUuid(uuid);
+		
+		if (optUser.isPresent()) {
+			return modelMapper.map(optUser.get(), TUser.class);
+		}
+
+		return null;
+	}
+
+	@Override
 	public TUser login(String email, String password) {
 		Optional<User> optUser = userRepository.findByEmail(email);
 

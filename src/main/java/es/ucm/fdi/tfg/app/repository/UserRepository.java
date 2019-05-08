@@ -14,6 +14,8 @@ public interface UserRepository extends PagingAndSortingRepository<User, Long> {
 
     public Optional<User> findByEmail(@Param("email") String email);
 
+    public Optional<User> findByUuid(@Param("uuid") String uuid);
+
     public Page<User> findByNameContainingIgnoreCase(String name, Pageable pageable);
 
 }

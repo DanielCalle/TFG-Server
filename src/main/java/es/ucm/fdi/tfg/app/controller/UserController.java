@@ -29,12 +29,12 @@ import es.ucm.fdi.tfg.app.transfer.TFilm;
 public class UserController {
 
 	@Autowired
-	SAUser saUserApp = SAFactory.getInstance().generateSAUser();
+	SAUser saUser = SAFactory.getInstance().generateSAUser();
 
 	@GetMapping({ "", "/" })
 	@ResponseBody
 	public Iterable<TUser> getAllUsers() {
-		return saUserApp.readAll();
+		return saUser.readAll();
 	}
 
 	@PostMapping({ "", "/" })
@@ -43,7 +43,7 @@ public class UserController {
 
 		if (tUser != null) {
 
-			TUser response = saUserApp.create(tUser);
+			TUser response = saUser.create(tUser);
 
 			if (response != null)
 				return ResponseEntity.status(HttpStatus.CREATED).body(response);
@@ -60,7 +60,7 @@ public class UserController {
 	public ResponseEntity<TUser> update(@RequestBody TUser tUser) {
 		if (tUser.getId() != null && tUser.getName() != null) {
 
-			TUser response = saUserApp.update(tUser);
+			TUser response = saUser.update(tUser);
 
 			if (response != null)
 				return ResponseEntity.status(HttpStatus.OK).body(tUser);
@@ -74,7 +74,18 @@ public class UserController {
 	@GetMapping("/{id}")
 	@ResponseBody
 	public ResponseEntity<TUser> getUserById(@PathVariable Long id) {
-		TUser tUser = saUserApp.read(id);
+		TUser tUser = saUser.read(id);
+
+		if (tUser != null)
+			return ResponseEntity.status(HttpStatus.OK).body(tUser);
+
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+	}
+
+	@GetMapping("/uuid/{uuid}")
+	@ResponseBody
+	public ResponseEntity<TUser> getUserByUuid(@PathVariable String uuid) {
+		TUser tUser = saUser.findByUuid(uuid);
 
 		if (tUser != null)
 			return ResponseEntity.status(HttpStatus.OK).body(tUser);
@@ -85,7 +96,7 @@ public class UserController {
 	@DeleteMapping("/{id}")
 	@ResponseBody
 	public ResponseEntity<TUser> delete(@PathVariable Long id) {
-		Long response = saUserApp.delete(id);
+		Long response = saUser.delete(id);
 
 		if (response != null)
 			return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
@@ -96,7 +107,7 @@ public class UserController {
 	@GetMapping("/{id}/friendships")
 	@ResponseBody
 	public ResponseEntity<List<TFriendship>> getFriendships(@PathVariable Long id) {
-		List<TFriendship> listFriendships = saUserApp.getFriends(id);
+		List<TFriendship> listFriendships = saUser.getFriends(id);
 
 		if (listFriendships != null)
 			return ResponseEntity.status(HttpStatus.OK).body(listFriendships);
@@ -107,19 +118,19 @@ public class UserController {
 	@GetMapping("/{id}/friends")
 	@ResponseBody
 	public ResponseEntity<List<TUser>> getFriends(@PathVariable Long id) {
-		List<TFriendship> listFriendships = saUserApp.getFriends(id);
+		List<TFriendship> listFriendships = saUser.getFriends(id);
 
 		List<Long> ids = listFriendships.stream().map(friendship -> {
 			return friendship.getFriendId() == id ? friendship.getRequesterId() : friendship.getFriendId();
 		}).collect(Collectors.toList());
 
-		return ResponseEntity.status(HttpStatus.OK).body(saUserApp.getUsers(ids));
+		return ResponseEntity.status(HttpStatus.OK).body(saUser.getUsers(ids));
 	}
 
 	@GetMapping("/{id}/plans")
 	@ResponseBody
 	public ResponseEntity<List<TPlan>> getPlans(@PathVariable Long id) {
-		List<TPlan> listPlans = saUserApp.getPlans(id);
+		List<TPlan> listPlans = saUser.getPlans(id);
 
 		if (listPlans != null)
 			return ResponseEntity.status(HttpStatus.OK).body(listPlans);
@@ -130,7 +141,7 @@ public class UserController {
 	@GetMapping("/{id}/films")
 	@ResponseBody
 	public ResponseEntity<List<TFilm>> getFilms(@PathVariable Long id) {
-		List<TFilm> listFilms = saUserApp.getFilms(id);
+		List<TFilm> listFilms = saUser.getFilms(id);
 
 		if (listFilms != null)
 			return ResponseEntity.status(HttpStatus.OK).body(listFilms);
@@ -141,7 +152,7 @@ public class UserController {
 	@PostMapping("/login")
 	@ResponseBody
 	public ResponseEntity<TUser> login(@RequestBody TUser user) {
-		TUser result = saUserApp.login(user.getEmail(), user.getPassword());
+		TUser result = saUser.login(user.getEmail(), user.getPassword());
 
 		if (result != null) {
 			return ResponseEntity.status(HttpStatus.OK).body(result);
@@ -153,18 +164,18 @@ public class UserController {
 	@GetMapping("/search/{name}")
 	@ResponseBody
 	public ResponseEntity<List<TUser>> searchLikeByName(@PathVariable String name) {
-		return ResponseEntity.status(HttpStatus.OK).body(saUserApp.searchLikeByName(name));
+		return ResponseEntity.status(HttpStatus.OK).body(saUser.searchLikeByName(name));
 	}
 
 	@GetMapping("/{id}/friendships/plans")
 	@ResponseBody
 	public ResponseEntity<List<TPlan>> getFriendsPlans(@PathVariable Long id) {
-		List<TFriendship> listFriendships = saUserApp.getFriends(id);
+		List<TFriendship> listFriendships = saUser.getFriends(id);
 		if (listFriendships != null) {
 			List<TPlan> result = new ArrayList<TPlan>();
 			for (int i = 0; i < listFriendships.size(); i++) {
 				if (listFriendships.get(i).isActive()) {
-					List<TPlan> listPlans = saUserApp.getPlans(listFriendships.get(i).getFriendId());
+					List<TPlan> listPlans = saUser.getPlans(listFriendships.get(i).getFriendId());
 					if (listPlans != null) {
 						for (int j = 0; j < listPlans.size(); j++) {
 							result.add(listPlans.get(j));
