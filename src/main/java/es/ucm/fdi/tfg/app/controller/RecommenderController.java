@@ -1,6 +1,10 @@
 package es.ucm.fdi.tfg.app.controller;
 
 import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
+
+import com.sun.tools.javac.util.Pair;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,15 +17,23 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import es.ucm.fdi.tfg.app.sa.SAFactory;
+import es.ucm.fdi.tfg.app.sa.SAPlan;
 import es.ucm.fdi.tfg.app.sa.SARecommendation;
+import es.ucm.fdi.tfg.app.sa.SAUser;
+import es.ucm.fdi.tfg.app.transfer.TPlan;
 import es.ucm.fdi.tfg.app.transfer.TRecommendation;
 
 @Controller
 @RequestMapping("/recommendations")
 public class RecommenderController {
 
+    private static final int MAX_PLAN_RECOMMENDATIONS = 3;
+
     @Autowired
     SARecommendation saRecommendation = SAFactory.getInstance().generateSARecommendation();
+
+    @Autowired
+    SAUser saUser = SAFactory.getInstance().generateSAUser();
 
     @GetMapping({ "", "/" })
     @ResponseBody
@@ -38,8 +50,22 @@ public class RecommenderController {
 
     @GetMapping("/{id}")
     @ResponseBody
-    public ResponseEntity<List<TRecommendation>> recommend(@PathVariable int id) {
+    public ResponseEntity<List<TRecommendation>> recommend(@PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(saRecommendation.findByUserId(id));
+    }
+
+    @GetMapping("/{id}/plans/{friendId}")
+    @ResponseBody
+    public ResponseEntity<List<Pair<TPlan, TRecommendation>>> recommendPlanForFriend(@PathVariable Long id,
+            @PathVariable Long friendId) {
+        List<TPlan> plans = saUser.getPlans(friendId);
+        
+        return ResponseEntity.status(HttpStatus.OK).body(plans.stream()
+                .map(plan -> new Pair<TPlan, TRecommendation>(plan, saRecommendation.read(id, plan.getFilmId())))
+                .filter(pair -> pair.fst != null).sorted((a, b) -> a.snd.getRating() < b.snd.getRating() ? -1 : 1)
+                .limit(MAX_PLAN_RECOMMENDATIONS)
+                .collect(Collectors.toList())
+        );
     }
 
 }

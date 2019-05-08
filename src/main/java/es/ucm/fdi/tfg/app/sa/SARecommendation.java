@@ -16,4 +16,6 @@ public interface SARecommendation {
 
 	public TRecommendation save(TRecommendation tRecommendation);
 
+	public TRecommendation read(Long userId, long filmId);
+
 }

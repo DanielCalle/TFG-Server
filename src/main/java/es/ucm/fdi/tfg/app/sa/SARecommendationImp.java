@@ -14,10 +14,12 @@ import org.springframework.stereotype.Service;
 
 import es.ucm.fdi.tfg.app.entity.Film;
 import es.ucm.fdi.tfg.app.entity.Recommendation;
+import es.ucm.fdi.tfg.app.entity.RecommendationId;
 import es.ucm.fdi.tfg.app.entity.User;
 import es.ucm.fdi.tfg.app.entity.UserFilm;
 import es.ucm.fdi.tfg.app.entity.UserFilmId;
 import es.ucm.fdi.tfg.app.repository.FilmRepository;
+import es.ucm.fdi.tfg.app.repository.PlanRepository;
 import es.ucm.fdi.tfg.app.repository.RecommendationRepository;
 import es.ucm.fdi.tfg.app.repository.UserFilmRepository;
 import es.ucm.fdi.tfg.app.repository.UserRepository;
@@ -33,6 +35,8 @@ public class SARecommendationImp implements SARecommendation {
 	private UserRepository userRepository;
 	@Autowired
 	private FilmRepository filmRepository;
+	@Autowired
+	private PlanRepository planRepository;
 	@Autowired
 	private RecommendationRepository recommendationRepository;
 
@@ -54,6 +58,21 @@ public class SARecommendationImp implements SARecommendation {
 			recommendation = recommendationRepository.save(recommendation);
 			return modelMapper.map(recommendation, TRecommendation.class);
 
+		}
+
+		return null;
+	}
+
+	@Override
+	public TRecommendation read(Long userId, long filmId) {
+		RecommendationId id = new RecommendationId();
+		id.setUser(userId);
+		id.setFilm(filmId);
+
+		Optional<Recommendation> optRecommendation = recommendationRepository.findById(id);
+
+		if (optRecommendation.isPresent()) {
+			return modelMapper.map(optRecommendation.get(), TRecommendation.class);
 		}
 
 		return null;
