@@ -4,8 +4,7 @@ import java.util.List;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
-import com.sun.tools.javac.util.Pair;
-
+import org.javatuples.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -59,10 +58,10 @@ public class RecommenderController {
     public ResponseEntity<List<Pair<TPlan, TRecommendation>>> recommendPlanForFriend(@PathVariable Long id,
             @PathVariable Long friendId) {
         List<TPlan> plans = saUser.getPlans(friendId);
-        
+
         return ResponseEntity.status(HttpStatus.OK).body(plans.stream()
                 .map(plan -> new Pair<TPlan, TRecommendation>(plan, saRecommendation.read(id, plan.getFilmId())))
-                .filter(pair -> pair.fst != null).sorted((a, b) -> a.snd.getRating() < b.snd.getRating() ? -1 : 1)
+                .filter(pair -> pair.getValue0() != null).sorted((a, b) -> a.getValue1().getRating() < b.getValue1().getRating() ? -1 : 1)
                 .limit(MAX_PLAN_RECOMMENDATIONS)
                 .collect(Collectors.toList())
         );
