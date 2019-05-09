@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.PutMapping;
 
 import es.ucm.fdi.tfg.app.sa.SAFactory;
+import es.ucm.fdi.tfg.app.sa.SAPlan;
 import es.ucm.fdi.tfg.app.sa.SAUser;
 import es.ucm.fdi.tfg.app.transfer.TFriendship;
 import es.ucm.fdi.tfg.app.transfer.TPlan;
@@ -30,6 +31,9 @@ public class UserController {
 
 	@Autowired
 	SAUser saUser = SAFactory.getInstance().generateSAUser();
+
+	@Autowired
+	SAPlan saPlan = SAFactory.getInstance().generateSAPlan();
 
 	@GetMapping({ "", "/" })
 	@ResponseBody
@@ -130,7 +134,7 @@ public class UserController {
 	@GetMapping("/{id}/plans")
 	@ResponseBody
 	public ResponseEntity<List<TPlan>> getPlans(@PathVariable Long id) {
-		List<TPlan> listPlans = saUser.getPlans(id);
+		List<TPlan> listPlans = saPlan.getPlansByUserId(id);
 
 		if (listPlans != null)
 			return ResponseEntity.status(HttpStatus.OK).body(listPlans);

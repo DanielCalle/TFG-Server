@@ -21,4 +21,6 @@ public interface SAPlan {
 	public List<TUser> getJoinedUsers(Long id);
 
 	public List<TPlan> searchLikeByTitle(String title);
+
+	public List<TPlan> getPlansByUserId(Long userId);
 }

@@ -13,6 +13,7 @@ import java.util.stream.StreamSupport;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import es.ucm.fdi.tfg.app.entity.Film;
@@ -26,6 +27,8 @@ import es.ucm.fdi.tfg.app.transfer.TUser;
 
 @Service
 public class SAPlanImp implements SAPlan {
+
+	private final static int MAX_RESULTS = 10;
 
 	@Autowired
 	private PlanRepository planRepository;
@@ -121,7 +124,7 @@ public class SAPlanImp implements SAPlan {
 		Iterable<Plan> listPlan = planRepository.findAll();
 
 		return StreamSupport.stream(listPlan.spliterator(), false).map(plan -> modelMapper.map(plan, TPlan.class))
-				.collect(Collectors.toList());
+		.collect(Collectors.toList());
 	}
 
 	@Override
@@ -134,6 +137,15 @@ public class SAPlanImp implements SAPlan {
 		}
 
 		return null;
+	}
+
+	@Override
+	public List<TPlan> getPlansByUserId(Long id) {
+		Iterable<Plan> listPlans = planRepository.getPlansByUserId(id, PageRequest.of(0, MAX_RESULTS));
+
+		return StreamSupport.stream(listPlans.spliterator(), false)
+			.map(plan -> modelMapper.map(plan, TPlan.class))
+			.collect(Collectors.toList());
 	}
 
 	@Override
