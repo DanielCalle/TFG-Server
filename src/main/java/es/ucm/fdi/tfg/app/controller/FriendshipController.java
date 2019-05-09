@@ -89,7 +89,7 @@ public class FriendshipController {
 		if (response != null)
 			return ResponseEntity.status(HttpStatus.OK).body(response);
 
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+		return ResponseEntity.status(HttpStatus.OK).body(null);
 
 	}
 }
