@@ -76,12 +76,16 @@ public class FriendshipController {
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 	}
 
-	@GetMapping("/{requesterId}/{friendId}")
+	@GetMapping("/{friendId}/{otherFriendId}")
 	@ResponseBody
-	public ResponseEntity<TFriendship> getUserById(@PathVariable Long requesterId, @PathVariable Long friendId) {
+	public ResponseEntity<TFriendship> findFriendship(@PathVariable Long friendId, @PathVariable Long otherFriendId) {
+		TFriendship response;
 
-		TFriendship response = saFriendship.read(requesterId, friendId);
+		response = saFriendship.read(friendId, otherFriendId);
+		if (response != null)
+			return ResponseEntity.status(HttpStatus.OK).body(response);
 
+		response = saFriendship.read(otherFriendId, friendId);
 		if (response != null)
 			return ResponseEntity.status(HttpStatus.OK).body(response);
 
