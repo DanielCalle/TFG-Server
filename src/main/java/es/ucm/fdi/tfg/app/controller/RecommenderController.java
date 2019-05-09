@@ -1,6 +1,7 @@
 package es.ucm.fdi.tfg.app.controller;
 
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
@@ -83,6 +84,14 @@ public class RecommenderController {
     @ResponseBody
     public ResponseEntity<List<TFilm>> getTrendingFilms() {
         return ResponseEntity.status(HttpStatus.OK).body(saUserFilm.getTredingFilms());
+    }
+
+    @GetMapping("/random")
+    @ResponseBody
+    public ResponseEntity<TFilm> getRandomFilm() {
+        List<TFilm> films = saUserFilm.getTredingFilms();
+        int rand = new Random(Math.round(Math.random())).nextInt(films.size());
+        return ResponseEntity.status(HttpStatus.OK).body(films.get(rand));
     }
 
     @GetMapping("/{id}/plans/{friendId}")
