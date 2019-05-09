@@ -89,33 +89,28 @@ public class RecommenderController {
     @GetMapping("/random")
     @ResponseBody
     public ResponseEntity<TFilm> getRandomFilm() {
-        List<TFilm> films = saUserFilm.getTredingFilms();
-        int rand = new Random(Math.round(Math.random())).nextInt(films.size());
+        List<TFilm> films = saUserFilm.getTredingFilms().stream().filter(film -> film.getImageURL() != null)
+                .collect(Collectors.toList());
+        int rand = new Random().nextInt(films.size());
         return ResponseEntity.status(HttpStatus.OK).body(films.get(rand));
     }
 
     @GetMapping("/{id}/plans/{friendId}")
     @ResponseBody
-    public ResponseEntity<List<Quartet<TPlan, TRecommendation, TFilm, List<TUser>>>> recommendPlanForFriend(@PathVariable Long id,
-            @PathVariable Long friendId) {
+    public ResponseEntity<List<Quartet<TPlan, TRecommendation, TFilm, List<TUser>>>> recommendPlanForFriend(
+            @PathVariable Long id, @PathVariable Long friendId) {
         List<TPlan> plans = saUser.getPlans(friendId);
 
         return ResponseEntity.status(HttpStatus.OK).body(plans.stream()
                 .map(plan -> new Pair<TPlan, TRecommendation>(plan, saRecommendation.read(id, plan.getFilmId())))
                 .filter(pair -> pair.getValue1() != null)
                 .sorted((a, b) -> a.getValue1().getRating() < b.getValue1().getRating() ? -1 : 1)
-                .limit(MAX_PLAN_RECOMMENDATIONS)
-                .map(pair -> {
-                    Quartet<TPlan, TRecommendation, TFilm, List<TUser>> quartet = Quartet.with(
-                        pair.getValue0(),
-                        pair.getValue1(),
-                        saFilm.read(pair.getValue0().getFilmId()),
-                        saPlan.getJoinedUsers(pair.getValue0().getId())
-                    );
+                .limit(MAX_PLAN_RECOMMENDATIONS).map(pair -> {
+                    Quartet<TPlan, TRecommendation, TFilm, List<TUser>> quartet = Quartet.with(pair.getValue0(),
+                            pair.getValue1(), saFilm.read(pair.getValue0().getFilmId()),
+                            saPlan.getJoinedUsers(pair.getValue0().getId()));
                     return quartet;
-                })
-                .collect(Collectors.toList())
-        );
+                }).collect(Collectors.toList()));
     }
 
 }
