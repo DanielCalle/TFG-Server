@@ -34,28 +34,20 @@ public class FriendshipController {
 		return saFriendship.readAll();
 	}
 
-	@PostMapping({ "", "/" })
+	@PostMapping("/{requesterId}/{friendId}/request")
 	@ResponseBody
-	public ResponseEntity<TFriendship> save(@RequestBody TFriendship tFriendship) {
+	public ResponseEntity<TFriendship> request(@PathVariable Long requesterId, @PathVariable Long friendId) {
+		TFriendship response = saFriendship.create(requesterId, friendId);
 
-		if (tFriendship.getRequesterId() != null && tFriendship.getFriendId() != null) {
+		if (response != null)
+			return ResponseEntity.status(HttpStatus.CREATED).body(response);
 
-			TFriendship response = saFriendship.create(tFriendship);
-
-			if (response != null)
-				return ResponseEntity.status(HttpStatus.CREATED).body(response);
-
-			return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
-		}
-
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-
+		return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
 	}
 
 	@PutMapping("/{requesterId}/{friendId}/accept")
 	@ResponseBody
 	public ResponseEntity<TFriendship> accept(@PathVariable Long requesterId, @PathVariable Long friendId) {
-
 		TFriendship response = saFriendship.accept(requesterId, friendId);
 
 		if (response != null)
@@ -64,10 +56,20 @@ public class FriendshipController {
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 	}
 
+	@DeleteMapping("/{requesterId}/{friendId}/decline")
+	@ResponseBody
+	public ResponseEntity<TFriendship> decline(@PathVariable Long requesterId, @PathVariable Long friendId) {
+		FriendshipId response = saFriendship.delete(requesterId, friendId);
+
+		if (response != null)
+			return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+	}
+
 	@DeleteMapping("/{requesterId}/{friendId}")
 	@ResponseBody
 	public ResponseEntity<TFriendship> delete(@PathVariable Long requesterId, @PathVariable Long friendId) {
-
 		FriendshipId response = saFriendship.delete(requesterId, friendId);
 
 		if (response != null)

@@ -10,6 +10,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 
+import org.hibernate.annotations.UpdateTimestamp;
+
 @Entity
 @Table(name = "friendship")
 @IdClass(FriendshipId.class)
@@ -23,6 +25,7 @@ public class Friendship {
     @ManyToOne
     private User friend;
 
+    @UpdateTimestamp
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date date;
 

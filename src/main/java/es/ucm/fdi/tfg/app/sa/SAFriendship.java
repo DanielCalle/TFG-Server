@@ -6,7 +6,7 @@ import es.ucm.fdi.tfg.app.entity.FriendshipId;
 import es.ucm.fdi.tfg.app.transfer.TFriendship;
 
 public interface SAFriendship {
-	public TFriendship create(TFriendship tFriendship);
+	public TFriendship create(Long requesterId, Long friendId);
 	
 	public TFriendship accept(Long friendId, Long requesterId);
 	
