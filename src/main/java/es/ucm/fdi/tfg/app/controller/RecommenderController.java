@@ -106,9 +106,11 @@ public class RecommenderController {
                 .filter(pair -> pair.getValue1() != null)
                 .sorted((a, b) -> a.getValue1().getRating() < b.getValue1().getRating() ? -1 : 1)
                 .limit(MAX_PLAN_RECOMMENDATIONS).map(pair -> {
+                    List<TUser> users = saPlan.getJoinedUsers(pair.getValue0().getId());
+                    users.add(0, saUser.read(friendId));
+                    users.add(0, saUser.read(id));
                     Quartet<TPlan, TRecommendation, TFilm, List<TUser>> quartet = Quartet.with(pair.getValue0(),
-                            pair.getValue1(), saFilm.read(pair.getValue0().getFilmId()),
-                            saPlan.getJoinedUsers(pair.getValue0().getId()));
+                            pair.getValue1(), saFilm.read(pair.getValue0().getFilmId()), users);
                     return quartet;
                 }).collect(Collectors.toList()));
     }
