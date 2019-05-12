@@ -16,6 +16,9 @@ import es.ucm.fdi.tfg.app.entity.Film;
 import es.ucm.fdi.tfg.app.repository.FilmRepository;
 import es.ucm.fdi.tfg.app.transfer.TFilm;
 
+/**
+ * Application Service pattern
+ */
 @Service
 public class SAFilmImp implements SAFilm {
 
@@ -24,6 +27,7 @@ public class SAFilmImp implements SAFilm {
 	@Autowired
 	private FilmRepository filmRepository;
 
+	// Mapping from entity to transfer and viceverse
 	private ModelMapper modelMapper = new ModelMapper();
 
 	@Override
@@ -86,25 +90,31 @@ public class SAFilmImp implements SAFilm {
 
 	@Override
 	public List<TFilm> readAll() {
+		// Enabling paging option for large data
 		Iterable<Film> listFilms = filmRepository.findAll(PageRequest.of(0, MAX_RESULTS));
 
+		// see lambda stream in java 8
 		return StreamSupport.stream(listFilms.spliterator(), false).map(film -> modelMapper.map(film, TFilm.class))
 				.collect(Collectors.toList());
 	}
 
 	@Override
 	public List<TFilm> readAllByPremiere() {
+		// Enabling paging option for large data
 		Iterable<Film> listFilms = filmRepository
 				.findAll(PageRequest.of(0, MAX_RESULTS, Sort.by("premiere").descending()));
 
+		// see lambda stream in java 8
 		return StreamSupport.stream(listFilms.spliterator(), false).map(film -> modelMapper.map(film, TFilm.class))
 				.collect(Collectors.toList());
 	}
 
 	@Override
 	public List<TFilm> searchLikeByName(String name) {
+		// Enabling paging option for large data
 		Iterable<Film> listFilms = filmRepository.findByNameContainingIgnoreCase(name, PageRequest.of(0, MAX_RESULTS));
 
+		// see lambda stream in java 8
 		return StreamSupport.stream(listFilms.spliterator(), false).map(film -> modelMapper.map(film, TFilm.class))
 				.collect(Collectors.toList());
 	}

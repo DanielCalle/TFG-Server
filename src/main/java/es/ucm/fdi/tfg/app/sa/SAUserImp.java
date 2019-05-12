@@ -12,10 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import es.ucm.fdi.tfg.app.entity.Friendship;
-import es.ucm.fdi.tfg.app.entity.Plan;
-import es.ucm.fdi.tfg.app.entity.User;
-import es.ucm.fdi.tfg.app.entity.UserFilm;
 import es.ucm.fdi.tfg.app.entity.User;
 import es.ucm.fdi.tfg.app.repository.UserRepository;
 import es.ucm.fdi.tfg.app.transfer.TFilm;
@@ -23,6 +19,9 @@ import es.ucm.fdi.tfg.app.transfer.TFriendship;
 import es.ucm.fdi.tfg.app.transfer.TPlan;
 import es.ucm.fdi.tfg.app.transfer.TUser;
 
+/**
+ * Application Service pattern
+ */
 @Service
 public class SAUserImp implements SAUser {
 
@@ -31,6 +30,7 @@ public class SAUserImp implements SAUser {
 	@Autowired
 	private UserRepository userRepository;
 
+	// Mapping from entity to transfer and viceverse
 	private ModelMapper modelMapper = new ModelMapper();
 
 	@Override
@@ -76,8 +76,10 @@ public class SAUserImp implements SAUser {
 
 	@Override
 	public List<TUser> readAll() {
+		// Enabling paging option for large data
 		Iterable<User> listUserApp = userRepository.findAll(PageRequest.of(0, MAX_RESULTS));
 
+		// see lambda stream in java 8
 		return StreamSupport.stream(listUserApp.spliterator(), false).map(user -> modelMapper.map(user, TUser.class))
 				.collect(Collectors.toList());
 	}
@@ -87,6 +89,7 @@ public class SAUserImp implements SAUser {
 		Optional<User> optUser = userRepository.findById(id);
 
 		if (optUser.isPresent()) {
+			// see lambda stream in java 8
 			return Stream
 					.concat(optUser.get().getFriendRequests().stream()
 							.map(friendShip -> modelMapper.map(friendShip, TFriendship.class)),
@@ -102,6 +105,7 @@ public class SAUserImp implements SAUser {
 	public List<TUser> getUsers(List<Long> ids) {
 		Iterable<User> listUserApp = userRepository.findAllById(ids);
 
+		// see lambda stream in java 8
 		return StreamSupport.stream(listUserApp.spliterator(), false).map(user -> modelMapper.map(user, TUser.class))
 				.collect(Collectors.toList());
 	}
@@ -111,6 +115,7 @@ public class SAUserImp implements SAUser {
 		Optional<User> optUser = userRepository.findById(id);
 
 		if (optUser.isPresent()) {
+			// see lambda stream in java 8
 			return Stream
 					.concat(optUser.get().getCreatedPlans().stream().map(plan -> modelMapper.map(plan, TPlan.class)),
 							optUser.get().getJoinedPlans().stream().map(plan -> modelMapper.map(plan, TPlan.class)))
@@ -158,6 +163,7 @@ public class SAUserImp implements SAUser {
 	public List<TUser> searchLikeByName(String name) {
 		Iterable<User> listUsers = userRepository.findByNameContainingIgnoreCase(name, PageRequest.of(0, MAX_RESULTS));
 
+		// see lambda stream in java 8
 		return StreamSupport.stream(listUsers.spliterator(), false).map(user -> modelMapper.map(user, TUser.class))
 				.collect(Collectors.toList());
 	}

@@ -30,7 +30,6 @@ public class FriendshipController {
 	@GetMapping({ "", "/" })
 	@ResponseBody
 	public List<TFriendship> getAllUsers() {
-
 		return saFriendship.readAll();
 	}
 

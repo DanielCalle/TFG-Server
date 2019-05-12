@@ -26,6 +26,7 @@ public class ImageController {
     @GetMapping("/{image}")
     @ResponseBody
     public ResponseEntity<byte[]> getImageAsByteArray(@PathVariable String image) throws IOException {
+        // From this path, gets all image files
         InputStream in = servletContext.getResourceAsStream("/WEB-INF/images/" + image);
 
         if (in != null) {

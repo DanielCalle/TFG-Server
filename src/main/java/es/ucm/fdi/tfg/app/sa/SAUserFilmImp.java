@@ -25,6 +25,9 @@ import es.ucm.fdi.tfg.app.repository.UserRepository;
 import es.ucm.fdi.tfg.app.transfer.TFilm;
 import es.ucm.fdi.tfg.app.transfer.TUserFilm;
 
+/**
+ * Application Service pattern
+ */
 @Service
 public class SAUserFilmImp implements SAUserFilm {
 
@@ -33,11 +36,14 @@ public class SAUserFilmImp implements SAUserFilm {
 
 	@Autowired
 	private UserRepository userRepository;
+
 	@Autowired
 	private FilmRepository filmRepository;
+
 	@Autowired
 	private UserFilmRepository userFilmRepository;
 
+	// Mapping from entity to transfer and viceverse
 	private ModelMapper modelMapper = new ModelMapper();
 
 	@Override
@@ -134,8 +140,10 @@ public class SAUserFilmImp implements SAUserFilm {
 
 	@Override
 	public List<TFilm> getTredingFilms() {
+		// Enabling paging option for large data
 		Iterable<BigInteger> listFilmIds = userFilmRepository.getTredingFilms(MIN_VALORATIONS_FOR_TRENDING, PageRequest.of(0, MAX_RESULTS, Sort.unsorted()));
 
+		// see lambda stream in java 8
 		return StreamSupport
 				.stream(filmRepository.findAllById(StreamSupport.stream(listFilmIds.spliterator(), false)
 						.map(filmId -> filmId.longValue()).collect(Collectors.toList())).spliterator(), false)
@@ -144,8 +152,10 @@ public class SAUserFilmImp implements SAUserFilm {
 
 	@Override
 	public List<TUserFilm> readAll() {
+		// Enabling paging option for large data
 		Iterable<UserFilm> listUserFilm = userFilmRepository.findAll(PageRequest.of(0, MAX_RESULTS));
 
+		// see lambda stream in java 8
 		return StreamSupport.stream(listUserFilm.spliterator(), false)
 				.map(userFilm -> modelMapper.map(userFilm, TUserFilm.class)).collect(Collectors.toList());
 	}

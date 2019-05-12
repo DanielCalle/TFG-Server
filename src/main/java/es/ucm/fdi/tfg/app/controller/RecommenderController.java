@@ -102,10 +102,15 @@ public class RecommenderController {
         List<TPlan> plans = saUser.getPlans(friendId);
 
         return ResponseEntity.status(HttpStatus.OK).body(plans.stream()
+                // returns for each plan, a pair of plan and recommendation
                 .map(plan -> new Pair<TPlan, TRecommendation>(plan, saRecommendation.read(id, plan.getFilmId())))
+                // removes the one which has no recommendation
                 .filter(pair -> pair.getValue1() != null)
+                // sorting by rating (desc)
                 .sorted((a, b) -> a.getValue1().getRating() < b.getValue1().getRating() ? -1 : 1)
+                // limit to MAX_PLAN_RECOMMENDATIONS
                 .limit(MAX_PLAN_RECOMMENDATIONS).map(pair -> {
+                    // Package to Quartet<TPlan, TRecommendation, TFilm, List<TUser>>
                     List<TUser> users = saPlan.getJoinedUsers(pair.getValue0().getId());
                     users.add(0, saUser.read(friendId));
                     users.add(0, saUser.read(id));

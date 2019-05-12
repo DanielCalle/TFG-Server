@@ -10,8 +10,10 @@ import es.ucm.fdi.tfg.app.entity.RecommendationId;
 
 public interface RecommendationRepository extends PagingAndSortingRepository<Recommendation, RecommendationId> {
 
+    // Find by user id
     public Iterable<Recommendation> findAllByUserId(@Param("user_id") long id);
 
+    // Find by user id with paging config
     public Page<Recommendation> findAllByUserId(@Param("user_id") long id, Pageable pageable);
 
 }

@@ -5,6 +5,9 @@ import java.util.List;
 import es.ucm.fdi.tfg.app.transfer.TPlan;
 import es.ucm.fdi.tfg.app.transfer.TUser;
 
+/**
+ * Application Service pattern
+ */
 public interface SAPlan {
 	public TPlan create(TPlan tPlan);
 

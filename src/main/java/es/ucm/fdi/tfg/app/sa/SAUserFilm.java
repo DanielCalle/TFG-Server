@@ -6,6 +6,9 @@ import es.ucm.fdi.tfg.app.entity.UserFilmId;
 import es.ucm.fdi.tfg.app.transfer.TFilm;
 import es.ucm.fdi.tfg.app.transfer.TUserFilm;
 
+/**
+ * Application Service pattern
+ */
 public interface SAUserFilm {
 	public TUserFilm create(TUserFilm tUserFilm);
 	

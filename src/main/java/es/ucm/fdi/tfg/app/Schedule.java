@@ -55,18 +55,22 @@ public class Schedule {
 	@Autowired
 	SARecommendation saRecommendation = SAFactory.getInstance().generateSARecommendation();
 
-
+    // Will be executed every 5h after deploy
     @Scheduled(fixedDelay = 1000 * 60 * 60 * 5)
     public void test() throws TasteException, IOException {
         System.out.println("Starting recommendation");
         
+        // this is the way of getting model from a file
         //DataModel model = new FileDataModel(new File(servletContext.getRealPath("/WEB-INF/csv/rating.csv")));
+        
+        // this is the way of getting model from a database (postgresql)
         DataModel model = MahoutDataModel.getDataModelFromPostreSQL(url, user, password);
         UserSimilarity similarity = new PearsonCorrelationSimilarity(model);
         UserNeighborhood neighborhood = new ThresholdUserNeighborhood(0.1, similarity, model);
         neighborhood = new NearestNUserNeighborhood(25, similarity, model);
         UserBasedRecommender recommender = new GenericUserBasedRecommender(model, neighborhood, similarity);
         
+        // Recommends for all users and saves into database
         for (TUser user : saUser.readAll()) {
             System.out.println("Recommend for user " + user.getId());
             List<RecommendedItem> recommendations = recommender.recommend(user.getId(), 3);

@@ -171,26 +171,4 @@ public class UserController {
 		return ResponseEntity.status(HttpStatus.OK).body(saUser.searchLikeByName(name));
 	}
 
-	@GetMapping("/{id}/friendships/plans")
-	@ResponseBody
-	public ResponseEntity<List<TPlan>> getFriendsPlans(@PathVariable Long id) {
-		List<TFriendship> listFriendships = saUser.getFriends(id);
-		if (listFriendships != null) {
-			List<TPlan> result = new ArrayList<TPlan>();
-			for (int i = 0; i < listFriendships.size(); i++) {
-				if (listFriendships.get(i).isActive()) {
-					List<TPlan> listPlans = saUser.getPlans(listFriendships.get(i).getFriendId());
-					if (listPlans != null) {
-						for (int j = 0; j < listPlans.size(); j++) {
-							result.add(listPlans.get(j));
-						}
-					}
-				}
-			}
-			return ResponseEntity.status(HttpStatus.OK).body(result);
-		}
-
-		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-	}
-
 }

@@ -13,6 +13,7 @@ import es.ucm.fdi.tfg.app.entity.UserFilmId;
 
 public interface UserFilmRepository extends PagingAndSortingRepository<UserFilm, UserFilmId> {
 
+    // Grouping user_film table by film_id, then calculate its average based on rating and count, only selecting when count > num 
     @Query(
         value = "select film_id from user_film group by film_id having count(film_id) >= (:num) order by avg(rating) desc", 
         nativeQuery = true

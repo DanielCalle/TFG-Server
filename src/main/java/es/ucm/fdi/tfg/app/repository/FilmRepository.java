@@ -11,8 +11,10 @@ import es.ucm.fdi.tfg.app.entity.Film;
 
 public interface FilmRepository extends PagingAndSortingRepository<Film, Long> {
 
+    // Find by name column (is acceptable when the value contains string name)
     public Page<Film> findByNameContainingIgnoreCase(String name, Pageable pageable);
 
+    // Find by column uuid
     public Optional<Film> findByUuid(@Param("uuid") String uuid);
 
 }

@@ -1,7 +1,5 @@
 package es.ucm.fdi.tfg.app.sa;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -17,17 +15,15 @@ import es.ucm.fdi.tfg.app.entity.Film;
 import es.ucm.fdi.tfg.app.entity.Recommendation;
 import es.ucm.fdi.tfg.app.entity.RecommendationId;
 import es.ucm.fdi.tfg.app.entity.User;
-import es.ucm.fdi.tfg.app.entity.UserFilm;
-import es.ucm.fdi.tfg.app.entity.UserFilmId;
 import es.ucm.fdi.tfg.app.repository.FilmRepository;
-import es.ucm.fdi.tfg.app.repository.PlanRepository;
 import es.ucm.fdi.tfg.app.repository.RecommendationRepository;
-import es.ucm.fdi.tfg.app.repository.UserFilmRepository;
 import es.ucm.fdi.tfg.app.repository.UserRepository;
 import es.ucm.fdi.tfg.app.transfer.TFilm;
 import es.ucm.fdi.tfg.app.transfer.TRecommendation;
-import es.ucm.fdi.tfg.app.transfer.TUserFilm;
 
+/**
+ * Application Service pattern
+ */
 @Service
 public class SARecommendationImp implements SARecommendation {
 
@@ -35,13 +31,14 @@ public class SARecommendationImp implements SARecommendation {
 
 	@Autowired
 	private UserRepository userRepository;
+
 	@Autowired
 	private FilmRepository filmRepository;
-	@Autowired
-	private PlanRepository planRepository;
+	
 	@Autowired
 	private RecommendationRepository recommendationRepository;
 
+	// Mapping from entity to transfer and viceverse
 	private ModelMapper modelMapper = new ModelMapper();
 
 	@Override
@@ -100,8 +97,10 @@ public class SARecommendationImp implements SARecommendation {
 
 	@Override
 	public List<TRecommendation> readAll() {
+		// Enabling paging option for large data
 		Iterable<Recommendation> listRecommendation = recommendationRepository.findAll(PageRequest.of(0, MAX_RESULTS));
 
+		// see lambda stream in java 8
 		return StreamSupport.stream(listRecommendation.spliterator(), false)
 				.map(recommendation -> modelMapper.map(recommendation, TRecommendation.class))
 				.collect(Collectors.toList());
@@ -111,6 +110,7 @@ public class SARecommendationImp implements SARecommendation {
 	public List<TRecommendation> findByUserId(long id) {
 		Iterable<Recommendation> listRecommendation = recommendationRepository.findAllByUserId(id);
 
+		// see lambda stream in java 8
 		return StreamSupport.stream(listRecommendation.spliterator(), false)
 				.map(recommendation -> modelMapper.map(recommendation, TRecommendation.class))
 				.collect(Collectors.toList());
@@ -118,8 +118,10 @@ public class SARecommendationImp implements SARecommendation {
 
 	@Override
 	public List<TFilm> findFilmsByUserId(long id) {
+		// Enabling paging option for large data
 		Iterable<Recommendation> listRecommendation = recommendationRepository.findAllByUserId(id, PageRequest.of(0, MAX_RESULTS, Sort.by("date").descending()));
 		
+		// see lambda stream in java 8
 		return StreamSupport.stream(listRecommendation.spliterator(), false)
 				.map(recommendation -> modelMapper.map(recommendation.getFilm(), TFilm.class))
 				.collect(Collectors.toList());

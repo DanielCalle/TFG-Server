@@ -1,13 +1,12 @@
 package es.ucm.fdi.tfg.app;
 
-import org.apache.mahout.cf.taste.impl.model.jdbc.PostgreSQLBooleanPrefJDBCDataModel;
 import org.apache.mahout.cf.taste.impl.model.jdbc.PostgreSQLJDBCDataModel;
 import org.apache.mahout.cf.taste.model.DataModel;
 import org.postgresql.ds.PGPoolingDataSource;
-import org.postgresql.ds.PGSimpleDataSource;
 
 public class MahoutDataModel {
 
+    // Set connection to postgresql database
     public static DataModel getDataModelFromPostreSQL(String url, String user, String password) {
         System.out.println(url);
         System.out.println(user);

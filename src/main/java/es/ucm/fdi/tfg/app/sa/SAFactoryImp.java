@@ -1,5 +1,8 @@
 package es.ucm.fdi.tfg.app.sa;
 
+/**
+ * Factory pattern
+ */
 public class SAFactoryImp extends SAFactory {
 
 	@Override

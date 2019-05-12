@@ -5,6 +5,9 @@ import java.util.List;
 import es.ucm.fdi.tfg.app.transfer.TFilm;
 import es.ucm.fdi.tfg.app.transfer.TRecommendation;
 
+/**
+ * Application Service pattern
+ */
 public interface SARecommendation {
 
 	public TRecommendation create(TRecommendation tRecommendation);

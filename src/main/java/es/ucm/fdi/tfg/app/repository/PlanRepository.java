@@ -10,8 +10,10 @@ import es.ucm.fdi.tfg.app.entity.Plan;
 
 public interface PlanRepository extends PagingAndSortingRepository<Plan, Long> {
 
+    // Find by title column (is acceptable when the value contains string title)
     public Iterable<Plan> findByTitleContainingIgnoreCase(String title);
 
+    // Finds all plans where the user is involved
     @Query(
         value = "select * from plan where creator_id = :userId or id in (select plan_joined_users.plan_id from plan_joined_users where joined_users_id = :userId)",
         nativeQuery = true

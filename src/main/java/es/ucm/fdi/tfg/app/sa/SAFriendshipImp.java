@@ -18,14 +18,19 @@ import es.ucm.fdi.tfg.app.repository.FriendshipRepository;
 import es.ucm.fdi.tfg.app.repository.UserRepository;
 import es.ucm.fdi.tfg.app.transfer.TFriendship;
 
+/**
+ * Application Service pattern
+ */
 @Service
 public class SAFriendshipImp implements SAFriendship {
 
 	@Autowired
 	private FriendshipRepository friendshipRepository;
+	
 	@Autowired
 	private UserRepository userRepository;
 
+	// Mapping from entity to transfer and viceverse
 	private ModelMapper modelMapper = new ModelMapper();
 
 	@Override
@@ -139,7 +144,8 @@ public class SAFriendshipImp implements SAFriendship {
 	@Override
 	public List<TFriendship> readAll() {
 		Iterable<Friendship> listFriendship = friendshipRepository.findAll();
-
+		
+		// see lambda stream in java 8
 		return StreamSupport.stream(listFriendship.spliterator(), false)
 				.map(friendShip -> modelMapper.map(friendShip, TFriendship.class))
 				.collect(Collectors.toList());

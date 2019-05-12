@@ -4,6 +4,9 @@ import java.util.List;
 
 import es.ucm.fdi.tfg.app.transfer.TFilm;
 
+/**
+ * Application Service pattern
+ */
 public interface SAFilm {
 	public TFilm create(TFilm tFilm);
 	

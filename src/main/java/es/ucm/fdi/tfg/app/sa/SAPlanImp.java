@@ -25,6 +25,9 @@ import es.ucm.fdi.tfg.app.repository.UserRepository;
 import es.ucm.fdi.tfg.app.transfer.TPlan;
 import es.ucm.fdi.tfg.app.transfer.TUser;
 
+/**
+ * Application Service pattern
+ */
 @Service
 public class SAPlanImp implements SAPlan {
 
@@ -32,11 +35,14 @@ public class SAPlanImp implements SAPlan {
 
 	@Autowired
 	private PlanRepository planRepository;
+	
 	@Autowired
 	private UserRepository userRepository;
+
 	@Autowired
 	private FilmRepository filmRepository;
 
+	// Mapping from entity to transfer and viceverse
 	private ModelMapper modelMapper = new ModelMapper();
 
 	@Override
@@ -123,6 +129,7 @@ public class SAPlanImp implements SAPlan {
 	public List<TPlan> readAll() {
 		Iterable<Plan> listPlan = planRepository.findAll();
 
+		// see lambda stream in java 8
 		return StreamSupport.stream(listPlan.spliterator(), false).map(plan -> modelMapper.map(plan, TPlan.class))
 		.collect(Collectors.toList());
 	}
@@ -141,8 +148,10 @@ public class SAPlanImp implements SAPlan {
 
 	@Override
 	public List<TPlan> getPlansByUserId(Long id) {
+		// Enabling paging option for large data
 		Iterable<Plan> listPlans = planRepository.getPlansByUserId(id, PageRequest.of(0, MAX_RESULTS));
 
+		// see lambda stream in java 8
 		return StreamSupport.stream(listPlans.spliterator(), false)
 			.map(plan -> modelMapper.map(plan, TPlan.class))
 			.collect(Collectors.toList());
@@ -152,6 +161,7 @@ public class SAPlanImp implements SAPlan {
 	public List<TPlan> searchLikeByTitle(String title) {
 		Iterable<Plan> listPlans = planRepository.findByTitleContainingIgnoreCase(title);
 		
+		// see lambda stream in java 8
 		return StreamSupport.stream(listPlans.spliterator(), false)
 			.map(plan -> modelMapper.map(plan, TPlan.class))
 			.collect(Collectors.toList());
