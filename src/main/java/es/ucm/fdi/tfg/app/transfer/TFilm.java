@@ -9,7 +9,6 @@ public class TFilm {
 	private String name;
 	private String director;
 	private String trailerURL;
-	private String infoURL;
 	private String synopsis;
 	private String imageURL;
 	private String genre;
@@ -86,20 +85,6 @@ public class TFilm {
 	 */
 	public void setTrailerURL(String trailerURL) {
 		this.trailerURL = trailerURL;
-	}
-
-	/**
-	 * @return the infoURL
-	 */
-	public String getInfoURL() {
-		return infoURL;
-	}
-
-	/**
-	 * @param infoURL the infoURL to set
-	 */
-	public void setInfoURL(String infoURL) {
-		this.infoURL = infoURL;
 	}
 
 	/**
