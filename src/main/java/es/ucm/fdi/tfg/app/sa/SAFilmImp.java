@@ -119,4 +119,14 @@ public class SAFilmImp implements SAFilm {
 				.collect(Collectors.toList());
 	}
 
+	@Override
+	public List<TFilm> getRecentFilms() {
+		// Enabling paging option for large data
+		Iterable<Film> listFilms = filmRepository.getRecentFilms(PageRequest.of(0, MAX_RESULTS, Sort.unsorted()));
+
+		// see lambda stream in java 8
+		return StreamSupport.stream(listFilms.spliterator(), false)
+				.map(film -> modelMapper.map(film, TFilm.class)).collect(Collectors.toList());
+	}
+
 }

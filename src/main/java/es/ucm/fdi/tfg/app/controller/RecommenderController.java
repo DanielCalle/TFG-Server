@@ -89,10 +89,14 @@ public class RecommenderController {
     @GetMapping("/random")
     @ResponseBody
     public ResponseEntity<TFilm> getRandomFilm() {
-        List<TFilm> films = saUserFilm.getTredingFilms().stream().filter(film -> film.getImageURL() != null)
+        List<TFilm> films = saFilm.getRecentFilms().stream().filter(film -> film.getImageURL() != null)
                 .collect(Collectors.toList());
-        int rand = new Random().nextInt(films.size());
-        return ResponseEntity.status(HttpStatus.OK).body(films.get(rand));
+        if (films.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.OK).body(null);
+        } else {
+            int rand = new Random().nextInt(films.size());
+            return ResponseEntity.status(HttpStatus.OK).body(films.get(rand));
+        }
     }
 
     @GetMapping("/{id}/plans/{friendId}")

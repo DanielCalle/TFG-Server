@@ -23,4 +23,6 @@ public interface SAFilm {
 	public List<TFilm> searchLikeByName(String name);
 
 	public TFilm findByUuid(String uuid);
+
+	public List<TFilm> getRecentFilms();
 }
