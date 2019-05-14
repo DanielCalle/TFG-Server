@@ -118,6 +118,12 @@
                 <spring.profiles.to.activate>prod</spring.profiles.to.activate>
             </properties>
         </profile>
+        <profile>
+            <id>docker</id>
+            <properties>
+                <spring.profiles.to.activate>docker</spring.profiles.to.activate>
+            </properties>
+        </profile>
     </profiles>
 
     <build>
