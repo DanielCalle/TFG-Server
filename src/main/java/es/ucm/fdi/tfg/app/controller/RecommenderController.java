@@ -101,7 +101,7 @@ public class RecommenderController {
 
     @GetMapping("/{id}/plans/{friendId}")
     @ResponseBody
-    public ResponseEntity<List<Quartet<TPlan, TRecommendation, TFilm, List<TUser>>>> recommendPlanForFriend(
+    public ResponseEntity<List<Quartet<TPlan, TRecommendation, TFilm, List<Pair<TUser, TRecommendation>>>>> recommendPlanForFriend(
             @PathVariable Long id, @PathVariable Long friendId) {
         List<TPlan> plans = saUser.getPlans(friendId);
 
@@ -118,8 +118,12 @@ public class RecommenderController {
                     List<TUser> users = saPlan.getJoinedUsers(pair.getValue0().getId());
                     users.add(0, saUser.read(friendId));
                     users.add(0, saUser.read(id));
-                    Quartet<TPlan, TRecommendation, TFilm, List<TUser>> quartet = Quartet.with(pair.getValue0(),
-                            pair.getValue1(), saFilm.read(pair.getValue0().getFilmId()), users);
+                    Quartet<TPlan, TRecommendation, TFilm, List<Pair<TUser, TRecommendation>>> quartet = Quartet.with(
+                            pair.getValue0(), pair.getValue1(), saFilm.read(pair.getValue0().getFilmId()),
+                            users.stream()
+                                    .map(user -> new Pair<TUser, TRecommendation>(user,
+                                            saRecommendation.read(user.getId(), pair.getValue0().getFilmId())))
+                                    .collect(Collectors.toList()));
                     return quartet;
                 }).collect(Collectors.toList()));
     }
