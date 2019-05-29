@@ -1,13 +1,12 @@
 #!/bin/sh
 
-echo Packaging project ...
-mvn package -P Docker
-
 SERVICE_NAME=filmar-service
 PATH_TO_JAR=/usr/src/app/target/RESTApi-1.0-SNAPSHOT.jar
 PID_PATH_NAME=/tmp/filmar-service-pid
 case $1 in
     start)
+        echo Packaging project ...
+        mvn package -P Docker
         echo "Starting $SERVICE_NAME ..."
         if [ ! -f $PID_PATH_NAME ]; then
             nohup java -jar $PATH_TO_JAR /tmp 2>> /dev/null >> /dev/null &
@@ -29,6 +28,8 @@ case $1 in
         fi
     ;;
     restart)
+        echo Packaging project ...
+        mvn package -P Docker
         if [ -f $PID_PATH_NAME ]; then
             PID=$(cat $PID_PATH_NAME);
             echo "$SERVICE_NAME stopping ...";
