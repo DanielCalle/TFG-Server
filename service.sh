@@ -6,7 +6,7 @@ PID_PATH_NAME=/tmp/filmar-service-pid
 case $1 in
     start)
         echo Packaging project ...
-        mvn package -P Docker
+        mvn package -P docker
         echo "Starting $SERVICE_NAME ..."
         if [ ! -f $PID_PATH_NAME ]; then
             nohup java -jar $PATH_TO_JAR /tmp 2>> /dev/null >> /dev/null &
@@ -29,7 +29,7 @@ case $1 in
     ;;
     restart)
         echo Packaging project ...
-        mvn package -P Docker
+        mvn package -P docker
         if [ -f $PID_PATH_NAME ]; then
             PID=$(cat $PID_PATH_NAME);
             echo "$SERVICE_NAME stopping ...";
