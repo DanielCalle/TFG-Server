@@ -1,6 +1,10 @@
 #!/bin/sh
+
+echo Packaging project ...
+mvn package -P Docker
+
 SERVICE_NAME=filmar-service
-PATH_TO_JAR=/home/TFG-Server/target/RESTApi-1.0-SNAPSHOT.jar
+PATH_TO_JAR=/usr/src/app/target/RESTApi-1.0-SNAPSHOT.jar
 PID_PATH_NAME=/tmp/filmar-service-pid
 case $1 in
     start)
