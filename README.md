@@ -38,11 +38,11 @@ Una vez configurado postgres, se procede al despliegue del servicio. Con **servi
 # Dar permiso de ejecucion al script
 chmod +x service.sh
 # Para iniciar el servicio
-./ service.sh start
+./service.sh start
 # Para reiniciar el servicio
-./ service.sh restart
+./service.sh restart
 # Para parar el servicio
-./ service.sh stop
+./service.sh stop
 ```
 Puede que haya problemas con el formato de los scripts pues los scripts se escribieron
 en Windows, para ello hace falta descargarse **vim**, y cambiarle el formato a los scripts.
